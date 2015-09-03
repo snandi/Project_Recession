@@ -13,6 +13,7 @@ rm(list=objects(all.names=TRUE))
 RScriptPath <- '~/Project_Recession/RScripts_Recession/'
 DataPath <- '~/Project_Recession/Data/'
 RDataPath <- '~/Project_Recession/RData/'
+PlotPath <- '~/Project_Recession/Plots/'
 Filename.Header <- paste('~/RScripts/HeaderFile_lmcg.R', sep='')
 source(Filename.Header)
 source(paste(RScriptPath, 'fn_Library_Recession.R', sep=''))
@@ -66,7 +67,7 @@ Colnames_Keep_merged <- c('ssuid', 'shhadid', 'yearmon', 'ehrefper', 'rhtype', '
 sipp08_master_disab <- sipp08_master_disab[, Colnames_Keep_merged]
 
 # disab_01 <- subset(disability_2008, ssuid == "730925701502")[,Colnames_Keep_disab]
-sipp08_master_disab <- subset(sipp08_master_disab, ssuid %in% ssuid_disb_1[1:500])
+#sipp08_master_disab <- subset(sipp08_master_disab, ssuid %in% ssuid_disb_1[1:500])
 sipp08_master_disab <- na.omit(sipp08_master_disab)
 
 #View(sipp08_master_disab[,Colnames_Keep_merged])
@@ -87,14 +88,42 @@ Data_forIncPov$FPL200[Data_forIncPov$FPL100 == TRUE] <- FALSE
 Data_forIncPov$Pct_rhpov <- Data_forIncPov$thtotinc/Data_forIncPov$rhpov
 Data_forIncPov$disb_wrk_ageR2 <- factor(Data_forIncPov$disb_wrk_ageR2, labels = c('no', 'yes'))
 str(Data_forIncPov)
+rownames(Data_forIncPov) <- NULL
+#qplot() + geom_boxplot(aes(x = as.factor(as.Date(yearmon)), y = Pct_rhpov), data = Data_forIncPov )
+########################################################################
+## Boxplot of ratio of thtotinc and rhpov, by yearmon
+########################################################################
+Plot1_box <- qplot() + geom_boxplot(aes(x = as.factor(as.Date(yearmon)), y = Pct_rhpov, fill = disb_wrk_ageR2, 
+                                        col = disb_wrk_ageR2), 
+                       data = Data_forIncPov , outlier.colour = 'gray30', outlier.size = 0.3) + 
+  ylab(label = 'thtotinc / rhpov') + xlab('Year month') +
+  theme(
+    legend.position = 'top',
+    axis.text.x = element_text(angle=90, vjust=1)
+  )
+#Plot1_box
 
-qplot() + geom_boxplot(aes(x = as.factor(as.Date(yearmon)), y = Pct_rhpov), data = Data_forIncPov )
-qplot() + geom_boxplot(aes(x = as.factor(as.Date(yearmon)), y = Pct_rhpov, fill = disb_wrk_ageR2), 
-                       data = Data_forIncPov )
+########################################################################
+## Boxplot of ratio of thtotinc and 2*rhpov, by yearmon
+########################################################################
+Data_forIncPov$Pct_rhpov2 <- Data_forIncPov$thtotinc/Data_forIncPov$rhpov2
+Plot2_box <- qplot() + geom_boxplot(aes(x = as.factor(as.Date(yearmon)), y = Pct_rhpov2, fill = disb_wrk_ageR2, 
+                                        col = disb_wrk_ageR2), 
+                                    data = Data_forIncPov , outlier.colour = 'gray30', outlier.size = 0.3) + 
+  ylab(label = 'thtotinc / (2*rhpov)') + xlab('Year month') +
+  theme(
+    legend.position = 'top',
+    axis.text.x = element_text(angle=90, vjust=1)
+  )
+#Plot2_box
+# qplot() + geom_line(aes(x = as.Date(yearmon), y = Pct_rhpov, col = ssuid), data = Data_forIncPov )
 
-qplot() + geom_line(aes(x = as.Date(yearmon), y = Pct_rhpov, col = ssuid), data = Data_forIncPov )
+Filename.plot <- paste0(PlotPath, 'IncomePovertyPlots_', Today, '.pdf')
+pdf(file = Filename.plot, onefile = TRUE)
+print(Plot1_box)
+print(Plot2_box)
+dev.off()
 
-str(Data_forIncPov)
 
 
 
