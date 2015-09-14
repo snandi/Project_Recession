@@ -51,8 +51,11 @@ Colnames_Keep_disab <- c('ssuid', 'shhadid', 'epppnum', 'disb_wrk_ageR2', 'gas',
 ## per ssuid, in the disability_2008 data
 ########################################################################
 Disab <- fn_returnDisb_ssuid(disbData = disability_2008)
+names(Disab)
 disability_2008_1 <- unique(Disab[['disability_2008_1']][,Colnames_Keep_disab])
 ssuid_disb_1 <- Disab[['ssuid_disb_1']]
+length(unique(as.numeric(ssuid_disb_1)))
+Disab[['ssuid_disb_2_ORmore']]
 
 ########################################################################
 ## Merge sipp_2008 & 2008_disability.dta 
@@ -76,7 +79,7 @@ str(sipp08_master_disab)
 ########################################################################
 ## Get Income Poverty information
 ########################################################################
-Data_forIncPov <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + yearmon, 
+Data_forIncPov <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + shhadid + yearmon, 
                             data = sipp08_master_disab, FUN = mean)
 Data_forIncPov <- Data_forIncPov[order(Data_forIncPov$ssuid, Data_forIncPov$yearmon), ]
 Data_forIncPov$rhpov2 <- 2 * Data_forIncPov$rhpov
@@ -89,6 +92,9 @@ Data_forIncPov$Pct_rhpov <- Data_forIncPov$thtotinc/Data_forIncPov$rhpov
 Data_forIncPov$disb_wrk_ageR2 <- factor(Data_forIncPov$disb_wrk_ageR2, labels = c('no', 'yes'))
 str(Data_forIncPov)
 rownames(Data_forIncPov) <- NULL
+head(Data_forIncPov)
+comment(Data_forIncPov) <- 'The lower the value of Pct_rhpov, the worse off the household is'
+str(Data_forIncPov)
 #qplot() + geom_boxplot(aes(x = as.factor(as.Date(yearmon)), y = Pct_rhpov), data = Data_forIncPov )
 ########################################################################
 ## Boxplot of ratio of thtotinc and rhpov, by yearmon
@@ -124,6 +130,8 @@ print(Plot1_box)
 print(Plot2_box)
 dev.off()
 
+Filename <- paste0(RDataPath, 'Data_forIncPov.RData')
+save(Data_forIncPov, file = Filename)
 
 
 

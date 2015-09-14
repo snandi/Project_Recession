@@ -58,12 +58,12 @@ fn_returnDisb_ssuid <- function(disbData = disability_2008){
   disb_only_table <- table(disb_only$ssuid)
   ssuid_disb_1 <- names(disb_only_table[disb_only_table == 1])
   ## ssuid_disb_1 is a list of ssuids that have only ONE disability status, per ssuid
-  ssuid_disb_2ORmore <- disb_only_table[disb_only_table > 1] 
+  ssuid_disb_2_ORmore <- disb_only_table[disb_only_table > 1] 
   #length(disb_only_table[disb_only_table > 1])
   
   return(list(disb_only_table = disb_only_table, 
               disability_2008_1 = subset(disability_2008, ssuid %in% ssuid_disb_1), 
               ssuid_disb_1 = ssuid_disb_1, 
-              ssuid_disb_2ORmore = ssuid_disb_2ORmore
+              ssuid_disb_2_ORmore = ssuid_disb_2_ORmore
               ))
 }
