@@ -26,10 +26,12 @@ Today <- Sys.Date()
 Filename <- paste0(RDataPath, 'Data_forIncPov.RData')
 load(file = Filename)
 
+Data_forIncPov <- subset(Data_forIncPov, yearmon !=  'May 2008')
+
 #View(Data_forIncPov[1:50,])
 Data_Sub <- subset(Data_forIncPov, yearmon ==  'Jun 2008')
 
-func <- function(Vec){unlist(as.data.frame(cbind(N_Total = length(Vec), N_FPL100 = sum(Vec))))}
+Fun <- function(Vec){unlist(as.data.frame(cbind(N_Total = length(Vec), N_FPL100 = sum(Vec))))}
 output <- func(Data_Sub$FPL100)
 output
 
@@ -44,6 +46,7 @@ IncPovPct <- merge(Total, FPLnum)
 IncPovPct$FPL100_pct <- IncPovPct$FPL100_num/IncPovPct$TotalHH
 IncPovPct$FPL200_pct <- IncPovPct$FPL200_num/IncPovPct$TotalHH
 IncPovPct <- IncPovPct[order(IncPovPct$yearmon),]
+IncPovPct$FPL200plusFPL100 <- IncPovPct$FPL200_pct+ IncPovPct$FPL100_pct
 Ylim <- range(IncPovPct$FPL100_pct, IncPovPct$FPL200_pct)
 
 Plot100 <- qplot() + 
@@ -54,14 +57,13 @@ Plot200 <- qplot() +
   geom_line(aes(x = as.numeric(yearmon), y = FPL200_pct, col = disab), data = IncPovPct, size = 2) +
   ylim(Ylim) + ggtitle(label = 'Below 200% FPL') + ylab(label = 'Percent') + xlab(label = 'Date') +
   theme(legend.position = 'top')
+Plot200plus100 <- qplot() + 
+  geom_line(aes(x = as.numeric(yearmon), y = FPL200plusFPL100, col = disab), data = IncPovPct, size = 2) +
+  ggtitle(label = 'Below 200% FPL & Below 100%') + ylab(label = 'Percent') + xlab(label = 'Date') +
+  theme(legend.position = 'top')
 
-Filename.plot <- paste0(PlotPath, 'IncomePovertyPct_', Today, '.pdf')
-pdf(file = Filename.plot, onefile = TRUE)
-grid.arrange(Plot100, Plot200, ncol = 2)
-dev.off()
-
-Filename.csv <- paste0(RDataPath, 'IncPovPct.csv')
-write.csv(IncPovPct, file = Filename.csv, row.names = F)
+## Filename.csv <- paste0(RDataPath, 'IncPovPct.csv')
+## write.csv(IncPovPct, file = Filename.csv, row.names = F)
 
 ################ Plotting columns of poverty pcts ################
 IncPovPct$AboveFPL <- 1 - rowSums(IncPovPct[,c('FPL100_pct', 'FPL200_pct')])
@@ -70,9 +72,19 @@ IncPovPct_Long <- melt(data=IncPovPct[,c('yearmon', 'disab', "FPL100_pct", "FPL2
                                          'AboveFPL')], 
                        id = c('yearmon', 'disab'))
 
-Barplot <- qplot() + geom_bar(aes(y = value, x = as.numeric(yearmon), fill = variable), 
+Barplot <- qplot() +
+  geom_bar(aes(y = value, x = as.numeric(yearmon), fill = variable), 
                               data = IncPovPct_Long, stat = 'identity') + 
   facet_wrap(~disab) +
   theme(legend.position = 'top')
 
   
+Filename.plot <- paste0(PlotPath, 'IncomePovertyPct_', Today, '.pdf')
+pdf(file = Filename.plot, onefile = TRUE)
+Plot100
+Plot200
+Plot200plus100
+#grid.arrange(Plot100, Plot200, ncol = 2)
+Barplot
+dev.off()
+
