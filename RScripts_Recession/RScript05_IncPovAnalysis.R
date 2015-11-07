@@ -30,41 +30,52 @@ Today <- Sys.Date()
 Filename <- paste0(RDataPath, 'Data_forIncPov.RData')
 load(file = Filename)
 
-Data_forIncPov <- subset(Data_forIncPov, yearmon != 'May 2008')
-Data_forIncPov$FPL100_pct <- Data_forIncPov$thtotinc/Data_forIncPov$rhpov
-Data_forIncPov$FPL200_pct <- Data_forIncPov$thtotinc/Data_forIncPov$rhpov2
+ssuids <- unique(Data_forIncPov$ssuid)
+#Data_Sub <- subset(Data_forIncPov, yearmon == 'Jun 2008')
+Data_Sub <- subset(Data_forIncPov, ssuid %in% ssuids[1:10])
+head(Data_forIncPov)
 
-#View(Data_forIncPov[1:50,])
-Data_Sub <- subset(Data_forIncPov, yearmon %in% c('Jun 2008', 'Jul 2008', 'Aug 2008', 'Sep 2008',
-                                                  'Oct 2008', 'Nov 2008', 'Dec 2008', 'Jan 2009',
-                                                  'Feb 2009', 'Mar 2009', 'Apr 2009'))
-
+########################################################################
+## Normalize the data by each ssuid
+########################################################################
+#SplitByssuid <- split(x = Data_Sub, f = as.factor(Data_Sub$ssuid))
+SplitByssuid <- split(x = Data_forIncPov, f = as.factor(Data_forIncPov$ssuid))
+normalize <- function(Data, Colname){
+  Mean <- mean(Data[,Colname])
+  SD <- sd(Data[,Colname])
+  Normalized <- (Data[,Colname] - Mean)/SD
+  Data$New <- Normalized
+  names(Data)[names(Data) == 'New'] <- paste(Colname, 'Norm', sep='_')
+  return(Data)
+}
+#Output <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = normalize, Colname = 'FPL100_num'))
+Data_Norm <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = normalize, Colname = 'FPL100_num'))
 ########################################################################
 ## Model 1
 ########################################################################
-## Model1 <- lm(FPL100_pct ~ yearmon + gender_ms + race + disb_wrk_ageR2, data = Data_Sub)
+## Model1 <- lm(FPL100 ~ yearmon + gender_ms + race + disb_wrk_ageR2, data = Data_Sub)
 
-Model1 <- lm(FPL100_pct ~ race, data = Data_forIncPov)
+Model1 <- lm(FPL100_num ~ race, data = Data_forIncPov)
 summary(Model1)
-Model2 <- lm(FPL100_pct ~ race + gender_ms, data = Data_forIncPov)
+Model2 <- lm(FPL100_num ~ race + gender_ms, data = Data_forIncPov)
 summary(Model2)
 anova(Model1, Model2)
-Model3 <- lm(FPL100_pct ~ race + gender_ms +  disb_wrk_ageR2, data = Data_forIncPov)
+Model3 <- lm(FPL100_num ~ race + gender_ms +  disb_wrk_ageR2, data = Data_forIncPov)
 summary(Model3)
 anova(Model2, Model3)
-Model4 <- lm(FPL100_pct ~ yearmon + race + gender_ms +  disb_wrk_ageR2, data = Data_forIncPov)
+Model4 <- lm(FPL100_num ~ yearmon + race + gender_ms +  disb_wrk_ageR2, data = Data_forIncPov)
 summary(Model4)
 anova(Model3, Model4)
 
 Plots4 <- diagPlot(model = Model4)
-Filename.plot <- paste0(PlotPath, 'ResidualPlots.pdf')
-pdf(file = Filename.plot)
-Plots4[[1]]
-Plots4[[2]]
-Plots4[[3]]
-Plots4[[4]]
-Plots4[[5]]
-Plots4[[6]]
+#Filename.plot <- paste0(PlotPath, 'ResidualPlots.pdf')
+#pdf(file = Filename.plot)
+#Plots4[[1]]
+#Plots4[[2]]
+#Plots4[[3]]
+#Plots4[[4]]
+#Plots4[[5]]
+#Plots4[[6]]
 dev.off()
 
 

@@ -68,6 +68,17 @@ fn_returnDisb_ssuid <- function(disbData = disability_2008){
               ))
 }
 
+################################################################## 
+## Prepares data for income poverty with FPL100 and FPL200
+##################################################################
+normalize <- function(Data, Colname){
+  Mean <- mean(Data[,Colname])
+  SD <- sd(Data[,Colname])
+  Normalized <- (Data[,Colname] - Mean)/SD
+  Data$New <- Normalized
+  names(Data)[names(Data) == 'New'] <- paste(Colname, 'Norm', sep='_')
+  return(Data)
+}
 fn_DataforIncPov <- function(Data){
   Data <- Data[order(Data$ssuid, Data$yearmon), ]
   Data$rhpov2 <- 2 * Data$rhpov
@@ -80,11 +91,21 @@ fn_DataforIncPov <- function(Data){
   Data$disb_wrk_ageR2 <- factor(Data$disb_wrk_ageR2, labels = c('no', 'yes'))
 
   rownames(Data) <- NULL
-  
+  Data <- subset(Data, yearmon != 'May 2008')
+  Data$FPL100_num <- Data$thtotinc/Data$rhpov
+  Data$FPL200_num <- Data$thtotinc/Data$rhpov2
+  SplitByssuid <- split(x = Data, f = as.factor(Data$ssuid))
+  Data_Norm1 <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = normalize, Colname = 'FPL100_num'))
+  SplitByssuid <- split(x = Data_Norm1, f = as.factor(Data_Norm1$ssuid))
+  Data_Norm2 <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = normalize, Colname = 'FPL200_num'))
+
   comment(Data) <- 'The lower the value of Pct_rhpov, the worse off the household is'
   return(Data)
 }
 
+################################################################## 
+## Return diagnostic plots of lm models in ggplot
+##################################################################
 require(ggplot2)
 diagPlot<-function(model){
     p1<-ggplot(model, aes(.fitted, .resid))+geom_point()
