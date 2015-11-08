@@ -27,7 +27,7 @@ Today <- Sys.Date()
 #Filename <- paste0(RDataPath, 'Data_forIncPov_byRace.RData')
 #load(file = Filename)
 
-Filename <- paste0(RDataPath, 'Data_forIncPov.RData')
+Filename <- paste0(RDataPath, 'Data_forIncPov_byGender.RData')
 load(file = Filename)
 
 ssuids <- unique(Data_forIncPov$ssuid)
@@ -35,25 +35,12 @@ ssuids <- unique(Data_forIncPov$ssuid)
 Data_Sub <- subset(Data_forIncPov, ssuid %in% ssuids[1:10])
 head(Data_forIncPov)
 
-########################################################################
-## Normalize the data by each ssuid
-########################################################################
-#SplitByssuid <- split(x = Data_Sub, f = as.factor(Data_Sub$ssuid))
-SplitByssuid <- split(x = Data_forIncPov, f = as.factor(Data_forIncPov$ssuid))
-normalize <- function(Data, Colname){
-  Mean <- mean(Data[,Colname])
-  SD <- sd(Data[,Colname])
-  Normalized <- (Data[,Colname] - Mean)/SD
-  Data$New <- Normalized
-  names(Data)[names(Data) == 'New'] <- paste(Colname, 'Norm', sep='_')
-  return(Data)
-}
-#Output <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = normalize, Colname = 'FPL100_num'))
-Data_Norm <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = normalize, Colname = 'FPL100_num'))
+Data <- Data_forIncPov_byGender
 ########################################################################
 ## Model 1
 ########################################################################
 ## Model1 <- lm(FPL100 ~ yearmon + gender_ms + race + disb_wrk_ageR2, data = Data_Sub)
+Model0 <- lm(FPL100_num_Norm ~ yearmon, data = Data)
 
 Model1 <- lm(FPL100_num ~ race, data = Data_forIncPov)
 summary(Model1)

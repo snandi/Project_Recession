@@ -99,8 +99,8 @@ fn_DataforIncPov <- function(Data){
   SplitByssuid <- split(x = Data_Norm1, f = as.factor(Data_Norm1$ssuid))
   Data_Norm2 <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = normalize, Colname = 'FPL200_num'))
 
-  comment(Data) <- 'The lower the value of Pct_rhpov, the worse off the household is'
-  return(Data)
+  comment(Data_Norm2) <- 'The lower the value of Pct_rhpov, the worse off the household is'
+  return(Data_Norm2)
 }
 
 ################################################################## 

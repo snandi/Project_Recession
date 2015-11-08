@@ -75,18 +75,18 @@ sipp08_master_disab <- sipp08_master_disab[order(sipp08_master_disab$ssuid, sipp
 sipp08_master_disab <- na.omit(sipp08_master_disab)
 
 #View(sipp08_master_disab[,Colnames_Keep_merged])
-str(sipp08_master_disab)
+#str(sipp08_master_disab)
 
 ########################################################################
 ## Get Income Poverty by Gender
 ########################################################################
-Temp <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + shhadid + yearmon + esex, 
-                  data = sipp08_master_disab, FUN = mean)
-Data_forIncPov_byGender <- fn_DataforIncPov(Data = Temp)
-Filename <- paste0(RDataPath, 'Data_forIncPov_byGender.RData')
-save(Data_forIncPov_byGender, file = Filename)
-rm(Temp, Data_forIncPov_byGender)
-gc()
+## Temp <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + shhadid + yearmon + esex, 
+##                   data = sipp08_master_disab, FUN = mean)
+## Data_forIncPov_byGender <- fn_DataforIncPov(Data = Temp)
+## Filename <- paste0(RDataPath, 'Data_forIncPov_byGender.RData')
+## save(Data_forIncPov_byGender, file = Filename)
+## rm(Temp, Data_forIncPov_byGender)
+## gc()
 
 ########################################################################
 ## Get Income Poverty by Race
@@ -95,13 +95,13 @@ sipp08_master_disab$race <- mapvalues(sipp08_master_disab$erace,
                                       from = c("White alone", "Black alone", "Asian alone", "Residual"),
                                       to = c('White', 'Not White', 'Not White', 'Not White')
                                       )
-Temp <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + shhadid + yearmon + race, 
-                  data = sipp08_master_disab, FUN = mean)
-Data_forIncPov_byRace <- fn_DataforIncPov(Data = Temp)
-Filename <- paste0(RDataPath, 'Data_forIncPov_byRace.RData')
-save(Data_forIncPov_byRace, file = Filename)
-rm(Temp, Data_forIncPov_byRace)
-gc()
+## Temp <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + shhadid + yearmon + race, 
+##                   data = sipp08_master_disab, FUN = mean)
+## Data_forIncPov_byRace <- fn_DataforIncPov(Data = Temp)
+## Filename <- paste0(RDataPath, 'Data_forIncPov_byRace.RData')
+## save(Data_forIncPov_byRace, file = Filename)
+## rm(Temp, Data_forIncPov_byRace)
+## gc()
 
 ########################################################################
 ## Get Income Poverty by Gender & Marital status of head of household
@@ -115,13 +115,13 @@ sipp08_master_disab$ms <- mapvalues(sipp08_master_disab$ems,
 sipp08_master_disab$gender_ms <- with(sipp08_master_disab,
                                       interaction(esex, ms))
 
-Temp <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + shhadid + yearmon + gender_ms, 
-                  data = sipp08_master_disab, FUN = mean)
-Data_forIncPov_byGenderMS <- fn_DataforIncPov(Data = Temp)
-Filename <- paste0(RDataPath, 'Data_forIncPov_byGenderMS.RData')
-save(Data_forIncPov_byGenderMS, file = Filename)
-rm(Temp, Data_forIncPov_byGenderMS)
-gc()
+## Temp <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + shhadid + yearmon + gender_ms, 
+##                   data = sipp08_master_disab, FUN = mean)
+## Data_forIncPov_byGenderMS <- fn_DataforIncPov(Data = Temp)
+## Filename <- paste0(RDataPath, 'Data_forIncPov_byGenderMS.RData')
+## save(Data_forIncPov_byGenderMS, file = Filename)
+## rm(Temp, Data_forIncPov_byGenderMS)
+## gc()
 
 ########################################################################
 ## Get Income Poverty by Race, Gender & Marital status of head of household
