@@ -27,13 +27,15 @@ Today <- Sys.Date()
 #Filename <- paste0(RDataPath, 'Data_forIncPov_byRace.RData')
 #load(file = Filename)
 
-Filename <- paste0(RDataPath, 'Data_forIncPov_byGender.RData')
+Filename <- paste0(RDataPath, 'Data_forIncPov.RData')
 load(file = Filename)
 
 ssuids <- unique(Data_forIncPov$ssuid)
 #Data_Sub <- subset(Data_forIncPov, yearmon == 'Jun 2008')
-Data_Sub <- subset(Data_forIncPov, ssuid %in% ssuids[1:10])
+Data_Sub <- subset(Data_forIncPov, ssuid %in% ssuids[40:50])
 head(Data_forIncPov)
+
+qplot() + geom_line(aes(x = as.factor(yearmon), y = FPL100_num_Norm, group = ssuid, colour = ssuid), data = Data_Sub)
 
 Data <- Data_forIncPov_byGender
 ########################################################################
