@@ -89,6 +89,12 @@ fn_lagData <- function(Data, Colname){
   return(Data)
 }
 
+normalize_baseline <- function(Data, Colname){
+  Baseline <- Data[1,Colname]
+  Normalized <- Data[,Colname] - Baseline
+  return(Normalized)
+}
+
 fn_DataforIncPov <- function(Data){
   Data <- Data[order(Data$ssuid, Data$yearmon), ]
   Data$rhpov2 <- 2 * Data$rhpov
@@ -104,19 +110,56 @@ fn_DataforIncPov <- function(Data){
   Data <- subset(Data, yearmon != 'May 2008')
   Data$FPL100_num <- Data$thtotinc/Data$rhpov
   Data$FPL200_num <- Data$thtotinc/Data$rhpov2
+
+  ## Normalize FPL100
   SplitByssuid <- split(x = Data, f = as.factor(Data$ssuid))
-  Data_Norm1 <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = normalize, Colname = 'FPL100_num'))
-  SplitByssuid <- split(x = Data_Norm1, f = as.factor(Data_Norm1$ssuid))
-  Data_Norm1 <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = fn_lagData, Colname = 'FPL100_num_Norm'))
+  Data <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = normalize, Colname = 'FPL100_num'))
+  rownames(Data) <- NULL
+  try(rm(SplitByssuid))
+  gc()
 
-  SplitByssuid <- split(x = Data_Norm1, f = as.factor(Data_Norm1$ssuid))
-  Data_Norm2 <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = normalize, Colname = 'FPL200_num'))
-  SplitByssuid <- split(x = Data_Norm2, f = as.factor(Data_Norm2$ssuid))
-  Data_Norm2 <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = fn_lagData, Colname = 'FPL200_num_Norm'))
+  ## Normalize FPL200
+  SplitByssuid <- split(x = Data, f = as.factor(Data$ssuid))
+  Data <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = normalize, Colname = 'FPL200_num'))
+  rownames(Data) <- NULL
+  try(rm(SplitByssuid))
+  gc()
 
-  comment(Data_Norm2) <- 'The lower the value of Pct_rhpov, the worse off the household is'
-  return(Data_Norm2)
+  ## Lag FPL100
+  SplitByssuid <- split(x = Data, f = as.factor(Data$ssuid))
+  Data <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = fn_lagData, Colname = 'FPL100_num'))
+  rownames(Data) <- NULL
+  try(rm(SplitByssuid))
+  gc()
+
+  ## Lag FPL200
+  SplitByssuid <- split(x = Data, f = as.factor(Data$ssuid))
+  Data <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = fn_lagData, Colname = 'FPL200_num'))
+  rownames(Data) <- NULL
+  try(rm(SplitByssuid))
+  gc()
+
+  ## Lag FPL100_Norm
+  SplitByssuid <- split(x = Data, f = as.factor(Data$ssuid))
+  Data <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = fn_lagData, Colname = 'FPL100_num_Norm'))
+  rownames(Data) <- NULL
+  try(rm(SplitByssuid))
+  gc()
+
+  ## Lag FPL200_Norm
+  SplitByssuid <- split(x = Data, f = as.factor(Data$ssuid))
+  Data <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = fn_lagData, Colname = 'FPL200_num_Norm'))
+  rownames(Data) <- NULL
+  try(rm(SplitByssuid))
+  gc()
+
+  comment(Data) <- 'The lower the value of Pct_rhpov, the worse off the household is'
+  return(Data)
 }
+
+################################################################## 
+## Prepares data for income poverty with FPL100 and FPL200
+##################################################################
 
 ################################################################## 
 ## Return diagnostic plots of lm models in ggplot

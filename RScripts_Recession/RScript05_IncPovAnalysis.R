@@ -35,19 +35,30 @@ ssuids <- unique(Data_forIncPov$ssuid)
 Data_Sub <- subset(Data_forIncPov, ssuid %in% ssuids[1:40])
 head(Data_forIncPov)
 
-# qplot() + geom_line(aes(x = as.factor(yearmon), y = FPL100_num_Norm, group = ssuid), data = Data_Sub) + 
-#   facet_wrap(~disb_wrk_ageR2)
-## SplitByssuid <- split(x = Data_Sub, f = as.factor(Data_Sub$ssuid))
+SplitByssuid <- split(x = Data_Sub, f = as.factor(Data_Sub$ssuid))
+Data_Sub$FPL100_num_nobaseline <- do.call(what = c, args = lapply(X = SplitByssuid,
+                                                      FUN = normalize_baseline, Colname = 'FPL100_num'))
+########################################################################
+## To plot longitudinal data for Yajuan
+########################################################################
+## Filename.plot <- paste0(PlotPath, 'Plot_40HH.pdf')
+## pdf(file = Filename.plot, onefile = T)
+## Plot1 <- qplot() + geom_line(aes(x = as.factor(yearmon), y = FPL100_num_Norm, group = ssuid, color = ssuid), data = Data_Sub) + 
+##   facet_wrap(~disb_wrk_ageR2) + 
+##   xlab(label = '') + ylab(label = '') +
+##   theme(axis.text.x = element_text(angle=90, vjust=1), 
+##         legend.position="none")
 
-## fn_lagData <- function(Data, Colname){
-##   Lag <- Data[,Colname]
-##   #print(Lag)
-##   Data$New <- c(0, Lag[-1])
-##   #print(Data$New)
-##   names(Data)[names(Data) == 'New'] <- paste(Colname, 'Lag', sep='_')
-##   return(Data)
-## }
-## Data_Sub <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = fn_lagData, Colname = 'FPL200_num_Norm'))
+## Plot2 <- qplot() + geom_line(aes(x = as.factor(yearmon), y = FPL100_num, group = ssuid, color = ssuid), data = Data_Sub) + 
+##   facet_wrap(~disb_wrk_ageR2) + 
+##   geom_hline(yintercept = 1)+ xlab(label = '') + ylab(label = '') +
+##   theme(axis.text.x = element_text(angle=90, vjust=1), 
+##         legend.position="none")
+## Plot1
+## Plot2
+## dev.off()
+## try(dev.off())
+########################################################################
 
 Data <- Data_forIncPov
 #
@@ -86,6 +97,10 @@ anova(Model5_FPL100)
 
 Model6_FPL100 <- lm(FPL100_num_Norm ~ yearmon + gender_ms + race + disb_wrk_ageR2*gender_ms, data = Data_forIncPov)
 summary(Model6_FPL100)
+
+Model7_FPL100 <- lm(FPL100_num_Norm ~ yearmon + gender_ms + race + disb_wrk_ageR2*gender_ms +
+                    FPL100_num_Norm_Lag, data = Data_forIncPov)
+summary(Model7_FPL100)
 
 ## Plots <- diagPlot(model = Model6_FPL100)
 ## Filename.plot <- paste0(PlotPath, 'ResidualPlots_Model6_FPL100.pdf')
