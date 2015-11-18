@@ -75,10 +75,20 @@ normalize <- function(Data, Colname){
   Mean <- mean(Data[,Colname])
   SD <- sd(Data[,Colname])
   Normalized <- (Data[,Colname] - Mean)/SD
+  #Normalized <- (Data[,Colname] - Mean)
   Data$New <- Normalized
   names(Data)[names(Data) == 'New'] <- paste(Colname, 'Norm', sep='_')
   return(Data)
 }
+fn_lagData <- function(Data, Colname){
+  Lag <- Data[,Colname]
+  #print(Lag)
+  Data$New <- c(0, Lag[-1])
+  #print(Data$New)
+  names(Data)[names(Data) == 'New'] <- paste(Colname, 'Lag', sep='_')
+  return(Data)
+}
+
 fn_DataforIncPov <- function(Data){
   Data <- Data[order(Data$ssuid, Data$yearmon), ]
   Data$rhpov2 <- 2 * Data$rhpov
@@ -97,7 +107,12 @@ fn_DataforIncPov <- function(Data){
   SplitByssuid <- split(x = Data, f = as.factor(Data$ssuid))
   Data_Norm1 <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = normalize, Colname = 'FPL100_num'))
   SplitByssuid <- split(x = Data_Norm1, f = as.factor(Data_Norm1$ssuid))
+  Data_Norm1 <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = fn_lagData, Colname = 'FPL100_num_Norm'))
+
+  SplitByssuid <- split(x = Data_Norm1, f = as.factor(Data_Norm1$ssuid))
   Data_Norm2 <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = normalize, Colname = 'FPL200_num'))
+  SplitByssuid <- split(x = Data_Norm2, f = as.factor(Data_Norm2$ssuid))
+  Data_Norm2 <- do.call(what = rbind, args = lapply(X = SplitByssuid, FUN = fn_lagData, Colname = 'FPL200_num_Norm'))
 
   comment(Data_Norm2) <- 'The lower the value of Pct_rhpov, the worse off the household is'
   return(Data_Norm2)
