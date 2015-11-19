@@ -56,7 +56,7 @@ names(Disab)
 disability_2008_1 <- unique(Disab[['disability_2008_1']][,Colnames_Keep_disab])
 ssuid_disb_1 <- Disab[['ssuid_disb_1']]
 length(unique(as.numeric(ssuid_disb_1)))
-Disab[['ssuid_disb_2_ORmore']]
+#Disab[['ssuid_disb_2_ORmore']]
 
 ########################################################################
 ## Merge sipp_2008 & 2008_disability.dta 
@@ -128,8 +128,14 @@ sipp08_master_disab$gender_ms <- with(sipp08_master_disab,
 ########################################################################
 Temp <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + shhadid + yearmon + gender_ms + race, 
                   data = sipp08_master_disab, FUN = mean)
-Data_forIncPov <- fn_DataforIncPov(Data = Temp)
-Filename <- paste0(RDataPath, 'Data_forIncPov.RData')
+## Data_forIncPov <- fn_DataforIncPov(Data = Temp)
+## Filename <- paste0(RDataPath, 'Data_forIncPov.RData')
+## save(Data_forIncPov, file = Filename)
+## rm(Temp, Data_forIncPov)
+## gc()
+
+Data_forIncPov <- fn_DataforIncPov_v2(Data = Temp)
+Filename <- paste0(RDataPath, 'Data_forIncPov_v2.RData')
 save(Data_forIncPov, file = Filename)
 rm(Temp, Data_forIncPov)
 gc()
