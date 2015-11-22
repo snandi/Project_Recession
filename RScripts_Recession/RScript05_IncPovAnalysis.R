@@ -69,8 +69,10 @@ Data$Recession <- mapvalues(as.factor(Data$yearqtr),
 				"2010 Q1", "2010 Q2", "2010 Q3", "2010 Q4", 
 				"2011 Q1", "2011 Q2", "2011 Q3", "2011 Q4"),
  				to = c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, 
-					TRUE, TRUE, TRUE, FALSE, FALSE, FALSE, FALSE, FALSE)
+					FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
 )
+Data$disab_Recession <- with(Data, interaction(disb_wrk_ageR2, Recession))
+
 #
 ########################################################################
 ## Linear Model of FPL 100
@@ -129,8 +131,8 @@ summary(MEM2_FPL100)
 MEM2_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + disb_wrk_ageR2 + disb_wrk_ageR2*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
 summary(MEM2_FPL100)
 
-MEM3_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + disb_wrk_ageR2 + Recession + 
-		disb_wrk_ageR2*gender_ms + disb_wrk_ageR2*Recession + (1 | ssuid), data=Data, REML=TRUE)
+MEM3_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race +  
+		disb_wrk_ageR2*gender_ms + disab_Recession + (1 | ssuid), data=Data, REML=TRUE)
 summary(MEM3_FPL100)
 
 Time2 <- Sys.time()
