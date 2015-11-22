@@ -158,9 +158,10 @@ fn_DataforIncPov <- function(Data){
 ## Prepares data for income poverty with FPL100 and FPL200, after
 ## meeting with Yajuan on 11/18. This normalizes based on the 
 ## baseline value
+## Also, this one uses yearqtr instead of yearmon
 ##################################################################
 fn_DataforIncPov_v2 <- function(Data){
-  Data <- Data[order(Data$ssuid, Data$yearmon), ]
+  Data <- Data[order(Data$ssuid, Data$yearqtr), ]
   Data$rhpov2 <- 2 * Data$rhpov
   
   Data$FPL200 <- Data$thtotinc < Data$rhpov2
@@ -171,7 +172,7 @@ fn_DataforIncPov_v2 <- function(Data){
   Data$disb_wrk_ageR2 <- factor(Data$disb_wrk_ageR2, labels = c('no', 'yes'))
 
   rownames(Data) <- NULL
-  Data <- subset(Data, yearmon != 'May 2008')
+  #Data <- subset(Data, yearmon != 'May 2008')
   Data$FPL100_num <- Data$thtotinc/Data$rhpov
   Data$FPL200_num <- Data$thtotinc/Data$rhpov2
 

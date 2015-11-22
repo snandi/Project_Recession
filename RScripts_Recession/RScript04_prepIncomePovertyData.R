@@ -124,10 +124,19 @@ sipp08_master_disab$gender_ms <- with(sipp08_master_disab,
 ## gc()
 
 ########################################################################
+## Get year quarter instead of year month
+########################################################################
+sipp08_master_disab <- subset(sipp08_master_disab, yearmon != 'May 2008')
+sipp08_master_disab$yearqtr <- as.yearqtr(sipp08_master_disab$yearmon)
+
+########################################################################
 ## Get Income Poverty by Race, Gender & Marital status of head of household
 ########################################################################
-Temp <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + shhadid + yearmon + gender_ms + race, 
+## Temp <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + shhadid + yearmon + gender_ms + race, 
+##                   data = sipp08_master_disab, FUN = mean)
+Temp <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + shhadid + yearqtr + gender_ms + race, 
                   data = sipp08_master_disab, FUN = mean)
+
 ## Data_forIncPov <- fn_DataforIncPov(Data = Temp)
 ## Filename <- paste0(RDataPath, 'Data_forIncPov.RData')
 ## save(Data_forIncPov, file = Filename)
