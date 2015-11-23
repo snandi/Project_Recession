@@ -93,7 +93,7 @@ sipp08_master_disab <- na.omit(sipp08_master_disab)
 ########################################################################
 sipp08_master_disab$race <- mapvalues(sipp08_master_disab$erace,
                                       from = c("White alone", "Black alone", "Asian alone", "Residual"),
-                                      to = c('White', 'Not White', 'Not White', 'Not White')
+                                      to = c('White', 'Black', 'Others', 'Others')
                                       )
 ## Temp <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + shhadid + yearmon + race, 
 ##                   data = sipp08_master_disab, FUN = mean)
@@ -110,7 +110,7 @@ sipp08_master_disab$ms <- mapvalues(sipp08_master_disab$ems,
                                     from = c("Married, spouse present", "Married, spouse absent",
                                       "Widowed", "Divorced", "Separated",
                                       "Never Married"),
-                                    to = c("Married", rep("Not married", 5))
+                                    to = c("Married", "Married", rep("Not married", 4))
                                     )
 sipp08_master_disab$gender_ms <- with(sipp08_master_disab,
                                       interaction(esex, ms))

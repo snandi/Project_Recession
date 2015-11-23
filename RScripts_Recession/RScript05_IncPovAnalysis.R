@@ -68,79 +68,63 @@ Data$Recession <- mapvalues(as.factor(Data$yearqtr),
 				"2009 Q1", "2009 Q2", "2009 Q3", "2009 Q4",
 				"2010 Q1", "2010 Q2", "2010 Q3", "2010 Q4", 
 				"2011 Q1", "2011 Q2", "2011 Q3", "2011 Q4"),
- 				to = c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, 
+ 				to = c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, 
 					FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
 )
 Data$disab_Recession <- with(Data, interaction(disb_wrk_ageR2, Recession))
-
-#
-########################################################################
-## Linear Model of FPL 100
-########################################################################
-Model1 <- lm(FPL100_noBaseline ~ race, data = Data_forIncPov)
-summary(Model1)
-Model2 <- lm(FPL100_noBaseline ~ race + gender_ms, data = Data_forIncPov)
-summary(Model2)
-anova(Model1, Model2)
-Model3 <- lm(FPL100_noBaseline ~ race + gender_ms +  disb_wrk_ageR2, data = Data_forIncPov)
-summary(Model3)
-anova(Model2, Model3)
 
 #######################################################################
 ## Linear Model of normalized FPL 100 
 ########################################################################
 ## Model1 <- lm(FPL100 ~ yearqtr + gender_ms + race + disb_wrk_ageR2, data = Data_Sub)
-Model0_FPL100 <- lm(FPL100_noBaseline ~ yearqtr, data = Data)
-summary(Model0_FPL100)
+## Model0_FPL100 <- lm(FPL100_noBaseline ~ yearqtr, data = Data)
+## summary(Model0_FPL100)
 
-Model1_FPL100 <- lm(FPL100_noBaseline ~ race, data = Data_forIncPov)
-summary(Model1_FPL100)
+## Model1_FPL100 <- lm(FPL100_noBaseline ~ race, data = Data_forIncPov)
+## summary(Model1_FPL100)
 
-Model2_FPL100 <- lm(FPL100_noBaseline ~ race + gender_ms, data = Data_forIncPov)
-summary(Model2_FPL100)
-anova(Model1_FPL100, Model2_FPL100)
+## Model2_FPL100 <- lm(FPL100_noBaseline ~ race + gender_ms, data = Data_forIncPov)
+## summary(Model2_FPL100)
+## anova(Model1_FPL100, Model2_FPL100)
 
-Model3_FPL100 <- lm(FPL100_noBaseline ~ race + gender_ms +  disb_wrk_ageR2, data = Data_forIncPov)
-summary(Model3_FPL100)
-anova(Model2_FPL100, Model3_FPL100)
+## Model3_FPL100 <- lm(FPL100_noBaseline ~ race + gender_ms +  disb_wrk_ageR2, data = Data_forIncPov)
+## summary(Model3_FPL100)
+## anova(Model2_FPL100, Model3_FPL100)
 
-Model4_FPL100 <- lm(FPL100_noBaseline ~ gender_ms + race + disb_wrk_ageR2*race , data = Data_forIncPov)
-summary(Model4_FPL100)
+## Model4_FPL100 <- lm(FPL100_noBaseline ~ gender_ms + race + disb_wrk_ageR2*race , data = Data_forIncPov)
+## summary(Model4_FPL100)
 
-Model5_FPL100 <- lm(FPL100_noBaseline ~ gender_ms + race + disb_wrk_ageR2*gender_ms, data = Data_forIncPov)
-summary(Model5_FPL100)
-anova(Model5_FPL100)
+## Model5_FPL100 <- lm(FPL100_noBaseline ~ gender_ms + race + disb_wrk_ageR2*gender_ms, data = Data_forIncPov)
+## summary(Model5_FPL100)
+## anova(Model5_FPL100)
 
-Model6_FPL100 <- lm(FPL100_noBaseline ~ yearqtr + gender_ms + race + disb_wrk_ageR2*gender_ms, data = Data_forIncPov)
-summary(Model6_FPL100)
+## Model6_FPL100 <- lm(FPL100_noBaseline ~ yearqtr + gender_ms + race + disb_wrk_ageR2*gender_ms, data = Data_forIncPov)
+## summary(Model6_FPL100)
 
-Model7_FPL100 <- lm(FPL100_noBaseline ~ yearqtr + gender_ms + race + disb_wrk_ageR2*gender_ms +
-                    FPL100_norm_Lag, data = Data_forIncPov)
-summary(Model7_FPL100)
+## Model7_FPL100 <- lm(FPL100_noBaseline ~ yearqtr + gender_ms + race + disb_wrk_ageR2*gender_ms +
+##                     FPL100_norm_Lag, data = Data_forIncPov)
+## summary(Model7_FPL100)
 
 #######################################################################
 ## Mixed Effects Model (MEM) of normalized FPL 100 
 ########################################################################
 Time1 <- Sys.time()
-MEM1_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + disb_wrk_ageR2  + (1 | ssuid), data=Data, REML=TRUE)
-summary(MEM1_FPL100)
-
-MEM2_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + disb_wrk_ageR2 + disb_wrk_ageR2*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
-summary(MEM2_FPL100)
+## MEM1_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + disb_wrk_ageR2  + (1 | ssuid), data=Data, REML=TRUE)
+## summary(MEM1_FPL100)
 
 MEM2_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + disb_wrk_ageR2 + disb_wrk_ageR2*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
 summary(MEM2_FPL100)
 
 MEM3_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race +  
-		disb_wrk_ageR2*gender_ms + disab_Recession + (1 | ssuid), data=Data, REML=TRUE)
+		disab_Recession + (1 | ssuid), data=Data, REML=TRUE)
 summary(MEM3_FPL100)
 
 Time2 <- Sys.time()
 print(Time2 - Time1)
 
-MEM3_FPL200 <- lmer(FPL200_noBaseline ~ 1 + gender_ms + race + disb_wrk_ageR2 + Recession + 
-		disb_wrk_ageR2*gender_ms + disb_wrk_ageR2*Recession + (1 | ssuid), data=Data, REML=TRUE)
-summary(MEM3_FPL200)
+## MEM3_FPL200 <- lmer(FPL200_noBaseline ~ 1 + gender_ms + race + disb_wrk_ageR2 + Recession + 
+## 		disb_wrk_ageR2*gender_ms + disb_wrk_ageR2*Recession + (1 | ssuid), data=Data, REML=TRUE)
+## summary(MEM3_FPL200)
 
 
 

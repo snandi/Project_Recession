@@ -65,7 +65,7 @@ sipp08_master_disab <- merge(x = sipp08_master, y = disability_2008_1,
 sipp08_master_disab$yearmon <- as.yearmon(paste(sipp08_master_disab$rhcalmn, sipp08_master_disab$rhcalyr))
 sipp08_master_disab <- sipp08_master_disab[order(sipp08_master_disab$ssuid, sipp08_master_disab$yearmon),]
 
-Colnames_Keep_merged <- c('ssuid', 'shhadid', 'yearmon', 'ehrefper', 'rhtype', 'whfnwgt', 'thtotinc', 'rhpov', 'epppnum',
+Colnames_Keep_merged <- c('ssuid', 'shhadid', 'yearmon', 'ehrefper', 'rhtype', 'wpfinwgt', 'thtotinc', 'rhpov', 'epppnum',
                           'disb_wrk_ageR2')
 sipp08_master_disab <- sipp08_master_disab[, Colnames_Keep_merged]
 
