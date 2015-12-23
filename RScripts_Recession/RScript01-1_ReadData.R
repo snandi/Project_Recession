@@ -22,36 +22,33 @@ Today <- Sys.Date()
 ## Load stata dataset
 Filename.dta <- paste(DataPath, 'sipp08_longitudinal.dta', sep='')
 Data <- read.dta13(file = Filename.dta)
+Filename.dta <- paste(DataPath, '2008_material_hardship.dta', sep='')
+Data_mathard <- read.dta13(file = Filename.dta)
+Filename.dta <- paste(DataPath, '2008_W6_topical_disability_variables.dta', sep='')
+Data_disab <- read.dta13(file = Filename.dta)
+
+## Merge the disability information
+Disab <- unique(Data_disab[,c('ssuid', 'adult_disb')])
+Data <- merge(Data, Disab, by = 'ssuid')
+
+## Check for wave 16
+Wave16 <- unique(Data[,c('ssuid', 'swave', 'ehrefper')])
+Wave16 <- subset(Wave16, swave == 16)
+
+Data16 <- merge(Data, Wave16[,c('ssuid', 'ehrefper')], by = c('ssuid', 'ehrefper'))
 
 ## Save it as RData dataset
 Filename.rdata <- paste(DataPath, 'sipp08_longitudinal.RData', sep='')
-save(Data, file=Filename.rdata)
+save(Data, file = Filename.rdata)
 
-## Load saved RData dataset
-## Filename.rdata <- paste(DataPath, 'sippl08puw6.RData', sep='')
-## load(file=Filename.rdata)
-## str(Data)
+## Save it as RData dataset
+Filename.rdata <- paste(DataPath, 'Data16.RData', sep='')
+save(Data16, file = Filename.rdata)
 
-## length(unique(as.numeric(Data$ssuid)))
-## length(unique(as.numeric(Data$ssuseq)))
+Filename.rdata <- paste(DataPath, '2008_material_hardship.RData', sep='')
+save(Data_mathard, file = Filename.rdata)
 
-########################################################################
-## use the dataset sipp08_MASTER.dta
-## The above data set has all the outcome variables by year (rhcalyr)
-## and month (rhcalmn)
-########################################################################
-Filepath1 <- paste(DataPath, 'Longitudinal08/sipp08_MASTER.dta', sep = '')
-sipp08_master <- read.dta(file = Filepath1)
-Filepath1 <- paste(RDataPath, 'sipp08_MASTER.RData', sep = '')
-save(sipp08_master, file = Filepath1)
+Filename.rdata <- paste(DataPath, '2008_W6_topical_disability_variables.RData', sep='')
+save(Data_disab, file = Filename.rdata)
 
-length(unique(as.numeric(Sipp08_master$ssuid)))
-########################################################################
-## The above data set needs to be merged with 2008_disability.dta 
-########################################################################
-Filepath2 <- paste(DataPath, 'Longitudinal08/2008_disability.dta', sep = '')
-disability_2008 <- read.dta(file = Filepath2)
-Filepath2 <- paste(RDataPath, '2008_disability.RData', sep = '')
-save(disability_2008, file = Filepath2)
-
-length(unique(as.numeric(disability_2008$ssuid)))
+                
