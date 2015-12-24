@@ -169,7 +169,8 @@ fn_DataforIncPov_v2 <- function(Data){
   Data$FPL200[Data$FPL100 == TRUE] <- FALSE
   
   Data$Pct_rhpov <- Data$thtotinc/Data$rhpov
-  Data$disb_wrk_ageR2 <- factor(Data$disb_wrk_ageR2, labels = c('no', 'yes'))
+  ## Data$disb_wrk_ageR2 <- factor(Data$disb_wrk_ageR2, labels = c('no', 'yes'))
+  Data$adult_disb <- factor(Data$adult_disb, labels = c('no', 'yes'))
 
   rownames(Data) <- NULL
   #Data <- subset(Data, yearmon != 'May 2008')
