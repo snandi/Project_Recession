@@ -12,8 +12,8 @@ rm(list = objects(all.names = TRUE))
 ## Run Path definition file                                           ##
 ########################################################################
 RScriptPath <- '~/Project_Recession/RScripts_Recession/'
-DataPath <- '~/Project_Recession/Data/'
-RDataPath <- '~/Project_Recession/RData/'
+DataPath <- '~/Project_Recession/Data/data_2015Dec/'
+RDataPath <- '~/Project_Recession/RData/data_2015Dec/'
 PlotPath <- '~/Project_Recession/Plots/'
 Filename.Header <- paste('~/RScripts/HeaderFile_lmcg.R', sep = '')
 source(Filename.Header)
@@ -68,10 +68,10 @@ Data$Recession <- mapvalues(as.factor(Data$yearqtr),
 				"2009 Q1", "2009 Q2", "2009 Q3", "2009 Q4",
 				"2010 Q1", "2010 Q2", "2010 Q3", "2010 Q4", 
 				"2011 Q1", "2011 Q2", "2011 Q3", "2011 Q4"),
- 				to = c(TRUE, TRUE, TRUE, TRUE, TRUE, TRUE, FALSE, 
+ 				to = c(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, 
 					FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
 )
-Data$disab_Recession <- with(Data, interaction(disb_wrk_ageR2, Recession))
+Data$disab_Recession <- with(Data, interaction(adult_disb, Recession))
 
 #######################################################################
 ## Linear Model of normalized FPL 100 
@@ -105,19 +105,26 @@ Data$disab_Recession <- with(Data, interaction(disb_wrk_ageR2, Recession))
 ##                     FPL100_norm_Lag, data = Data_forIncPov)
 ## summary(Model7_FPL100)
 
+str(Data$erace)
+str(Data$race)
 #######################################################################
 ## Mixed Effects Model (MEM) of normalized FPL 100 
 ########################################################################
 Time1 <- Sys.time()
-## MEM1_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + disb_wrk_ageR2  + (1 | ssuid), data=Data, REML=TRUE)
-## summary(MEM1_FPL100)
+MEM1_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + adult_disb + (1 | ssuid), data=Data, REML=TRUE)
+summary(MEM1_FPL100)
 
-MEM2_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + disb_wrk_ageR2 + disb_wrk_ageR2*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
+MEM2_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + adult_disb + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
 summary(MEM2_FPL100)
 
-MEM3_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race +  
-		disab_Recession + (1 | ssuid), data=Data, REML=TRUE)
+MEM3_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + erace + adult_disb + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
 summary(MEM3_FPL100)
+
+MEM4_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + adult_disb + adult_disb*race + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
+summary(MEM4_FPL100)
+
+## MEM3_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + adult_disb + adult_disb*gender_ms + Recession + (1 | ssuid), data=Data, REML=TRUE)
+## summary(MEM3_FPL100)
 
 Time2 <- Sys.time()
 print(Time2 - Time1)

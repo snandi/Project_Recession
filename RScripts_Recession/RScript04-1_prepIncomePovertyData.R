@@ -44,9 +44,14 @@ Colnames_keep <- c('ssuid',
                    'erace',
                    'esex',
                    'ems',
+                   'epppnum',
                    'adult_disb')
 Data <- unique(Data15[, Colnames_keep])
 Data <- subset(Data, yearmon != 'May 2008')
+
+### Keep only when epppnum == ehrefper
+Data$epppnum <- as.numeric(Data$epppnum)
+Data <- Data[Data$ehrefper == Data$epppnum,]
 
 ########################################################################
 ## Get Income Poverty by Race
@@ -72,7 +77,7 @@ Data$gender_ms <- with(Data, interaction(esex, ms))
 ########################################################################
 ## Temp <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + shhadid + yearmon + gender_ms + race, 
 ##                   data = Data15, FUN = mean)
-Temp <- aggregate(cbind(thtotinc, rhpov, adult_disb) ~ ssuid + shhadid + yearqtr + gender_ms + race, 
+Temp <- aggregate(cbind(thtotinc, rhpov, adult_disb) ~ ssuid + shhadid + yearqtr + gender_ms + race + erace, 
                   data = Data, FUN = mean)
 
 ## Data_forIncPov <- fn_DataforIncPov(Data = Temp)

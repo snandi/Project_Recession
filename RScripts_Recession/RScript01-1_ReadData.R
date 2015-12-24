@@ -28,12 +28,13 @@ Filename.dta <- paste(DataPath, '2008_W6_topical_disability_variables.dta', sep=
 Data_disab <- read.dta13(file = Filename.dta)
 
 ## Merge the disability information
-Disab <- unique(Data_disab[,c('ssuid', 'adult_disb')])
+Disab <- aggregate(adult_disb ~ ssuid, data = Data_disab, FUN = max)
 Data <- merge(Data, Disab, by = 'ssuid')
 
 ## Check for wave 16
 Wave15 <- unique(Data[,c('ssuid', 'swave', 'ehrefper')])
 Wave15 <- subset(Wave15, swave == 15)
+Wave15$swave <- NULL
 
 Data15 <- merge(Data, Wave15[,c('ssuid', 'ehrefper')], by = c('ssuid', 'ehrefper'))
 
