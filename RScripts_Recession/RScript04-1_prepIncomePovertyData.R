@@ -19,6 +19,10 @@ source(paste(RScriptPath, 'fn_Library_Recession.R', sep=''))
 ########################################################################
 Today <- Sys.Date()
 
+## Load weights
+Filename <- paste0(RDataPath, 'Weights.RData')
+load(Filename)
+
 ########################################################################
 ## load sipp08_MASTER.RData
 ########################################################################
@@ -73,11 +77,20 @@ Data$ms <- mapvalues(Data$ems,
 Data$gender_ms <- with(Data, interaction(esex, ms))
 
 ########################################################################
+## Add weights
+########################################################################
+Data <- merge(x = Data, y = Weights[,c('ssuid', 'epppnum', 'lgtcy5wt')], by = c('ssuid', 'epppnum'), all.x = T, all.y = F)
+summary(Data$lgtcy5wt)
+Median <- unlist(summary(Data$lgtcy5wt))[['Median']]
+Data$lgtcy5wt[is.na(Data$lgtcy5wt)] <- Median
+summary(Data$lgtcy5wt)
+colnames(Data)[colnames(Data) == 'lgtcy5wt'] <- 'wt'
+########################################################################
 ## Get Income Poverty by Race, Gender & Marital status of head of household
 ########################################################################
 ## Temp <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + shhadid + yearmon + gender_ms + race, 
 ##                   data = Data15, FUN = mean)
-Temp <- aggregate(cbind(thtotinc, rhpov, adult_disb) ~ ssuid + shhadid + yearqtr + gender_ms + race + erace, 
+Temp <- aggregate(cbind(thtotinc, rhpov, adult_disb) ~ ssuid + shhadid + yearqtr + gender_ms + race + erace + wt, 
                   data = Data, FUN = mean)
 
 ## Data_forIncPov <- fn_DataforIncPov(Data = Temp)

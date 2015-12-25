@@ -87,8 +87,8 @@ Data$disab_Recession <- with(Data, interaction(adult_disb, Recession))
 ## summary(Model2_FPL100)
 ## anova(Model1_FPL100, Model2_FPL100)
 
-## Model3_FPL100 <- lm(FPL100_noBaseline ~ race + gender_ms +  disb_wrk_ageR2, data = Data_forIncPov)
-## summary(Model3_FPL100)
+Model3_FPL100 <- lm(FPL100_num ~ erace + adult_disb, data = Data)
+summary(Model3_FPL100)
 ## anova(Model2_FPL100, Model3_FPL100)
 
 ## Model4_FPL100 <- lm(FPL100_noBaseline ~ gender_ms + race + disb_wrk_ageR2*race , data = Data_forIncPov)
@@ -111,6 +111,10 @@ str(Data$race)
 ## Mixed Effects Model (MEM) of normalized FPL 100 
 ########################################################################
 Time1 <- Sys.time()
+Model1 <- lmer(FPL100_noBaseline ~ 1 + race + (1 | ssuid), data=Data, REML=TRUE)
+summary(Model1)
+
+Time1 <- Sys.time()
 MEM1_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + adult_disb + (1 | ssuid), data=Data, REML=TRUE)
 summary(MEM1_FPL100)
 
@@ -123,15 +127,46 @@ summary(MEM3_FPL100)
 MEM4_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + adult_disb + adult_disb*race + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
 summary(MEM4_FPL100)
 
-## MEM3_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + adult_disb + adult_disb*gender_ms + Recession + (1 | ssuid), data=Data, REML=TRUE)
-## summary(MEM3_FPL100)
+MEM1_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + adult_disb + wt + (1 | ssuid), data=Data, REML=TRUE)
+summary(MEM1_FPL100_wt)
+
+MEM2_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
+summary(MEM2_FPL100_wt)
+
+MEM3_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
+summary(MEM3_FPL100)
+
+MEM4_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + gender_ms + adult_disb + adult_disb*race + wt + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
+summary(MEM4_FPL100_wt)
 
 Time2 <- Sys.time()
 print(Time2 - Time1)
 
-## MEM3_FPL200 <- lmer(FPL200_noBaseline ~ 1 + gender_ms + race + disb_wrk_ageR2 + Recession + 
-## 		disb_wrk_ageR2*gender_ms + disb_wrk_ageR2*Recession + (1 | ssuid), data=Data, REML=TRUE)
-## summary(MEM3_FPL200)
+Time1 <- Sys.time()
+MEM1_FPL200 <- lmer(FPL200_noBaseline ~ 1 + gender_ms + race + adult_disb + (1 | ssuid), data=Data, REML=TRUE)
+summary(MEM1_FPL200)
 
+MEM2_FPL200 <- lmer(FPL200_noBaseline ~ 1 + gender_ms + race + adult_disb + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
+summary(MEM2_FPL200)
 
+MEM3_FPL200 <- lmer(FPL200_noBaseline ~ 1 + gender_ms + erace + adult_disb + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
+summary(MEM3_FPL200)
+
+MEM4_FPL200 <- lmer(FPL200_noBaseline ~ 1 + gender_ms + adult_disb + adult_disb*race + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
+summary(MEM4_FPL200)
+
+MEM1_FPL200_wt <- lmer(FPL200_noBaseline ~ 1 + gender_ms + race + adult_disb + wt + (1 | ssuid), data=Data, REML=TRUE)
+summary(MEM1_FPL200_wt)
+
+MEM2_FPL200_wt <- lmer(FPL200_noBaseline ~ 1 + gender_ms + race + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
+summary(MEM2_FPL200_wt)
+
+MEM3_FPL200_wt <- lmer(FPL200_noBaseline ~ 1 + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
+summary(MEM3_FPL200)
+
+MEM4_FPL200_wt <- lmer(FPL200_noBaseline ~ 1 + gender_ms + adult_disb + adult_disb*race + wt + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
+summary(MEM4_FPL200_wt)
+
+Time2 <- Sys.time()
+print(Time2 - Time1)
 

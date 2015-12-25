@@ -19,6 +19,10 @@ source(paste(RScriptPath, 'fn_Library_Recession.R', sep=''))
 ########################################################################
 Today <- Sys.Date()
 
+## Load weights
+Filename <- paste0(RDataPath, 'Weights.RData')
+load(Filename)
+
 ## Load stata dataset
 Filename.dta <- paste(DataPath, 'sipp08_longitudinal.dta', sep='')
 Data <- read.dta13(file = Filename.dta)
