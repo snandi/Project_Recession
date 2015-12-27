@@ -44,6 +44,15 @@ Data15 <- merge(Data, Wave15[,c('ssuid', 'ehrefper')], by = c('ssuid', 'ehrefper
 
 ## Keep only up to wave 15
 Data15 <- subset(Data15, swave < 16)
+length(unique(Data15$ssuid))
+
+## Match ehrefper & epppnum
+Data15$epppnum <- as.numeric(Data15$epppnum)
+Data15 <- Data15[Data15$ehrefper == Data15$epppnum,]
+length(unique(Data15$ssuid))
+
+## Check for age to be above 18
+
 
 ## Save it as RData dataset
 Filename.rdata <- paste(RDataPath, 'sipp08_longitudinal.RData', sep='')
