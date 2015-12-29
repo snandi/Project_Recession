@@ -1,52 +1,4 @@
-is.integer0 <- function(x)
-{
-  is.integer(x) && !length(x)
-}
-
-## Function library for Curve registration
-
-fn_get_pValue <- function (lmobject) {
-  if (class(lmobject) != "lm") stop("Not an object of class 'lm' ")
-  f <- summary(lmobject)$fstatistic
-  p <- pf(f[1],f[2],f[3],lower.tail=F)
-  attributes(p) <- NULL
-  return(round(p, 6))
-}
-
-################################################################## 
-## Returns the SE of mean of each row of a dataset
-##################################################################
-rowSE <- function(Data){
-  SE <- apply(X = Data, MARGIN = 1, FUN=function(Row){sd(Row)/sqrt(length(Row))})
-  return(SE)
-}
-################################################################## 
-
-################################################################## 
-## Returns the SD of each row of a dataset
-##################################################################
-rowSD <- function(Data){
-  SD <- apply(X = Data, MARGIN = 1, FUN=function(Row){sd(Row)})
-  return(SD)
-}
-
-colSD <- function(Data){
-  rowSD(t(Data))
-}
-################################################################## 
-
-################################################################## 
-## Returns the SD of each row of a dataset
-##################################################################
-rowVar <- function(Data){
-  SD <- apply(X = Data, MARGIN = 1, FUN=function(Row){var(Row)})
-  return(SD)
-}
-
-colVar <- function(Data){
-  rowVar(t(Data))
-}
-################################################################## 
+source('~/RScripts/fn_Library_SN.R')
 
 ################################################################## 
 ## Returns disability information, from disability_2008 dataset
@@ -250,10 +202,29 @@ diagPlot<-function(model){
 
 fn_keepWave15ehref <- function(Subset){
     Subset <- Subset[order(Subset$swave, Subset$ehrefper),]
-    ehrefper_last <- tail(Subset$ehrefper, n = 1)
-    ehrefper_first <- head(Subset$ehrefper, n = 1)
+    ehrefper_last <- last(Subset$ehrefper)
+    ehrefper_first <- Subset$ehrefper[ 1 ]
+    Subset$epppnum <- as.numeric(Subset$epppnum)
     Subset <- Subset[Subset$ehrefper == Subset$epppnum, ]
-    if(ehrefper_first == ehrefper_last){
+    
+    Return <- TRUE
+
+    ## Check if last wave is wave 15
+    swave_last <- last(Subset$swave)
+    if(swave_last < 15){
+	Return <- FALSE
+    }
+    ## Check if age of ref per is < 18
+    Age <- min(as.numeric(Subset[, 'tage']))
+    if(Age < 18){
+	Return <- FALSE
+    }
+    ## Check if the ehrefper has remained the same
+    if(ehrefper_first != ehrefper_last){
+	Return <- FALSE
+    }
+
+    if(Return == TRUE){
 	return(Subset)
     }
 }

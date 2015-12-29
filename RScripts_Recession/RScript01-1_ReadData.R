@@ -36,24 +36,16 @@ Disab <- aggregate(adult_disb ~ ssuid, data = Data_disab, FUN = max)
 Data <- merge(Data, Disab, by = 'ssuid')
 
 ## Check for wave 15
-Wave15 <- unique(Data[,c('ssuid', 'swave', 'ehrefper')])
-Wave15 <- subset(Wave15, swave == 15)
-Wave15$swave <- NULL
 SplitData <- split(x = Data, f = as.factor(Data$ssuid))
-
-Data15 <- merge(Data, Wave15[,c('ssuid', 'ehrefper')], by = c('ssuid', 'ehrefper'))
+## Data15 <- do.call(what = rbind, sapply(X = SplitData, FUN = fn_keepWave15ehref))
+Data15 <- ldply(.data = SplitData, .fun = fn_keepWave15ehref)
 
 ## Keep only up to wave 15
 Data15 <- subset(Data15, swave < 16)
 length(unique(Data15$ssuid))
 
-## Match ehrefper & epppnum
-Data15$epppnum <- as.numeric(Data15$epppnum)
-Data15 <- Data15[Data15$ehrefper == Data15$epppnum,]
-length(unique(Data15$ssuid))
-
 ## Check for age to be above 18
-
+nrow(subset(Data15, tage < 18))
 
 ## Save it as RData dataset
 Filename.rdata <- paste(RDataPath, 'sipp08_longitudinal.RData', sep='')
