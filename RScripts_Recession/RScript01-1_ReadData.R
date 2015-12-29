@@ -35,10 +35,11 @@ Data_disab <- read.dta13(file = Filename.dta)
 Disab <- aggregate(adult_disb ~ ssuid, data = Data_disab, FUN = max)
 Data <- merge(Data, Disab, by = 'ssuid')
 
-## Check for wave 16
+## Check for wave 15
 Wave15 <- unique(Data[,c('ssuid', 'swave', 'ehrefper')])
 Wave15 <- subset(Wave15, swave == 15)
 Wave15$swave <- NULL
+SplitData <- split(x = Data, f = as.factor(Data$ssuid))
 
 Data15 <- merge(Data, Wave15[,c('ssuid', 'ehrefper')], by = c('ssuid', 'ehrefper'))
 

@@ -248,3 +248,13 @@ diagPlot<-function(model){
     return(list(rvfPlot=p1, qqPlot=p2, sclLocPlot=p3, cdPlot=p4, rvlevPlot=p5, cvlPlot=p6))
 }
 
+fn_keepWave15ehref <- function(Subset){
+    Subset <- Subset[order(Subset$swave, Subset$ehrefper),]
+    ehrefper_last <- tail(Subset$ehrefper, n = 1)
+    ehrefper_first <- head(Subset$ehrefper, n = 1)
+    Subset <- Subset[Subset$ehrefper == Subset$epppnum, ]
+    if(ehrefper_first == ehrefper_last){
+	return(Subset)
+    }
+}
+
