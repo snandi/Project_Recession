@@ -30,7 +30,9 @@ Filepath1 <- paste(RDataPath, 'Data15.RData', sep = '')
 load(Filepath1)
 
 length(unique(as.numeric(Data15$ssuid)))
-## 25123 unique ssuids
+nrow(unique(Data15[,c('ssuid', 'ehrefper')]))
+nrow(unique(Data15[,c('ssuid', 'epppnum')]))
+## 22002 unique ssuids, and 1 ehrefper per hh
 
 Data15$yearmon <- as.yearmon(paste(Data15$rhcalmn, Data15$rhcalyr))
 Data15$yearqtr <- as.yearqtr(Data15$yearmon)
@@ -41,6 +43,7 @@ Colnames_keep <- c('ssuid',
                    'yearmon',
                    'yearqtr',
                    'ehrefper',
+                   'epppnum',
                    'rhtype',
                    'whfnwgt',
                    'thtotinc',
@@ -48,32 +51,29 @@ Colnames_keep <- c('ssuid',
                    'erace',
                    'esex',
                    'ems',
-                   'epppnum',
                    'adult_disb')
 Data <- unique(Data15[, Colnames_keep])
 Data <- subset(Data, yearmon != 'May 2008')
 
-### Keep only when epppnum == ehrefper
-Data$epppnum <- as.numeric(Data$epppnum)
-Data <- Data[Data$ehrefper == Data$epppnum,]
-
 ########################################################################
 ## Get Income Poverty by Race
 ########################################################################
-Data$race <- mapvalues(Data$erace,
-                                 from = c("White alone", "Black alone", "Asian alone", "Residual"),
-                                 to = c('White', 'Black', 'Others', 'Others')
-                                 )
+Data$race <- mapvalues(
+  Data$erace,
+  from = c("White alone", "Black alone", "Asian alone", "Residual"),
+  to = c('White', 'Black', 'Others', 'Others')
+)
 
 ########################################################################
 ## Get Income Poverty by Gender & Marital status of head of household
 ########################################################################
-Data$ms <- mapvalues(Data$ems,
-                               from = c("Married, spouse present", "Married, spouse absent",
-                                 "Widowed", "Divorced", "Separated",
-                                 "Never Married"),
-                               to = c("Married", "Married", rep("Not married", 4))
-                               )
+Data$ms <- mapvalues(
+  Data$ems,
+  from = c("Married, spouse present", "Married, spouse absent",
+           "Widowed", "Divorced", "Separated",
+           "Never Married"),
+  to = c("Married", "Married", rep("Not married", 4))
+)
 Data$gender_ms <- with(Data, interaction(esex, ms))
 
 Data$year <- format(Data$yearqtr, "%Y")
@@ -108,7 +108,7 @@ Temp <- aggregate(cbind(thtotinc, rhpov, adult_disb) ~ ssuid + shhadid + yearqtr
 ## gc()
 
 Data_forIncPov <- fn_DataforIncPov_v2(Data = Temp)
-Filename <- paste0(RDataPath, 'Data_forIncPov_v2.RData')
+Filename <- paste0(RDataPath, 'Data_forIncPov_v3.RData')
 save(Data_forIncPov, file = Filename)
 rm(Temp, Data_forIncPov)
 gc()

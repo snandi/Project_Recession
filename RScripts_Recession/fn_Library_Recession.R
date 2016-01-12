@@ -206,6 +206,7 @@ fn_keepWave15ehref <- function(Subset){
     ehrefper_first <- Subset$ehrefper[ 1 ]
     Subset$epppnum <- as.numeric(Subset$epppnum)
     Subset <- Subset[Subset$ehrefper == Subset$epppnum, ]
+    Subset <- subset(Subset, ehrefper == ehrefper_last)
     
     Return <- TRUE
 
