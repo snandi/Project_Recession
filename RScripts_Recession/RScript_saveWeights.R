@@ -69,9 +69,35 @@ str(Weights)
 rownames(Weights) <- NULL
 
 Weights$epppnum <- as.numeric(Weights$epppnum)
+LongWeights <- c("lgtcy1wt", "lgtcy2wt", "lgtcy3wt", "lgtcy4wt", "lgtcy5wt")
+Weights_Long <- melt(data = Weights, id.vars = c('ssuid', 'epppnum'), 
+                     measure.vars = LongWeights)
+colnames(Weights_Long) <- c('ssuid', 'epppnum', 'lgtcy', 'weight')
+
+Weights_Long$year <- mapvalues(
+  x = Weights_Long$lgtcy,
+  from = c("lgtcy1wt", "lgtcy2wt", "lgtcy3wt", "lgtcy4wt", "lgtcy5wt"), 
+  to = c("2008", "2009", "2010", "2011", "2012")
+)
+
+Weights_Long$year <- as.vector(Weights_Long$year)
+
+Weights2013 <- subset(Weights_Long, year == 2012)
+Weights2013$year <- 2013
+
+Weights_Long <- rbind(Weights_Long, Weights2013)
+
+Weights_Long <- Weights_Long[order(Weights_Long$ssuid, Weights_Long$epppnum, Weights_Long$year),]
+str(Weights_Long)
 
 Filename <- paste0(RDataPath, 'Weights.RData')
 save(Weights, file = Filename)
 
 Filename <- paste0(DataPath, 'Weights.txt')
 write.table(x = Weights, file = Filename, sep = ',', row.names = F, col.names = T)
+
+Filename <- paste0(RDataPath, 'Weights_Long.RData')
+save(Weights_Long, file = Filename)
+
+Filename <- paste0(DataPath, 'Weights_Long.txt')
+write.table(x = Weights_Long, file = Filename, sep = ',', row.names = F, col.names = T)

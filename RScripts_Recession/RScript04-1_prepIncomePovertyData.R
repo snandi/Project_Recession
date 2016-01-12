@@ -20,7 +20,7 @@ source(paste(RScriptPath, 'fn_Library_Recession.R', sep=''))
 Today <- Sys.Date()
 
 ## Load weights
-Filename <- paste0(RDataPath, 'Weights.RData')
+Filename <- paste0(RDataPath, 'Weights_Long.RData')
 load(Filename)
 
 ########################################################################
@@ -76,15 +76,23 @@ Data$ms <- mapvalues(Data$ems,
                                )
 Data$gender_ms <- with(Data, interaction(esex, ms))
 
+Data$year <- format(Data$yearqtr, "%Y")
+
 ########################################################################
 ## Add weights
 ########################################################################
-Data <- merge(x = Data, y = Weights[,c('ssuid', 'epppnum', 'lgtcy5wt')], by = c('ssuid', 'epppnum'), all.x = T, all.y = F)
-summary(Data$lgtcy5wt)
-Median <- unlist(summary(Data$lgtcy5wt))[['Median']]
-Data$lgtcy5wt[is.na(Data$lgtcy5wt)] <- Median
-summary(Data$lgtcy5wt)
-colnames(Data)[colnames(Data) == 'lgtcy5wt'] <- 'wt'
+Data <- merge(
+  x = Data, 
+  y = Weights_Long[,c('ssuid', 'epppnum', 'year', 'weight')], 
+  by = c('ssuid', 'epppnum', 'year'), 
+  all.x = T, 
+  all.y = F
+)
+summary(Data$weight)
+colnames(Data)[colnames(Data) == 'weight'] <- 'wt'
+
+NoWeights <- unique(subset(Data, wt == 0)[,'ssuid'])
+length(unique(Data$ssuid))
 ########################################################################
 ## Get Income Poverty by Race, Gender & Marital status of head of household
 ########################################################################
