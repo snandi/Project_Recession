@@ -90,16 +90,31 @@ Data <- merge(
 )
 summary(Data$weight)
 colnames(Data)[colnames(Data) == 'weight'] <- 'wt'
+MedianWeights <- aggregate(weight ~ year, data = Weights_Long, FUN = median)
+colnames(MedianWeights) <- c('year', 'median_wt')
 
-NoWeights <- unique(subset(Data, wt == 0)[,'ssuid'])
-length(unique(Data$ssuid))
+Data <- merge(
+  x = Data,
+  y = MedianWeights,
+  by = 'year'
+)
+
+Data$wt <- na.is.zero(Data$wt)
+
+Data$wt[Data$wt == 0] <- Data$median_wt[Data$wt == 0]
+
+## NoWeights <- unique(subset(Data, wt == 0)[,'ssuid'])
+## length(unique(Data$ssuid))
 ########################################################################
 ## Get Income Poverty by Race, Gender & Marital status of head of household
 ########################################################################
 ## Temp <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + shhadid + yearmon + gender_ms + race, 
 ##                   data = Data15, FUN = mean)
-Temp <- aggregate(cbind(thtotinc, rhpov, adult_disb) ~ ssuid + shhadid + yearqtr + gender_ms + race + erace + wt, 
-                  data = Data, FUN = mean)
+Temp <- aggregate(
+  cbind(thtotinc, rhpov, adult_disb) ~ ssuid + shhadid + yearqtr + gender_ms + race + erace + wt, 
+  data = Data,
+  FUN = mean
+)
 
 ## Data_forIncPov <- fn_DataforIncPov(Data = Temp)
 ## Filename <- paste0(RDataPath, 'Data_forIncPov.RData')

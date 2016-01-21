@@ -19,17 +19,15 @@ source(paste(RScriptPath, 'fn_Library_Recession.R', sep=''))
 ########################################################################
 Today <- Sys.Date()
 
-## Load weights
-Filename <- paste0(RDataPath, 'Weights.RData')
-load(Filename)
-
-## Load stata dataset
+## ## Load stata dataset
 Filename.dta <- paste(DataPath, 'sipp08_longitudinal.dta', sep='')
 Data <- read.dta13(file = Filename.dta)
 Filename.dta <- paste(DataPath, '2008_material_hardship.dta', sep='')
 Data_mathard <- read.dta13(file = Filename.dta)
 Filename.dta <- paste(DataPath, '2008_W6_topical_disability_variables.dta', sep='')
 Data_disab <- read.dta13(file = Filename.dta)
+
+
 
 ## Merge the disability information
 Disab <- aggregate(adult_disb ~ ssuid, data = Data_disab, FUN = max)
