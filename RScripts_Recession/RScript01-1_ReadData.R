@@ -27,7 +27,8 @@ Data_mathard <- read.dta13(file = Filename.dta)
 Filename.dta <- paste(DataPath, '2008_W6_topical_disability_variables.dta', sep='')
 Data_disab <- read.dta13(file = Filename.dta)
 
-
+length(unique(Data$ssuid))
+length(unique(Data_disab$ssuid))
 
 ## Merge the disability information
 Disab <- aggregate(adult_disb ~ ssuid, data = Data_disab, FUN = max)
@@ -37,6 +38,7 @@ Data <- merge(Data, Disab, by = 'ssuid')
 SplitData <- split(x = Data, f = as.factor(Data$ssuid))
 ## Data15 <- do.call(what = rbind, sapply(X = SplitData, FUN = fn_keepWave15ehref))
 Data15 <- ldply(.data = SplitData, .fun = fn_keepWave15ehref)
+length(unique(Data15$ssuid))
 
 ## Keep only up to wave 15
 Data15 <- subset(Data15, swave < 16)
