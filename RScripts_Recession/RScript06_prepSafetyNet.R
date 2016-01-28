@@ -135,7 +135,7 @@ Data_race$Pct_norm <- Data_race$Pct - Data_race$baseline
 
 anova(lm(Pct_norm ~ yearmon + erace, data = Data_race))
 summary(lm(Pct_norm ~ yearmon + erace, data = Data_race))
-        
+
 Plot2a <- qplot() + geom_line(aes(x = as.Date(yearmon), y = Pct_norm, color = erace), data = Data_race, size = 1) +
   ggtitle(label = 'Safety net participation of households with disability, by race') +
   xlab(label = '') + ylab(label = 'percentage')

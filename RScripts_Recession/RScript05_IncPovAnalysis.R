@@ -107,6 +107,8 @@ summary(Model3_FPL100)
 
 str(Data$erace)
 str(Data$race)
+
+Data$wt <- Data$wt/1000
 #######################################################################
 ## Mixed Effects Model (MEM) of normalized FPL 100 
 ########################################################################
@@ -117,56 +119,60 @@ summary(Model1)
 Time1 <- Sys.time()
 MEM1_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + adult_disb + (1 | ssuid), data=Data, REML=TRUE)
 summary(MEM1_FPL100)
+anova(MEM1_FPL100)
+step(model = MEM1_FPL100, reduce.random = T)
+Resid_MEM1 <- residuals(MEM1_FPL100)
+ResidPlot_MEM1 <- qplot() + geom_point(aes(x = 1:length(Resid_MEM1), y = Resid_MEM1))
 
 MEM2_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + adult_disb + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
 summary(MEM2_FPL100)
 
 MEM3_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + erace + adult_disb + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
 summary(MEM3_FPL100)
+anova(MEM3_FPL100)
 
 MEM4_FPL100 <- lmer(FPL100_noBaseline ~ 1 + gender_ms + adult_disb + adult_disb*race + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
 summary(MEM4_FPL100)
 
-MEM1_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + adult_disb + wt + (1 | ssuid), data=Data, REML=TRUE)
+MEM1_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + gender_ms + erace + adult_disb + wt + (1 | ssuid), data=Data, REML=TRUE)
 summary(MEM1_FPL100_wt)
+anova(MEM1_FPL100_wt)
+step(model = MEM1_FPL100_wt, reduce.random = T)
 
-MEM2_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + gender_ms + race + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
+MEM2_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
 summary(MEM2_FPL100_wt)
 
 MEM3_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
-summary(MEM3_FPL100)
+summary(MEM3_FPL100_wt)
+anova(MEM3_FPL100_wt)
 
 MEM4_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + gender_ms + adult_disb + adult_disb*race + wt + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
 summary(MEM4_FPL100_wt)
+anova(MEM4_FPL100_wt)
+step(model = MEM4_FPL100_wt, reduce.random = T)
+Resid_MEM4_wt <- residuals(MEM4_FPL100_wt)
+ResidPlot_MEM4_wt <- qplot() + geom_point(aes(x = 1:length(Resid_MEM4_wt), y = Resid_MEM4_wt))
+acf(x = Resid_MEM4_wt)
+
+MEM5_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + FPL100_norm_Lag + gender_ms + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), 
+                       data = Data, REML=TRUE)
+summary(MEM5_FPL100_wt)
+anova(MEM5_FPL100_wt)
+step(model = MEM5_FPL100_wt, reduce.random = T)
+Resid_MEM5_wt <- residuals(MEM5_FPL100_wt)
+ResidPlot_MEM5_wt <- qplot() + geom_point(aes(x = 1:length(Resid_MEM5_wt), y = Resid_MEM5_wt))
+acf(x = Resid_MEM5_wt)
 
 Time2 <- Sys.time()
 print(Time2 - Time1)
 
-Time1 <- Sys.time()
-MEM1_FPL200 <- lmer(FPL200_noBaseline ~ 1 + gender_ms + race + adult_disb + (1 | ssuid), data=Data, REML=TRUE)
-summary(MEM1_FPL200)
 
-MEM2_FPL200 <- lmer(FPL200_noBaseline ~ 1 + gender_ms + race + adult_disb + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
-summary(MEM2_FPL200)
+Num3_FPL100_wt <- lmer(FPL100_num ~ 1 + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), 
+                       data = Data, REML = TRUE)
+summary(Num3_FPL100_wt)
+anova(Num3_FPL100_wt)
 
-MEM3_FPL200 <- lmer(FPL200_noBaseline ~ 1 + gender_ms + erace + adult_disb + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
-summary(MEM3_FPL200)
-
-MEM4_FPL200 <- lmer(FPL200_noBaseline ~ 1 + gender_ms + adult_disb + adult_disb*race + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
-summary(MEM4_FPL200)
-
-MEM1_FPL200_wt <- lmer(FPL200_noBaseline ~ 1 + gender_ms + race + adult_disb + wt + (1 | ssuid), data=Data, REML=TRUE)
-summary(MEM1_FPL200_wt)
-
-MEM2_FPL200_wt <- lmer(FPL200_noBaseline ~ 1 + gender_ms + race + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
-summary(MEM2_FPL200_wt)
-
-MEM3_FPL200_wt <- lmer(FPL200_noBaseline ~ 1 + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
-summary(MEM3_FPL200)
-
-MEM4_FPL200_wt <- lmer(FPL200_noBaseline ~ 1 + gender_ms + adult_disb + adult_disb*race + wt + adult_disb*gender_ms + (1 | ssuid), data=Data, REML=TRUE)
-summary(MEM4_FPL200_wt)
-
-Time2 <- Sys.time()
-print(Time2 - Time1)
-
+Num4_FPL100_wt <- lmer(FPL100_num ~ 1 + FPL100_num_Lag + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), 
+                       data = Data, REML = TRUE)
+summary(Num4_FPL100_wt)
+anova(Num4_FPL100_wt)
