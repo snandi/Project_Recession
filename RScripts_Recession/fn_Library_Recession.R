@@ -34,7 +34,8 @@ normalize <- function(Data, Colname){
 }
 fn_lagData <- function(Data, Colname){
   BeforeLag <- Data[,Colname]
-  AfterLag <- c(0, BeforeLag[-1])
+  N <- length(BeforeLag)
+  AfterLag <- c(0, BeforeLag[-N])
   return(AfterLag)
 }
 

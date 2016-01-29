@@ -63,19 +63,27 @@ head(Data_forIncPov)
 ########################################################################
 
 Data <- Data_forIncPov
-Data$Recession <- mapvalues(as.factor(Data$yearqtr),
-				from = c("2008 Q2", "2008 Q3", "2008 Q4", 
-				"2009 Q1", "2009 Q2", "2009 Q3", "2009 Q4",
-				"2010 Q1", "2010 Q2", "2010 Q3", "2010 Q4", 
-				"2011 Q1", "2011 Q2", "2011 Q3", "2011 Q4"),
- 				to = c(FALSE, FALSE, FALSE, FALSE, TRUE, TRUE, FALSE, 
-					FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE, FALSE)
-)
-Data$disab_Recession <- with(Data, interaction(adult_disb, Recession))
+Data$year <- substr(x = Data$yearqtr, start = 1, stop = 4)
+Data$year <- as.factor(Data$year)
+
+View(Data[,c('ssuid', 'yearqtr', 'thtotinc', 'rhpov', 'adult_disb', 'FPL100_num', 'FPL100_num_Lag')])
 
 #######################################################################
 ## Linear Model of normalized FPL 100 
 ########################################################################
+Num1_FPL100_wt <- lmer(FPL100_num ~ 1 + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), 
+                       data = Data, REML = TRUE)
+summary(Num3_FPL100_wt)
+anova(Num3_FPL100_wt)
+step(Num3_FPL100_wt)
+
+Num2_FPL100_wt <- lmer(FPL100_num ~ 1 + FPL100_num_Lag + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), 
+                       data = Data, REML = TRUE)
+summary(Num4_FPL100_wt)
+anova(Num4_FPL100_wt)
+
+
+
 ## Model1 <- lm(FPL100 ~ yearqtr + gender_ms + race + disb_wrk_ageR2, data = Data_Sub)
 ## Model0_FPL100 <- lm(FPL100_noBaseline ~ yearqtr, data = Data)
 ## summary(Model0_FPL100)
@@ -161,18 +169,10 @@ anova(MEM5_FPL100_wt)
 step(model = MEM5_FPL100_wt, reduce.random = T)
 Resid_MEM5_wt <- residuals(MEM5_FPL100_wt)
 ResidPlot_MEM5_wt <- qplot() + geom_point(aes(x = 1:length(Resid_MEM5_wt), y = Resid_MEM5_wt))
-acf(x = Resid_MEM5_wt)
 
 Time2 <- Sys.time()
 print(Time2 - Time1)
 
 
-Num3_FPL100_wt <- lmer(FPL100_num ~ 1 + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), 
-                       data = Data, REML = TRUE)
-summary(Num3_FPL100_wt)
-anova(Num3_FPL100_wt)
 
-Num4_FPL100_wt <- lmer(FPL100_num ~ 1 + FPL100_num_Lag + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), 
-                       data = Data, REML = TRUE)
-summary(Num4_FPL100_wt)
-anova(Num4_FPL100_wt)
+
