@@ -51,9 +51,27 @@ Colnames_keep <- c('ssuid',
                    'erace',
                    'esex',
                    'ems',
+                   'eeducate',
                    'adult_disb')
 Data <- unique(Data15[, Colnames_keep])
 Data <- subset(Data, yearmon != 'May 2008')
+
+########################################################################
+## Map education levels
+########################################################################
+Data$education <- mapvalues(
+  Data$eeducate,
+  from = c("Not in Universe", "Less Than 1st Grade", "1st, 2nd, 3rd or 4th grade", "5th Or 6th Grade", 
+           "7th Or 8th Grade", "9th Grade", "10th Grade", "11th Grade", "12th grade, no diploma", 
+           "High School Graduate - (diploma", "Some college, but no degree", "Diploma or certificate from a", 
+           "Associate (2-yr) college degree", "Bachelor's degree (for example:", "Master's degree (For example: MA,", 
+           "Professional School degree (for", "Doctorate degree (for example:"),
+  to = c('High School or less', 'High School or less', 'High School or less', 'High School or less', 
+         'High School or less', 'High School or less', 'High School or less', 'High School or less', 
+         'High School or less', 'High School or less', 'Some college, diploma, assoc', 
+         'Some college, diploma, assoc','Some college, diploma, assoc', 'Bachelors or higher', 'Bachelors or higher', 
+         'Bachelors or higher', 'Bachelors or higher')
+)
 
 ########################################################################
 ## Get Income Poverty by Race
@@ -111,7 +129,7 @@ Data$wt[Data$wt == 0] <- Data$median_wt[Data$wt == 0]
 ## Temp <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + shhadid + yearmon + gender_ms + race, 
 ##                   data = Data15, FUN = mean)
 Temp <- aggregate(
-  cbind(thtotinc, rhpov, adult_disb) ~ ssuid + shhadid + yearqtr + gender_ms + race + erace + wt, 
+  cbind(thtotinc, rhpov, adult_disb) ~ ssuid + shhadid + yearqtr + gender_ms + race + erace + education + wt, 
   data = Data,
   FUN = mean
 )
