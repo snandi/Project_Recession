@@ -128,7 +128,6 @@ step(MEM3_FPL100_wt)
 Data$Resid_Num1 <- residuals(Num1_FPL100_wt)
 Data$Resid_Num2 <- residuals(Num2_FPL100_wt) 
 Data$Resid_Num3 <- residuals(Num3_FPL100_wt)
-Data$Resid_Num4 <- residuals(Num4_FPL100_wt)
 
 Data$Resid_MEM1 <- residuals(MEM1_FPL100_wt)
 Data$Resid_MEM2 <- residuals(MEM2_FPL100_wt)
