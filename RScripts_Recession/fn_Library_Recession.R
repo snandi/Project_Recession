@@ -1,6 +1,36 @@
 source('~/RScripts/fn_Library_SN.R')
 
 ################################################################## 
+## Separate safety net program analysis
+################################################################## 
+fn_separateSafetyNet <- function(
+  Data, 
+  ProgramVar = 'thsocsec',
+  Maintitle = 'Total Household Social Security Income, per household',
+  ylabel = 'thsocsec per household'
+){
+  Program_yrmon <- aggregate(Data[,ProgramVar] ~ yearmon + gender_ms + erace + adult_disb, data = Data, FUN = sum)
+  names(Program_yrmon)[5] <- 'Program'
+  HH_yrmon <- aggregate(ssuid ~ yearmon + gender_ms + erace + adult_disb, data = Data, FUN = length)
+  Program_yrmon <- merge(
+    x = Program_yrmon,
+    y = HH_yrmon,
+    by = c('yearmon', 'erace', 'gender_ms', 'adult_disb')
+  )
+  Program_yrmon$Program_perhh <- Program_yrmon$Program/Program_yrmon$ssuid
+  
+  Plot <- qplot() + geom_line(aes(x = as.Date(yearmon), y = Program_perhh, group = adult_disb, col = adult_disb), 
+  data = Program_yrmon, size = 1) +
+  ggtitle(label = Maintitle) +
+  xlab(label = '') + ylab(label = ylabel) +
+#   facet_grid(race ~ gender_ms, scales = 'free_y') +
+  facet_grid(erace ~ gender_ms) +
+  theme(legend.position = 'top')
+
+  return(list(Program_yrmon = Program_yrmon, Plot = Plot))
+}
+
+################################################################## 
 ## Returns disability information, from disability_2008 dataset
 ##################################################################
 fn_returnDisb_ssuid <- function(disbData = disability_2008){
@@ -201,6 +231,11 @@ diagPlot<-function(model){
   return(list(rvfPlot=p1, qqPlot=p2, sclLocPlot=p3, cdPlot=p4, rvlevPlot=p5, cvlPlot=p6))
 }
 
+################################################################## 
+## Keep the ssuids that are in wave 15 and trace them back
+## Keep ssuids with hh_heads > 18 yrs old
+## Keep the ssuids where the ehrefper hasn't changed
+##################################################################
 fn_keepWave15ehref <- function(Subset){
   Subset <- Subset[order(Subset$swave, Subset$ehrefper),]
   ehrefper_last <- last(Subset$ehrefper)
@@ -230,4 +265,5 @@ fn_keepWave15ehref <- function(Subset){
     return(Subset)
   }
 }
+
 
