@@ -231,3 +231,13 @@ afdc$Plot
 ssi$Plot
 #noncsh$Plot
 dev.off()
+
+Data_Participation <- rbind(cbind(fdstp$Program_yrmon, Program_factor = 'FdStp'), 
+                       cbind(unemp$Program_yrmon, Program_factor = 'Unemp'), 
+                       cbind(ssi$Program_yrmon, Program_factor = 'SSI')
+)
+str(Data_Participation)
+
+Filename.RData <- paste0(RDataPath, 'Safetynet_participateOnly.RData')
+save(Data_Participation, file = Filename.RData)
+
