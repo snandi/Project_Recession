@@ -98,25 +98,6 @@ thsocsec <- fn_separateSafetyNet(
   ylabel = 'thsocsec per household'
 )
 
-# thsocsec_yrmon <- aggregate(thsocsec ~ yearmon + gender_ms + erace + adult_disb, data = Data, FUN = sum)
-# HH_yrmon <- aggregate(ssuid ~ yearmon + gender_ms + erace + adult_disb, data = Data, FUN = length)
-# thsocsec_yrmon <- merge(
-#   x = thsocsec_yrmon,
-#   y = HH_yrmon,
-#   by = c('yearmon', 'erace', 'gender_ms', 'adult_disb')
-# )
-# thsocsec_yrmon$thsocsec_perhh <- thsocsec_yrmon$thsocsec/thsocsec_yrmon$ssuid
-# 
-# Plot1 <- qplot() + geom_line(aes(x = as.Date(yearmon), y = thsocsec_perhh, group = factor(adult_disb), col = factor(adult_disb)), 
-#   data = thsocsec_yrmon, size = 1) +
-#   ggtitle(label = 'Total Household Social Security Income, per household') +
-#   xlab(label = '') + ylab(label = 'thsocsec per household') +
-# #   facet_grid(race ~ gender_ms, scales = 'free_y') +
-#   facet_grid(erace ~ gender_ms) +
-#   theme(legend.position = 'top')
-# 
-# Plot1
-
 ########################################################################
 # thfdstp: Total Household food stamps Received 
 ########################################################################
@@ -126,17 +107,6 @@ thfdstp <- fn_separateSafetyNet(
   Maintitle = 'Total Household food stamps Received',
   ylabel = 'thfdstp per household'
 )
-
-# thfdstp_yrmon <- aggregate(thfdstp ~ yearmon + gender_ms + race + adult_disb, data = Data, FUN = sum)
-# 
-# Plot2 <- qplot() + geom_line(aes(x = as.Date(yearmon), y = thfdstp, group = factor(adult_disb), col = factor(adult_disb)), 
-#   data = thfdstp_yrmon, size = 1) +
-#   ggtitle(label = 'Total Household food stamps Received') +
-#   xlab(label = '') + ylab(label = 'thfdstp') +
-#   facet_grid(race ~ gender_ms, scales = 'free_y') +
-#   theme(legend.position = 'top')
-# 
-# Plot2
 
 ########################################################################
 # thunemp: Total Household Unemployment Income
@@ -148,17 +118,6 @@ thunemp <- fn_separateSafetyNet(
   ylabel = 'thunemp per household'
 )
 
-# thunemp_yrmon <- aggregate(thunemp ~ yearmon + gender_ms + race + adult_disb, data = Data, FUN = sum)
-# 
-# Plot3 <- qplot() + geom_line(aes(x = as.Date(yearmon), y = thunemp, group = factor(adult_disb), col = factor(adult_disb)), 
-#   data = thunemp_yrmon, size = 1) +
-#   ggtitle(label = 'Total Household Unemployment Income') +
-#   xlab(label = '') + ylab(label = 'thunemp') +
-#   facet_grid(race ~ gender_ms, scales = 'free_y') +
-#   theme(legend.position = 'top')
-# 
-# Plot3
-
 ########################################################################
 # thafdc: Total household public assistance payments
 ########################################################################
@@ -169,17 +128,6 @@ thafdc <- fn_separateSafetyNet(
   ylabel = 'thafdc per household'
 )
 
-# thafdc_yrmon <- aggregate(thafdc ~ yearmon + gender_ms + race + adult_disb, data = Data, FUN = sum)
-# 
-# Plot4 <- qplot() + geom_line(aes(x = as.Date(yearmon), y = thafdc, group = factor(adult_disb), col = factor(adult_disb)), 
-#   data = thafdc_yrmon, size = 1) +
-#   ggtitle(label = 'Total household public assistance payments') +
-#   xlab(label = '') + ylab(label = 'thafdc') +
-#   facet_grid(race ~ gender_ms, scales = 'free_y') +
-#   theme(legend.position = 'top')
-# 
-# Plot4
-
 ########################################################################
 # thssi: Total Household Supplemental Security Income
 ########################################################################
@@ -189,17 +137,6 @@ thssi <- fn_separateSafetyNet(
   Maintitle = 'Total Household Supplemental Security Income',
   ylabel = 'thssi per household'
 )
-
-# thssi_yrmon <- aggregate(thssi ~ yearmon + gender_ms + race + adult_disb, data = Data, FUN = sum)
-# 
-# Plot5 <- qplot() + geom_line(aes(x = as.Date(yearmon), y = thssi, group = factor(adult_disb), col = factor(adult_disb)), 
-#   data = thssi_yrmon, size = 1) +
-#   ggtitle(label = 'Total Household Supplemental Security Income') +
-#   xlab(label = '') + ylab(label = 'thssi') +
-#   facet_grid(race ~ gender_ms, scales = 'free_y') +
-#   theme(legend.position = 'top')
-# 
-# Plot5
 
 Filename.plot <- paste0(PlotPath, 'Separate_Safetynet_Plots_perHH.pdf')
 pdf(file = Filename.plot, onefile = T)

@@ -25,7 +25,8 @@ fn_separateSafetyNet <- function(
   xlab(label = '') + ylab(label = ylabel) +
 #   facet_grid(race ~ gender_ms, scales = 'free_y') +
   facet_grid(erace ~ gender_ms) +
-  theme(legend.position = 'top')
+  theme(legend.position = 'top', 
+        axis.text.x = element_text(angle = 90, hjust = 0))
 
   return(list(Program_yrmon = Program_yrmon, Plot = Plot))
 }
