@@ -30,6 +30,7 @@ load(Filename)
 Filename.RData <- paste0(RDataPath, 'Safetynet_participateOnly.RData')
 load(Filename.RData)
 summary(Data_Participation$Program_perhh)
+table(Data_Participation$Program_factor)
 
 ########################################################################
 ## Model1: Participation vs time + program
