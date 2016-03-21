@@ -245,16 +245,3 @@ str(Data_Participation)
 Filename.RData <- paste0(RDataPath, 'Safetynet_participateOnly.RData')
 save(Data_Participation, file = Filename.RData)
 
-Model1 <- lm(Program_perhh ~ yearmon + Program_factor + erace + gender_ms + gender_ms*erace + 
-               adult_disb + yearmon*adult_disb, 
-             data = Data_Participation)
-summary(Model1)
-anova(Model1)
-DiagPlots1 <- diagPlot(model = Model1)
-names(DiagPlots1)
-# grid.arrange(DiagPlots1$rvfPlot, DiagPlots1$qqPlot, DiagPlots1$sclLocPlot, DiagPlots1$cdPlot, 
-#              DiagPlots1$rvlevPlot, DiagPlots1$cvlPlot, nrow = 2)
-
-
-
-source(paste(RScriptPath, 'fn_Library_Recession.R', sep=''))

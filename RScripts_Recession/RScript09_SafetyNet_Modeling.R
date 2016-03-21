@@ -32,35 +32,106 @@ load(Filename.RData)
 summary(Data_Participation$Program_perhh)
 table(Data_Participation$Program_factor)
 
-########################################################################
-## Model1: Participation vs time + program
-########################################################################
-Model1 <- lm(sqrt(Program_perhh) ~ yearmon + Program_factor, 
-             data = Data_Participation)
-summary(Model1)
-plot(residuals(Model1))
+Data_Participation$Program_perhh[Data_Participation$Program_perhh == 0] <- 0.0001
 
-## need to do weighted least square
+Data_Participation <- Data_Participation[order(Data_Participation$yearmon),]
+
+#Data_Participation$yearmon_Num <- as.numeric(Data_Participation$yearmon) - 2008
+
+# ########################################################################
+# ## Model1: Participation vs time + program
+# ########################################################################
+# Model1 <- lm(sqrt(Program_perhh) ~ yearmon + Program_factor, 
+#              data = Data_Participation)
+# summary(Model1)
+# plot(residuals(Model1))
+# 
+# ## need to do weighted least square
+# 
+# ########################################################################
+# ## Model2: Participation vs time + program + gender_ms
+# ########################################################################
+# Model2 <- lm(sqrt(Program_perhh) ~ yearmon + Program_factor + gender_ms, 
+#              data = Data_Participation)
+# summary(Model2)
+# 
+# ########################################################################
+# ## Model3: Participation vs time + program + gender_ms + erace
+# ########################################################################
+# Model3 <- lm(sqrt(Program_perhh) ~ yearmon + Program_factor + gender_ms + erace, 
+#              data = Data_Participation)
+# summary(Model3)
+# 
+# ########################################################################
+# ## Model4: Participation vs time + program + gender_ms + erace + interaction
+# ########################################################################
+# Model4 <- lm(sqrt(Program_perhh) ~ yearmon + Program_factor + gender_ms + erace
+#              + gender_ms:erace, 
+#              data = Data_Participation)
+# summary(Model4)
+# plot(residuals(Model4))
 
 ########################################################################
-## Model2: Participation vs time + program + gender_ms
+## Model5: Participation vs time + program + gender_ms + erace + interaction + disab
 ########################################################################
-Model2 <- lm(sqrt(Program_perhh) ~ yearmon + Program_factor + gender_ms, 
+Model5 <- lm(sqrt(Program_perhh) ~ yearmon + Program_factor + erace + gender_ms + gender_ms*erace + 
+               adult_disb + yearmon*adult_disb, 
              data = Data_Participation)
-summary(Model2)
+summary(Model5)
+anova(Model5)
+DiagPlots5 <- diagPlot(model = Model5)
+names(DiagPlots5)
+# grid.arrange(DiagPlots5$rvfPlot, DiagPlots5$qqPlot, DiagPlots5$sclLocPlot, DiagPlots5$cdPlot, 
+#             DiagPlots5$rvlevPlot, DiagPlots5$cvlPlot, nrow = 2)
 
 ########################################################################
-## Model3: Participation vs time + program + gender_ms + erace
+## Model5 - GLM: Participation vs time + program + gender_ms + erace + interaction + disab
 ########################################################################
-Model3 <- lm(sqrt(Program_perhh) ~ yearmon + Program_factor + gender_ms + erace, 
-             data = Data_Participation)
-summary(Model3)
+Model5.glm <- glm(Program_perhh ~ yearmon + Program_factor + erace + gender_ms + 
+                    adult_disb, 
+                  family = binomial( link = logit ), 
+                  data = Data_Participation)
+summary(Model5.glm)
+conf.intervals(Model5.glm)
+
+# Model5.glm <- glm(Program_perhh ~ yearmon_Num + Program_factor + erace + gender_ms + 
+#                     adult_disb, 
+#                   family = binomial( link = logit ), 
+#                   data = Data_Participation)
+# summary(Model5.glm)
+# conf.intervals(Model5.glm)
+########################################################################
+## Model6 - GLM: Participation vs time + program + gender_ms + erace + interaction + disab
+########################################################################
+Model6.glm <- glm(Program_perhh ~ yearmon + Program_factor + erace + gender_ms + 
+                    adult_disb + yearmon*Program_factor, 
+                  family = binomial( link = logit ), 
+                  data = Data_Participation)
+summary(Model6.glm)
+conf.intervals(Model6.glm)
 
 ########################################################################
-## Model3: Participation vs time + program + gender_ms + erace + interaction
+## Model for unemployment
 ########################################################################
-Model4 <- lm(sqrt(Program_perhh) ~ yearmon + Program_factor + gender_ms + erace
-             + gender_ms:erace, 
-             data = Data_Participation)
-summary(Model4)
-plot(residuals(Model4))
+Model_Unemp <- glm(Program_perhh ~ yearmon + I(yearmon^2) + erace + gender_ms + 
+                    adult_disb, 
+                  family = binomial( link = logit ), 
+                  data = subset(Data_Participation, Program_factor == 'Unemp'))
+summary(Model_Unemp)
+
+########################################################################
+## Model for SSI
+########################################################################
+Model_SSI <- glm(Program_perhh ~ yearmon + erace + gender_ms + adult_disb, 
+                   family = binomial( link = logit ), 
+                   data = subset(Data_Participation, Program_factor == 'SSI'))
+summary(Model_SSI)
+
+########################################################################
+## Model for foodstamp
+########################################################################
+Model_FdStp <- glm(Program_perhh ~ yearmon + erace + gender_ms + adult_disb, 
+                 family = binomial( link = logit ), 
+                 data = subset(Data_Participation, Program_factor == 'FdStp'))
+summary(Model_FdStp)
+
