@@ -22,12 +22,6 @@
 
 \maketitle
 
-\section{Data description}
-In the original dataset there were 42,030 unique households. In the disability dataset (panel 2008, wave 6), there were 33,363 households. Only those households who have responded to the survey from wave 1 through wave 15 were analyzed. In addition, if reference person of a household changed over the duration of the survey, that household was dropped. The reference person of the households also needed to be 18 or older, at the beginning of the survey. There were a total of 22,002 unique households that satisfied all the above criteria. 
-
-\section{Methods}
-The primary aim of this study was to estimate how the households with disability coped through the great recession, in terms of income poverty. We used the ratio of total monthly household income and the monthly federal poverty level to quantify income poverty. We name this income poverty ratio (IPR).  Households with IPRs lower than 1 were below 100\% Federal poverty levels. Data from June 2008 through May 2013 were analyzed. The baseline value of IPR (of June 2008) of each household was subtracted from the rest of that household's responses. This helped us analyze the isolated effect of the great recession on income poverty of different socio-economic strata. A mixed effect model was fit between IPR and disability, controlling for demographic variables like race, gender and marital status of household head. Since this is a panel survey, with longitudinal observations from each household, to account for ``between household'' variability, we included a random effect for each household. Our conclusion is that the great recession has had a detrimental impact on IPR. Households with unmarried female adults as the head fared much worse than other types of households. 
-
 \section{Analysis of Safety net program participation}
 Participation rates of households in different safety net programs were analyzed, to detect any significant difference in participation of households with a disabled adult. The following programs were analyzed:
 \begin{itemize}
@@ -36,11 +30,93 @@ Participation rates of households in different safety net programs were analyzed
 \item Food stamps (FdStp)
 \end{itemize}
 
-The following control variables were inculded in the models:
+The following control variables were included in the models:
 \begin{itemize}
 \item Year and month, from August 2008 - April 2013
 \item Race (asian, black, others and white) - 4 levels
 \item Household type (interaction between gender and marital status of household head) - 4 levels
 \end{itemize}
+
+The response variable ($p$) is the program participation rate of different types of household. Since $0 \leq p \leq 1$, a binomial logistic regression model was fit, to estimate the effect of disability on the the odds ratio of program participation rates, after controlling for the demographic variables. The model is of the form
+\[ \text{logit}(p(x)) = \log\left(\frac{p(x)}{1 - p(x)}\right) = \alpha + \beta_1 x_1 + \beta_2 x_2 + \beta_3 x_3  \]
+where, $p(x)$ is the participation rate, as a function of the covariates $x$. The three program participation rates were analyzed separately and together. Below are the results.
+\subsection{Unemployment income participation}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale = 0.8, page = 7]{../Plots/Safetynet_Plots_participateOnly.pdf}
+\end{center}
+\end{figure}
+The plots above are of participation rates of different households in ``unemployment income''. To incorporate the nonlinear behavior of the participation rate a quadratic term was introduced.
+\[ \text{logit}(p(x)) = \log\left(\frac{p(x)}{1 - p(x)}\right) = \alpha + \beta_1\cdot \text{yrmon} + \beta_2 \cdot \text{yrmon}^2 + \beta_3 \cdot \text{race} + \beta_4 \cdot \text{hh\_type} + \gamma \cdot \text{disab} \]
+
+
+\subsection{Supplemental security income participation}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale = 0.8, page = 9]{../Plots/Safetynet_Plots_participateOnly.pdf}
+\end{center}
+\end{figure}
+The plots above are of participation rates of different households in ``supplemental security income''. The following model was fit:
+\[ \text{logit}(p(x)) = \log\left(\frac{p(x)}{1 - p(x)}\right) = \alpha + \beta_1\cdot \text{yrmon} + \beta_2 \cdot \text{race} + \beta_3 \cdot \text{hh\_type} + \gamma \cdot \text{disab} \]
+We are interested in $\hat{\gamma}$, the estimate of $\gamma$, the contribution of disability in participation rate. 
+
+% latex table generated in R 3.2.2 by xtable 1.8-0 package
+% Mon Mar 21 23:26:15 2016
+\begin{table}[H]
+\centering
+\begin{tabular}{rrrrrrrr}
+  \hline
+  & $\hat{\beta}$ & S.E. & z & p-value & Odds Ratio & 2.5\% & 97.5\% \\ 
+  \hline
+  (Intercept) & -91.6394 & 122.7252 & -0.7467 & 0.4552 & 0.0000 & 0.0000 &   Inf \\ 
+  yearmon & 0.0431 & 0.0610 & 0.7067 & 0.4798 & 1.0441 & 0.9264 & 1.1771 \\ 
+  race (Black alone) & 0.9913 & 0.2645 & 3.7481 & 0.0002 & 2.6948 & 1.6238 & 4.5989 \\ 
+  race (Asian alone) & 0.8967 & 0.2671 & 3.3575 & 0.0008 & 2.4514 & 1.4684 & 4.2016 \\ 
+  race (Residual) & 0.7257 & 0.2724 & 2.6645 & 0.0077 & 2.0662 & 1.2228 & 3.5730 \\ 
+  Female.Married & 0.1020 & 0.2653 & 0.3845 & 0.7006 & 1.1074 & 0.6581 & 1.8690 \\ 
+  Male.Not married & 0.5163 & 0.2488 & 2.0755 & 0.0379 & 1.6758 & 1.0341 & 2.7506 \\ 
+  Female.Not married & 0.7868 & 0.2410 & 3.2653 & 0.0011 & 2.1963 & 1.3794 & 3.5575 \\ 
+  Disabled & 2.2330 & 0.2443 & 9.1391 & 0.0000 & 9.3279 & 5.9201 & 15.5045 \\ 
+  \hline
+\end{tabular}
+\end{table}
+
+\subsection{Food stamps  participation}
+\begin{figure}[H]
+\begin{center}
+\includegraphics[scale = 0.8, page = 6]{../Plots/Safetynet_Plots_participateOnly.pdf}
+\end{center}
+\end{figure}
+The plots above are of participation rates of different households in ``Food stamp programs''. The following model was fit:
+\[ \text{logit}(p(x)) = \log\left(\frac{p(x)}{1 - p(x)}\right) = \alpha + \beta_1\cdot \text{yrmon} + \beta_2 \cdot \text{race} + \beta_3 \cdot \text{hh\_type} + \gamma \cdot \text{disab} \]
+We are interested in $\hat{\gamma}$, the estimate of $\gamma$, the contribution of disability in participation rate. Below are the coefficients.
+
+% latex table generated in R 3.2.2 by xtable 1.8-0 package
+% Mon Mar 21 23:33:33 2016
+\begin{table}[H]
+\centering
+\begin{tabular}{rrrrrrrr}
+  \hline
+ & Beta & S.E. & z & p-value & Odds Ratio & 2.5\% & 97.5\% \\ 
+  \hline
+(Intercept) & -190.7829 & 100.8751 & -1.8913 & 0.0586 & 0.0000 & 0.0000 & 663.6447 \\ 
+  yearmon & 0.0932 & 0.0502 & 1.8576 & 0.0632 & 1.0977 & 0.9951 & 1.2115 \\ 
+  race (Black alone) & 1.0083 & 0.2030 & 4.9662 & 0.0000 & 2.7410 & 1.8528 & 4.1134 \\ 
+  race (Asian alone) & 0.0811 & 0.2284 & 0.3549 & 0.7227 & 1.0845 & 0.6928 & 1.7005 \\ 
+  race (Residual) & 0.8712 & 0.2055 & 4.2393 & 0.0000 & 2.3897 & 1.6065 & 3.6014 \\ 
+  Female.Married & 0.1015 & 0.2302 & 0.4412 & 0.6591 & 1.1069 & 0.7049 & 1.7421 \\ 
+  Male.Not married & 0.7041 & 0.2109 & 3.3387 & 0.0008 & 2.0221 & 1.3442 & 3.0786 \\ 
+  Female.Not married & 1.2347 & 0.2013 & 6.1345 & 0.0000 & 3.4374 & 2.3343 & 5.1467 \\ 
+  Disabled & 0.9047 & 0.1433 & 6.3145 & 0.0000 & 2.4712 & 1.8718 & 3.2842 \\ 
+  \hline
+\end{tabular}
+\end{table}
+
+\section{Data description}
+In the original data-set there were 42,030 unique households. In the disability data-set (panel 2008, wave 6), there were 33,363 households. Only those households who have responded to the survey from wave 1 through wave 15 were analyzed. In addition, if reference person of a household changed over the duration of the survey, that household was dropped. The reference person of the households also needed to be 18 or older, at the beginning of the survey. There were a total of 22,002 unique households that satisfied all the above criteria. 
+
+\section{Methods}
+The primary aim of this study was to estimate how the households with disability coped through the great recession, in terms of income poverty. We used the ratio of total monthly household income and the monthly federal poverty level to quantify income poverty. We name this income poverty ratio (IPR).  Households with IPRs lower than 1 were below 100\% Federal poverty levels. Data from June 2008 through May 2013 were analyzed. The baseline value of IPR (of June 2008) of each household was subtracted from the rest of that household's responses. This helped us analyze the isolated effect of the great recession on income poverty of different socio-economic strata. A mixed effect model was fit between IPR and disability, controlling for demographic variables like race, gender and marital status of household head. Since this is a panel survey, with longitudinal observations from each household, to account for ``between household'' variability, we included a random effect for each household. Our conclusion is that the great recession has had a detrimental impact on IPR. Households with unmarried female adults as the head fared much worse than other types of households. 
+
 
 \end{document}

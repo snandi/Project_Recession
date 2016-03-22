@@ -32,7 +32,7 @@ load(Filename.RData)
 summary(Data_Participation$Program_perhh)
 table(Data_Participation$Program_factor)
 
-Data_Participation$Program_perhh[Data_Participation$Program_perhh == 0] <- 0.0001
+#Data_Participation$Program_perhh[Data_Participation$Program_perhh == 0] 
 
 Data_Participation <- Data_Participation[order(Data_Participation$yearmon),]
 
@@ -118,6 +118,11 @@ Model_Unemp <- glm(Program_perhh ~ yearmon + I(yearmon^2) + erace + gender_ms +
                   family = binomial( link = logit ), 
                   data = subset(Data_Participation, Program_factor == 'Unemp'))
 summary(Model_Unemp)
+Output_Unemp <- cbind(summary(Model_Unemp)$coeff, round(exp(coefficients(Model_Unemp)), 4), 
+                      exp(conf.intervals(Model_Unemp)))
+colnames(Output_Unemp) <- c('Beta', 'S.E.', 'z', 'p-value', 'Odds Ratio', '2.5%', '97.5%')
+Output_Unemp <- round(Output_Unemp, 4)
+xtable(Output_Unemp)
 
 ########################################################################
 ## Model for SSI
@@ -126,6 +131,12 @@ Model_SSI <- glm(Program_perhh ~ yearmon + erace + gender_ms + adult_disb,
                    family = binomial( link = logit ), 
                    data = subset(Data_Participation, Program_factor == 'SSI'))
 summary(Model_SSI)
+Output_SSI <- cbind(summary(Model_SSI)$coeff, round(exp(coefficients(Model_SSI)), 4), 
+                      exp(conf.intervals(Model_SSI)))
+colnames(Output_SSI) <- c('Beta', 'S.E.', 'z', 'p-value', 'Odds Ratio', '2.5%', '97.5%')
+Output_SSI[1,7] <- Inf
+Output_SSI <- round(Output_SSI, 4)
+xtable(Output_SSI, digits = c(0, rep(4, times = 7)))
 
 ########################################################################
 ## Model for foodstamp
@@ -134,4 +145,9 @@ Model_FdStp <- glm(Program_perhh ~ yearmon + erace + gender_ms + adult_disb,
                  family = binomial( link = logit ), 
                  data = subset(Data_Participation, Program_factor == 'FdStp'))
 summary(Model_FdStp)
+Output_FdStp <- cbind(summary(Model_FdStp)$coeff, round(exp(coefficients(Model_FdStp)), 4), 
+                    exp(conf.intervals(Model_FdStp)))
+colnames(Output_FdStp) <- c('Beta', 'S.E.', 'z', 'p-value', 'Odds Ratio', '2.5%', '97.5%')
+Output_FdStp <- round(Output_FdStp, 4)
+xtable(Output_FdStp, digits = c(0, rep(4, times = 7)))
 
