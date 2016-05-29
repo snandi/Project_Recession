@@ -20,14 +20,14 @@ fn_separateSafetyNet <- function(
   Program_yrmon$Program_perhh <- Program_yrmon$Program/Program_yrmon$ssuid
   
   Plot <- qplot() + geom_line(aes(x = as.Date(yearmon), y = Program_perhh, group = adult_disb, col = adult_disb), 
-  data = Program_yrmon, size = 1)  + 
-  ggtitle(label = Maintitle)  + 
-  xlab(label = '') + ylab(label = ylabel)  + 
-#   facet_grid(race ~ gender_ms, scales = 'free_y')  + 
-  facet_grid(erace ~ gender_ms)  + 
-  theme(legend.position = 'top', 
-        axis.text.x = element_text(angle = 90, hjust = 0))
-
+                              data = Program_yrmon, size = 1)  + 
+    ggtitle(label = Maintitle)  + 
+    xlab(label = '') + ylab(label = ylabel)  + 
+    #   facet_grid(race ~ gender_ms, scales = 'free_y')  + 
+    facet_grid(erace ~ gender_ms)  + 
+    theme(legend.position = 'top', 
+          axis.text.x = element_text(angle = 90, hjust = 0))
+  
   return(list(Program_yrmon = Program_yrmon, Plot = Plot))
 }
 
@@ -203,15 +203,20 @@ diagPlot <- function(model){
   p1 <- p1 + xlab("Fitted values") + ylab("Residuals")
   p1 <- p1 + ggtitle("Residual vs Fitted Plot")
   
-  p2 <- ggplot(model, aes(qqnorm(.stdresid)[[1]], .stdresid)) + geom_point(na.rm = TRUE)
+  p2 <- ggplot(model, aes(x = qqnorm(.stdresid, plot.it = F)[[1]], y = .stdresid)) + geom_point(na.rm = TRUE)
   #p2 <- p2 + geom_abline(aes(qqline(.stdresid)))
   p2 <- p2 + xlab("Theoretical Quantiles") + ylab("Standardized Residuals")
   p2 <- p2 + ggtitle("Normal Q-Q")
   
-  p3 <- ggplot(model, aes(.fitted, sqrt(abs(.stdresid)))) + geom_point(na.rm=TRUE)
-  p3 <- p3 + stat_smooth(method="loess", na.rm = TRUE) + xlab("Fitted Value")
-  p3 <- p3 + ylab(expression(sqrt("|Standardized residuals|")))
-  p3 <- p3 + ggtitle("Scale-Location")
+  #   p3 <- ggplot(model, aes(.fitted, sqrt(abs(.stdresid)))) + geom_point(na.rm=TRUE)
+  #   p3 <- p3 + stat_smooth(method="loess", na.rm = TRUE) + xlab("Fitted Value")
+  #   p3 <- p3 + ylab(expression(sqrt("|Standardized residuals|")))
+  #   p3 <- p3 + ggtitle("Scale-Location")
+  Residuals <- residuals(model)
+  p3 <- qplot() + geom_histogram(aes(x = Residuals), binwidth = (range(Residuals)[2] - range(Residuals)[1])/30) 
+  #p3 <- ggplot(aes(x = residuals)) + geom_histogram(binwidth = (range(residuals)[2] - range(residuals)[1])/30) 
+  p3 <- p3 + ggtitle(label = 'Histogram of residuals') 
+  p3 <- p3 + ylab(label = '') + xlab(label = 'Residuals')
   
   p4 <- ggplot(model, aes(seq_along(.cooksd), .cooksd)) + geom_bar(stat="identity", position="identity")
   p4 <- p4 + xlab("Obs. Number") + ylab("Cook's distance")
