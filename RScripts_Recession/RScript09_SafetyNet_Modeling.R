@@ -145,8 +145,9 @@ Model_FdStp <- glm(Program_perhh ~ yearmon + erace + gender_ms + adult_disb,
                  family = binomial( link = logit ), 
                  data = subset(Data_Participation, Program_factor == 'FdStp'))
 summary(Model_FdStp)
-Output_FdStp <- cbind(summary(Model_FdStp)$coeff, round(exp(coefficients(Model_FdStp)), 4), 
-                    exp(conf.intervals(Model_FdStp)))
+Output_FdStp <- cbind(summary(Model_FdStp)$coeff,
+                      round(exp(coefficients(Model_FdStp)), 4),
+                      exp(conf.intervals(Model_FdStp)))
 colnames(Output_FdStp) <- c('Beta', 'S.E.', 'z', 'p-value', 'Odds Ratio', '2.5%', '97.5%')
 Output_FdStp <- round(Output_FdStp, 4)
 xtable(Output_FdStp, digits = c(0, rep(4, times = 7)))
