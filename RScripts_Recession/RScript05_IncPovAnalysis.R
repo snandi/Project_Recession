@@ -11,13 +11,17 @@ rm(list = objects(all.names = TRUE))
 ########################################################################
 ## Run Path definition file                                           ##
 ########################################################################
-RScriptPath <- '~/Project_Recession/RScripts_Recession/'
-DataPath <- '~/Project_Recession/Data/data_2015Dec/'
-RDataPath <- '~/Project_Recession/RData/data_2015Dec/'
-PlotPath <- '~/Project_Recession/Plots/'
-Filename.Header <- paste('~/RScripts/HeaderFile_lmcg.R', sep = '')
+PathPrefix <- '~/'
+PathPrefix <- '/Users/patron/Documents/snandi/'
+RScriptPath <- paste0(PathPrefix, 'Project_Recession/RScripts_Recession/')
+DataPath <- paste0(PathPrefix, 'Project_Recession/Data/data_2015Dec/')
+RDataPath <- paste0(PathPrefix, 'Project_Recession/RData/data_2015Dec/')
+PlotPath <- paste0(PathPrefix, 'Project_Recession/Plots/')
+Filename.Header <- paste0(PathPrefix, 'RScripts/HeaderFile_lmcg.R')
 source(Filename.Header)
-source(paste(RScriptPath, 'fn_Library_Recession.R', sep = ''))
+
+source(paste(RScriptPath, 'fn_Library_Recession.R', sep=''))
+source('../../RScripts/fn_Library_SN.R')
 ########################################################################
 Today <- Sys.Date()
 
@@ -36,6 +40,7 @@ ssuids <- unique(Data_forIncPov$ssuid)
 #Data_Sub <- subset(Data_forIncPov, yearmon == 'Jun 2008')
 Data_Sub <- subset(Data_forIncPov, ssuid %in% ssuids[1:40])
 head(Data_forIncPov)
+View(subset(Data_forIncPov, ssuid == '019128000276'))
 
 ## SplitByssuid <- split(x = Data_Sub, f = as.factor(Data_Sub$ssuid))
 ## Data_Sub$FPL100_num_nobaseline <- do.call(what = c, args = lapply(X = SplitByssuid,
