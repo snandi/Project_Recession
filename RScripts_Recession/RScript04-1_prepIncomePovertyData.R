@@ -9,13 +9,18 @@ rm(list=objects(all.names=TRUE))
 ########################################################################
 ## Run Path definition file                                           ##
 ########################################################################
-RScriptPath <- '~/Project_Recession/RScripts_Recession/'
-DataPath <- '~/Project_Recession/Data/data_2015Dec/'
-RDataPath <- '~/Project_Recession/RData/data_2015Dec/'
-PlotPath <- '~/Project_Recession/Plots/'
-Filename.Header <- paste('~/RScripts/HeaderFile_lmcg.R', sep='')
+PathPrefix <- '~/'
+PathPrefix <- '/Users/patron/Documents/snandi/'
+RScriptPath <- paste0(PathPrefix, 'Project_Recession/RScripts_Recession/')
+DataPath <- paste0(PathPrefix, 'Project_Recession/Data/data_2015Dec/')
+RDataPath <- paste0(PathPrefix, 'Project_Recession/RData/data_2015Dec/')
+PlotPath <- paste0(PathPrefix, 'Project_Recession/Plots/')
+Filename.Header <- paste0(PathPrefix, 'RScripts/HeaderFile_lmcg.R')
 source(Filename.Header)
+
 source(paste(RScriptPath, 'fn_Library_Recession.R', sep=''))
+source('../../RScripts/fn_Library_SN.R')
+
 ########################################################################
 Today <- Sys.Date()
 

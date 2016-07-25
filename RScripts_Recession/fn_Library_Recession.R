@@ -1,5 +1,3 @@
-source('~/RScripts/fn_Library_SN.R')
-
 ################################################################## 
 ## Separate safety net program analysis
 ################################################################## 
@@ -69,7 +67,7 @@ fn_lagData <- function(Data, Colname){
   AfterLag <- c(0, BeforeLag[-N])
   return(AfterLag)
 }
-
+	
 normalize_baseline <- function(Data, Colname){
   Baseline <- Data[1,Colname]
   Normalized <- Data[,Colname] - Baseline
