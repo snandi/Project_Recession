@@ -103,17 +103,9 @@ UniqeData <- ddply(
   .variables = c('ssuid', 'shhadid')
 )
 
-table(GenderMS$gender_ms)
-unique(length(GenderMS$ssuid))
-nrow(unique(Data_forIncPov[,c('ssuid', 'shhadid')]))
+GenderMS <- table(UniqeData$gender_ms)
+chisq.test(GenderMS)
 
-########################################################################
-## Race
-########################################################################
-Race <- ddply(
-  .data = Data_forIncPov[,c('ssuid', 'shhadid', 'race', 'erace')],
-  .fun = fn_FirstRow,
-  .variables = c('ssuid', 'shhadid')
-)
-table(Race$race)
-table(Race$erace)
+eRace <- table(UniqeData$erace)
+
+table(UniqeData$adult_disb)
