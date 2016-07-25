@@ -31,8 +31,9 @@ length(unique(Data$ssuid))
 length(unique(Data_disab$ssuid))
 
 ## Merge the disability information
-Disab <- aggregate(adult_disb ~ ssuid, data = Data_disab, FUN = max)
-Data <- merge(Data, Disab, by = 'ssuid')
+Disab <- aggregate(adult_disb ~ ssuid + shhadid, data = Data_disab, FUN = max)
+#Data <- merge(Data, Disab, by = c('ssuid', 'shhadid'))
+Data <- merge(Data, Disab, by = c('ssuid'))
 
 ## Check for wave 15
 SplitData <- split(x = Data, f = as.factor(Data$ssuid))
