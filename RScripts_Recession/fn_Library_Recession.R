@@ -271,4 +271,40 @@ fn_keepWave15ehref <- function(Subset){
   }
 }
 
+################################################################## 
+## Keep the ssuids & shhadid that are in wave 15 and trace them back
+## Keep ssuids with hh_heads > 18 yrs old
+## Keep the ssuids where the ehrefper from 2006 hasn't changed
+## This function was written on 07/24/2016
+##################################################################
+fn_keepWave6ehref <- function(Subset){
+
+  ## Check 1: Keep the rows with only ehrefper == epppnum
+  Subset$epppnum <- as.numeric(Subset$epppnum)
+  Subset <- Subset[Subset$ehrefper == Subset$epppnum, ]
+  Return <- TRUE
+  
+  ## Check if age of ref per is < 18
+  Age <- min(as.numeric(Subset[, 'tage']))
+  if(Age < 18){
+    Return <- FALSE
+  }
+
+  ## Check 2: Wave 6 needs to be present
+  Swaves <- unique(Subset$swave)
+  Return <- Return * (6 %in% Swaves)
+  
+  ## Check 3: ssuid + shhadid needs to have at least 12 data points
+  if(Return == TRUE){
+    Subset <- Subset[order(Subset$swave),]
+    if(nrow(Subset) < 12){
+      Return <- FALSE
+    }  
+  }
+
+  if(Return == TRUE){
+    return(Subset)
+  }
+}
+
 
