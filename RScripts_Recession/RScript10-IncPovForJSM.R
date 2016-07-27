@@ -109,3 +109,13 @@ chisq.test(GenderMS)
 eRace <- table(UniqeData$erace)
 
 table(UniqeData$adult_disb)
+
+########################################################################
+## Disability Data
+########################################################################
+FilenameDisab <- paste(RDataPath, '2008_W6_topical_disability_variables.RData', sep='')
+load(FilenameDisab)
+
+UniqueDisb <- unique(Data_disab[,c('ssuid', 'shhadid', 'adult_disb')])
+table(UniqueDisb$adult_disb)
+sum(table(UniqueDisb$adult_disb))
