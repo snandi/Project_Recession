@@ -158,7 +158,10 @@ fn_DataforIncPov_v2 <- function(Data){
   #Data <- subset(Data, yearmon != 'May 2008')
   Data$FPL100_num <- Data$thtotinc/Data$rhpov
   Data$FPL200_num <- Data$thtotinc/Data$rhpov2
-  
+
+  Data$FPL100_num[Data$FPL100_num == 0] <- 0.001
+  Data$FPL200_num[Data$FPL200_num == 0] <- 0.001
+
   ## Normalize FPL100
   SplitByssuid <- split(x = Data, f = as.factor(Data$ssuid))
   Data$FPL100_noBaseline <- do.call(what = c, args = lapply(X = SplitByssuid, FUN = normalize_baseline, Colname = 'FPL100_num'))

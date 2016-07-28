@@ -38,11 +38,6 @@ Today <- Sys.Date()
 Filename <- paste0(RDataPath, 'Data_forIncPov_v3.RData')
 load(file = Filename)
 
-########################################################################
-## create a household id
-########################################################################
-Data_forIncPov$hhid <- paste(Data_forIncPov$ssuid, Data_forIncPov$shhadid, sep = '_')
-
 ## ssuids <- unique(Data_forIncPov$ssuid)
 
 ## #Data_Sub <- subset(Data_forIncPov, yearmon == 'Jun 2008')
@@ -80,6 +75,7 @@ Data$year <- substr(x = Data$yearqtr, start = 1, stop = 4)
 Data$year <- as.factor(Data$year)
 
 #View(Data[,c('hhid', 'yearqtr', 'thtotinc', 'rhpov', 'adult_disb', 'FPL100_num', 'FPL100_num_Lag')])
+
 
 #######################################################################
 ## Mixed Effects Model (MEM) of Income Poverty Ratio

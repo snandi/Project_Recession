@@ -146,7 +146,26 @@ Temp <- aggregate(
 ## gc()
 
 Data_forIncPov <- fn_DataforIncPov_v2(Data = Temp)
+
+########################################################################
+## create a household id
+########################################################################
+Data_forIncPov$hhid <- paste(Data_forIncPov$ssuid, Data_forIncPov$shhadid, sep = '_')
+
+########################################################################
+## Remove negative thtotinc 
+########################################################################
+hhids_negative <- unique(subset(Data_forIncPov, thtotinc < 0)[,'hhid'])
+hhids_nonnegative <- unique(Data_forIncPov[,'hhid']) %w/o% hhids_negative
+
+Data_forIncPov <- subset(Data_forIncPov, hhid %in% hhids_nonnegative)
+## Around 450 households were dropped
+
+########################################################################
+## save the data
+########################################################################
 Filename <- paste0(RDataPath, 'Data_forIncPov_v3.RData')
 save(Data_forIncPov, file = Filename)
 rm(Temp, Data_forIncPov)
 gc()
+
