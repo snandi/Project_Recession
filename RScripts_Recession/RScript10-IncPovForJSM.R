@@ -38,32 +38,32 @@ Today <- Sys.Date()
 Filename <- paste0(RDataPath, 'Data_forIncPov_v3.RData')
 load(file = Filename)
 
-ssuids <- unique(Data_forIncPov$ssuid)
-#Data_Sub <- subset(Data_forIncPov, yearmon == 'Jun 2008')
-Data_Sub <- subset(Data_forIncPov, ssuid %in% ssuids[1:40])
+hhids <- unique(Data_forIncPov$hhid)
+# Data_Sub <- subset(Data_forIncPov, yearmon == 'Jun 2008')
+# Data_Sub <- subset(Data_forIncPov, ssuid %in% ssuids[1:40])
 head(Data_forIncPov)
 # View(subset(Data_forIncPov, ssuid == '019128000276'))
 
 ########################################################################
 ## save one user's data
 ########################################################################
-FilenameUser <- paste0(SlidePath, 'SnapshotUser.csv')
-SnapshotUserData <- subset(Data_forIncPov, ssuid == '019128000276')
+# FilenameUser <- paste0(SlidePath, 'SnapshotUser.csv')
+# SnapshotUserData <- subset(Data_forIncPov, ssuid == '019128000276')
 # write.csv(SnapshotUserData, file = FilenameUser, quote = F, row.names = F)
-str(SnapshotUserData)
+# str(SnapshotUserData)
 
 ########################################################################
 ## Plot snapshot of income poverty
-########################################################################
-ssuids <- c('019128000276', '019128038276', '019133469324', '019133717344')
+#######################################################################
+hhids <- c('019128000276_11', '019128038276_11', '019133469324_11', 
+           '019133717344_11')
 
-fn_PlotSnapshot <- function(IncData = Data_forIncPov, ssID = ssuids){
-  SnapshotUserData <- subset(IncData, ssuid %in% ssID)
-  SnapshotUserData1 <- subset(IncData, ssuid %in% ssID[1])
+fn_PlotSnapshot <- function(IncData = Data_forIncPov, ssID = hhids){
+  SnapshotUserData <- subset(IncData, hhid %in% ssID)
+  SnapshotUserData1 <- subset(IncData, hhid %in% ssID[1])
   PlotSnapshot <- qplot() + 
-    geom_line(aes(x = as.numeric(yearqtr), y = thtotinc, col = ssuid), 
-                                      data = SnapshotUserData) + 
-    theme(legend.position = 'none')
+    geom_line(aes(x = as.numeric(yearqtr), y = thtotinc, col = hhid), 
+              data = SnapshotUserData, size = 1.2) 
   PlotSnapshot <- PlotSnapshot + 
     geom_line(aes(x = as.numeric(yearqtr), y = rhpov), size = 1.1,
               data = SnapshotUserData1, col = 'black')
@@ -72,11 +72,17 @@ fn_PlotSnapshot <- function(IncData = Data_forIncPov, ssID = ssuids){
               data = SnapshotUserData1, col = 'black', lty = 2)
   PlotSnapshot <- PlotSnapshot + xlab(label = '') + ylab(label = '') + 
     ggtitle(label = 'Monthly Household Income')
+  PlotSnapshot <- PlotSnapshot + 
+    theme(
+      legend.position = 'none', 
+      axis.text = element_text(size = 20, face = 'bold'), 
+      plot.title = element_text(size = 32, face = 'bold')
+    )
   PlotFilename <- paste0(SlidePath, 'PlotSnapshot', ssID[1], '.jpeg')
   ggsave(
     filename = PlotFilename, 
     plot = PlotSnapshot, 
-    device = 'jpeg', 
+    device = 'jpg', 
     width = 30,
     height = 20,
     units = 'cm'
@@ -84,8 +90,8 @@ fn_PlotSnapshot <- function(IncData = Data_forIncPov, ssID = ssuids){
   return(PlotSnapshot)
 }
 
-PlotSnapshot <- fn_PlotSnapshot(IncData = Data_forIncPov, ssID = ssuids)
-
+PlotSnapshot <- fn_PlotSnapshot(IncData = Data_forIncPov, ssID = hhids)
+PlotSnapshot
 ########################################################################
 ## Demographics
 ########################################################################
@@ -97,10 +103,10 @@ fn_FirstRow <- function(Data){
 library(dplyr)
 
 UniqeData <- ddply(
-  .data = Data_forIncPov[,c('ssuid', 'shhadid', 'gender_ms', 
+  .data = Data_forIncPov[,c('hhid', 'gender_ms', 
                             'race', 'erace', 'adult_disb')],
   .fun = fn_FirstRow,
-  .variables = c('ssuid', 'shhadid')
+  .variables = c('hhid')
 )
 
 GenderMS <- table(UniqeData$gender_ms)
@@ -113,9 +119,12 @@ table(UniqeData$adult_disb)
 ########################################################################
 ## Disability Data
 ########################################################################
-FilenameDisab <- paste(RDataPath, '2008_W6_topical_disability_variables.RData', sep='')
-load(FilenameDisab)
+# FilenameDisab <- paste(RDataPath, '2008_W6_topical_disability_variables.RData', sep='')
+# load(FilenameDisab)
+# 
+# UniqueDisb <- unique(Data_disab[,c('ssuid', 'shhadid', 'adult_disb')])
+# table(UniqueDisb$adult_disb)
+# sum(table(UniqueDisb$adult_disb))
 
-UniqueDisb <- unique(Data_disab[,c('ssuid', 'shhadid', 'adult_disb')])
-table(UniqueDisb$adult_disb)
-sum(table(UniqueDisb$adult_disb))
+summary(Data_forIncPov$FPL100_num)
+qplot() + geom_histogram(aes(x = log(FPL100_num)), data = Data_forIncPov)
