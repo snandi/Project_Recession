@@ -11,8 +11,8 @@ rm(list = objects(all.names = TRUE))
 ########################################################################
 ## Run Path definition file                                           ##
 ########################################################################
-PathPrefix <- '~/'
 PathPrefix <- '/Users/patron/Documents/snandi/'
+PathPrefix <- '~/'
 RScriptPath <- paste0(PathPrefix, 'Project_Recession/RScripts_Recession/')
 DataPath <- paste0(PathPrefix, 'Project_Recession/Data/data_2015Dec/')
 RDataPath <- paste0(PathPrefix, 'Project_Recession/RData/data_2015Dec/')
@@ -21,7 +21,9 @@ Filename.Header <- paste0(PathPrefix, 'RScripts/HeaderFile_lmcg.R')
 source(Filename.Header)
 
 source(paste(RScriptPath, 'fn_Library_Recession.R', sep=''))
-source('../../RScripts/fn_Library_SN.R')
+try(source('../../RScripts/fn_Library_SN.R'))
+try(source('~/RScripts/fn_Library_SN.R'))
+
 ########################################################################
 Today <- Sys.Date()
 
@@ -36,11 +38,17 @@ Today <- Sys.Date()
 Filename <- paste0(RDataPath, 'Data_forIncPov_v3.RData')
 load(file = Filename)
 
-ssuids <- unique(Data_forIncPov$ssuid)
-#Data_Sub <- subset(Data_forIncPov, yearmon == 'Jun 2008')
-Data_Sub <- subset(Data_forIncPov, ssuid %in% ssuids[1:40])
-head(Data_forIncPov)
-View(subset(Data_forIncPov, ssuid == '019128000276'))
+########################################################################
+## create a household id
+########################################################################
+Data_forIncPov$hhid <- paste(Data_forIncPov$ssuid, Data_forIncPov$shhadid, sep = '_')
+
+## ssuids <- unique(Data_forIncPov$ssuid)
+
+## #Data_Sub <- subset(Data_forIncPov, yearmon == 'Jun 2008')
+## Data_Sub <- subset(Data_forIncPov, ssuid %in% ssuids[1:40])
+## head(Data_forIncPov)
+## View(subset(Data_forIncPov, ssuid == '019128000276'))
 
 ## SplitByssuid <- split(x = Data_Sub, f = as.factor(Data_Sub$ssuid))
 ## Data_Sub$FPL100_num_nobaseline <- do.call(what = c, args = lapply(X = SplitByssuid,
@@ -71,61 +79,73 @@ Data <- Data_forIncPov
 Data$year <- substr(x = Data$yearqtr, start = 1, stop = 4)
 Data$year <- as.factor(Data$year)
 
-View(Data[,c('ssuid', 'yearqtr', 'thtotinc', 'rhpov', 'adult_disb', 'FPL100_num', 'FPL100_num_Lag')])
+#View(Data[,c('hhid', 'yearqtr', 'thtotinc', 'rhpov', 'adult_disb', 'FPL100_num', 'FPL100_num_Lag')])
 
 #######################################################################
 ## Mixed Effects Model (MEM) of Income Poverty Ratio
 ########################################################################
 Data$wt <- Data$wt/1000
 
-Num1_FPL100_wt <- lmer(FPL100_num ~ 1 + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), 
+Num1_FPL100_wt <- lmer(FPL100_num ~ 1 + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | hhid), 
                        data = Data, REML = TRUE)
 summary(Num1_FPL100_wt)
 anova(Num1_FPL100_wt)
-step(Num1_FPL100_wt)
+### step(Num1_FPL100_wt)
 
-Num2_FPL100_wt <- lmer(FPL100_num ~ 1 + FPL100_num_Lag + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), 
+Num2_FPL100_wt <- lmer(FPL100_num ~ 1 + FPL100_num_Lag + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | hhid), 
                        data = Data, REML = TRUE)
 summary(Num2_FPL100_wt)
 anova(Num2_FPL100_wt)
-step(Num2_FPL100_wt)
+## step(Num2_FPL100_wt)
 
 anova(Num1_FPL100_wt, Num2_FPL100_wt)
 
-Num3_FPL100_wt <- lmer(FPL100_num ~ 1 + FPL100_num_Lag + education + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), 
+Num3_FPL100_wt <- lmer(FPL100_num ~ 1 + FPL100_num_Lag + education + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | hhid), 
                        data = Data, REML = TRUE)
 summary(Num3_FPL100_wt)
 anova(Num3_FPL100_wt)
-step(Num3_FPL100_wt)
+## step(Num3_FPL100_wt)
 
 #anova(Num2_FPL100_wt, Num3_FPL100_wt)
 
-#Num4_FPL100_wt <- lmer(FPL100_num ~ 1 + FPL100_num_Lag + year + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + adult_disb*year + (1 | ssuid), 
+#Num4_FPL100_wt <- lmer(FPL100_num ~ 1 + FPL100_num_Lag + year + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + adult_disb*year + (1 | hhid), 
 #                       data = Data, REML = TRUE)
 #summary(Num4_FPL100_wt)
 #anova(Num4_FPL100_wt)
-#step(Num4_FPL100_wt)
+### step(Num4_FPL100_wt)
 
 #######################################################################
 ## Mixed Effects Model (MEM) of normalized FPL 100 
 #######################################################################
-MEM1_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), 
+MEM0_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + gender_ms + erace + adult_disb + wt + (1 | hhid), 
+                    data = Data, REML = TRUE)
+summary(MEM0_FPL100_wt)
+anova(MEM0_FPL100_wt)
+
+MEM1_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | hhid), 
                     data = Data, REML = TRUE)
 summary(MEM1_FPL100_wt)
 anova(MEM1_FPL100_wt)
-step(MEM1_FPL100_wt)
 
-MEM2_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + FPL100_norm_Lag + gender_ms + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), 
+MEM2_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + FPL100_norm_Lag + erace + gender_ms + adult_disb + wt + adult_disb*gender_ms + (1 | hhid), 
                     data = Data, REML = TRUE)
 anova(MEM2_FPL100_wt)
 summary(MEM2_FPL100_wt)
-step(MEM2_FPL100_wt)
+## step(MEM2_FPL100_wt)
 
-MEM3_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + FPL100_norm_Lag + education + gender_ms + adult_disb + wt + adult_disb*gender_ms + (1 | ssuid), 
+anova(MEM1_FPL100_wt, MEM2_FPL100_wt) 
+
+MEM3_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + FPL100_norm_Lag + erace + education + gender_ms + adult_disb + wt + adult_disb*gender_ms + (1 | hhid), 
                     data = Data, REML = TRUE)
 anova(MEM3_FPL100_wt)
 summary(MEM3_FPL100_wt)
-step(MEM3_FPL100_wt)
+## step(MEM3_FPL100_wt)
+anova(MEM1_FPL100_wt, MEM3_FPL100_wt) 
+anova(MEM2_FPL100_wt, MEM3_FPL100_wt) 
+
+## Final model for normalized FPL 100
+## MEM2_FPL100_wt, since FPL100_norm_Lag is not significant
+
 
 #######################################################################
 ## Residuals
