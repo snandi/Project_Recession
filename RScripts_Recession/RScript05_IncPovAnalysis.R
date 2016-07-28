@@ -11,8 +11,8 @@ rm(list = objects(all.names = TRUE))
 ########################################################################
 ## Run Path definition file                                           ##
 ########################################################################
-PathPrefix <- '/Users/patron/Documents/snandi/'
 PathPrefix <- '~/'
+PathPrefix <- '/Users/patron/Documents/snandi/'
 RScriptPath <- paste0(PathPrefix, 'Project_Recession/RScripts_Recession/')
 DataPath <- paste0(PathPrefix, 'Project_Recession/Data/data_2015Dec/')
 RDataPath <- paste0(PathPrefix, 'Project_Recession/RData/data_2015Dec/')
@@ -82,11 +82,22 @@ Data$year <- as.factor(Data$year)
 ########################################################################
 Data$wt <- Data$wt/1000
 
-Num1_FPL100_wt <- lmer(FPL100_num ~ 1 + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | hhid), 
+Num1_FPL100_wt <- lmer(FPL100_num ~ 1 + yearqtr + gender_ms + erace + 
+                         adult_disb + wt + adult_disb*gender_ms + (1 | hhid), 
                        data = Data, REML = TRUE)
 summary(Num1_FPL100_wt)
 anova(Num1_FPL100_wt)
 ### step(Num1_FPL100_wt)
+Resid1 <- as.data.frame(cbind(yearqtr = Data$yearqtr, resid = residuals(Num1_FPL100_wt)))
+Resid1Plot <- qplot() + geom_point(aes(x = yearqtr, y = resid), data = Resid1)
+
+Num1_FPL100_wt_log <- lmer(log(FPL100_num) ~ 1 + yearqtr + gender_ms + erace + 
+                         adult_disb + wt + adult_disb*gender_ms + (1 | hhid), 
+                       data = Data, REML = TRUE)
+summary(Num1_FPL100_wt_log)
+anova(Num1_FPL100_wt_log)
+Resid1_log <- as.data.frame(cbind(yearqtr = Data$yearqtr, resid = residuals(Num1_FPL100_wt_log)))
+Resid1_logPlot <- qplot() + geom_point(aes(x = yearqtr, y = resid), data = Resid1_log)
 
 Num2_FPL100_wt <- lmer(FPL100_num ~ 1 + FPL100_num_Lag + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | hhid), 
                        data = Data, REML = TRUE)
@@ -94,7 +105,13 @@ summary(Num2_FPL100_wt)
 anova(Num2_FPL100_wt)
 ## step(Num2_FPL100_wt)
 
-anova(Num1_FPL100_wt, Num2_FPL100_wt)
+Num2_FPL100_wt_log <- lmer(log(FPL100_num) ~ 1 + yearqtr + yearqtr*adult_disb + 
+                             gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | hhid), 
+                       data = Data, REML = TRUE)
+summary(Num2_FPL100_wt_log)
+anova(Num2_FPL100_wt_log)
+
+anova(Num1_FPL100_wt_log, Num2_FPL100_wt_log)
 
 Num3_FPL100_wt <- lmer(FPL100_num ~ 1 + FPL100_num_Lag + education + gender_ms + erace + adult_disb + wt + adult_disb*gender_ms + (1 | hhid), 
                        data = Data, REML = TRUE)
@@ -130,6 +147,15 @@ summary(MEM2_FPL100_wt)
 ## step(MEM2_FPL100_wt)
 
 anova(MEM1_FPL100_wt, MEM2_FPL100_wt) 
+library(lsmeans)
+
+Data$FPL100_noBaseline[Data$FPL100_noBaseline == 0] <- 0.001
+MEM2_FPL100_wt_log <- lmer(log(FPL100_noBaseline) ~ 1 + yearqtr + 
+                             yearqtr*adult_disb +
+                             erace + gender_ms + adult_disb + wt + 
+                             adult_disb*gender_ms + (1 | hhid), 
+                       data = Data, REML = TRUE)
+summary(MEM2_FPL100_wt_log)
 
 MEM3_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + FPL100_norm_Lag + erace + education + gender_ms + adult_disb + wt + adult_disb*gender_ms + (1 | hhid), 
                     data = Data, REML = TRUE)
