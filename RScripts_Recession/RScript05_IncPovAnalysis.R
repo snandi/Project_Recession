@@ -74,6 +74,7 @@ Data <- Data_forIncPov
 Data$year <- substr(x = Data$yearqtr, start = 1, stop = 4)
 Data$year <- as.factor(Data$year)
 
+rm(Data_forIncPov)
 #View(Data[,c('hhid', 'yearqtr', 'thtotinc', 'rhpov', 'adult_disb', 'FPL100_num', 'FPL100_num_Lag')])
 
 
@@ -157,16 +158,23 @@ MEM2_FPL100_wt_log <- lmer(log(FPL100_noBaseline) ~ 1 + yearqtr +
                        data = Data, REML = TRUE)
 summary(MEM2_FPL100_wt_log)
 
-MEM3_FPL100_wt <- lmer(FPL100_noBaseline ~ 1 + FPL100_norm_Lag + erace + education + gender_ms + adult_disb + wt + adult_disb*gender_ms + (1 | hhid), 
-                    data = Data, REML = TRUE)
-anova(MEM3_FPL100_wt)
-summary(MEM3_FPL100_wt)
-## step(MEM3_FPL100_wt)
-anova(MEM1_FPL100_wt, MEM3_FPL100_wt) 
-anova(MEM2_FPL100_wt, MEM3_FPL100_wt) 
+lsmeans(MEM2_FPL100_wt_log, pairwise ~ gender_ms)
+lsmeans(MEM2_FPL100_wt_log, pairwise ~ erace)
+lsmeans(MEM2_FPL100_wt_log, pairwise ~ adult_disb*gender_ms)
 
-## Final model for normalized FPL 100
-## MEM2_FPL100_wt, since FPL100_norm_Lag is not significant
+MEM3_FPL100_wt_log <- lmer(log(FPL100_noBaseline) ~ 1 + yearqtr + yearqtr*adult_disb +
+                             race + adult_disb*race + 
+                             gender_ms + adult_disb + wt + 
+                             adult_disb*gender_ms + (1 | hhid), 
+                           data = Data, REML = TRUE)
+summary(MEM3_FPL100_wt_log)
+anova(MEM3_FPL100_wt_log)
+
+lsmeans(MEM3_FPL100_wt_log, pairwise ~ gender_ms)
+lsmeans(MEM3_FPL100_wt_log, pairwise ~ race)
+lsmeans(MEM3_FPL100_wt_log, pairwise ~ race*adult_disb)
+
+lsmeans(MEM3_FPL100_wt_log, pairwise ~ adult_disb*gender_ms)
 
 
 #######################################################################
