@@ -58,7 +58,10 @@ head(Data_forIncPov)
 hhids <- c('019128000276_11', '019128038276_11', '019133469324_11', 
            '019133717344_11')
 
-fn_PlotSnapshot <- function(IncData = Data_forIncPov, ssID = hhids){
+fn_PlotSnapshot <- function(
+  IncData = Data_forIncPov, 
+  ssID = hhids
+){
   SnapshotUserData <- subset(IncData, hhid %in% ssID)
   SnapshotUserData1 <- subset(IncData, hhid %in% ssID[1])
   PlotSnapshot <- qplot() + 
@@ -128,3 +131,53 @@ table(UniqeData$adult_disb)
 
 summary(Data_forIncPov$FPL100_num)
 qplot() + geom_histogram(aes(x = log(FPL100_num)), data = Data_forIncPov)
+
+
+fn_PlotFPL100 <- function(
+  IncData = Data_forIncPov, 
+  ssID = hhids,
+  ColToPlot = 'FPL100_num',
+  Title = 'Ratio of Monthly Income to FPL 100',
+  FilenameSuffix = 'FPL100'
+){
+  SnapshotUserData <- subset(IncData, hhid %in% ssID)
+  SnapshotUserData1 <- subset(IncData, hhid %in% ssID[1])
+  PlotSnapshot <- qplot() + 
+    geom_line(aes(x = as.numeric(yearqtr), y = get(ColToPlot), col = hhid), 
+              data = SnapshotUserData, size = 1.2) 
+  PlotSnapshot <- PlotSnapshot + xlab(label = '') + ylab(label = '') + 
+    ggtitle(label = Title)
+  PlotSnapshot <- PlotSnapshot + 
+    theme(
+      legend.position = 'none', 
+      axis.text = element_text(size = 20, face = 'bold'), 
+      plot.title = element_text(size = 32, face = 'bold')
+    )
+  PlotFilename <- paste0(SlidePath, 'PlotFPL_', FilenameSuffix, '.jpeg')
+  ggsave(
+    filename = PlotFilename, 
+    plot = PlotSnapshot, 
+    device = 'jpg', 
+    width = 50,
+    height = 20,
+    units = 'cm'
+  )
+  return(PlotSnapshot)
+}
+
+PlotFPL100 <- fn_PlotFPL100(
+  IncData = Data, 
+  ssID = hhids,
+  ColToPlot = 'FPL100_num',
+  Title = 'Ratio of Monthly Income to FPL 100',
+  FilenameSuffix = 'FPL100'
+)
+
+PlotFPL100_noBaseline <- fn_PlotFPL100(
+  IncData = Data, 
+  ssID = hhids,
+  ColToPlot = 'FPL100_noBaseline',
+  Title = 'Normalized Ratio of Monthly Income to FPL 100',
+  FilenameSuffix = 'FPL100_noBaseline'
+)
+library(stargazer)
