@@ -52,11 +52,12 @@ library(lsmeans)
 
 Data$wt <- Data$wt/1000
 
-Num1_FPL100_wt_log <- lmer(log(FPL100_num) ~ 1 + yearqtr + gender_ms + race + 
+Num1_FPL100_wt_log <- lme4::lmer(log(FPL100_num) ~ 1 + yearqtr + gender_ms + race + 
                              race*adult_disb + 
                              adult_disb + wt + adult_disb*gender_ms + adult_disb*gender_ms + 
                              adult_disb*yearqtr + (1 | hhid), 
-                           data = Data, REML = TRUE)
+                           data = Data)
+
 summary(Num1_FPL100_wt_log)
 anova(Num1_FPL100_wt_log) ## 
 Resid1_log <- as.data.frame(cbind(yearqtr = Data$yearqtr, resid = residuals(Num1_FPL100_wt_log)))
@@ -67,7 +68,7 @@ LS1 <- lsmeans(Num1_FPL100_wt_log, pairwise ~ race*adult_disb)
 Num1_gender <- lsmeans(Num1_FPL100_wt_log, pairwise ~ adult_disb*gender)
 Num1_disb_gender <- lsmeans(Num1_FPL100_wt_log, pairwise ~ adult_disb*gender_ms)
 
-lmerTest::step(
+XX <- lmerTest::step(
   Num1_FPL100_wt_log, 
   reduce.fixed = FALSE, 
   reduce.random = FALSE,
