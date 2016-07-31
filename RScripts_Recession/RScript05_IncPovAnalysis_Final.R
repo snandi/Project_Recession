@@ -17,7 +17,7 @@ RScriptPath <- paste0(PathPrefix, 'Project_Recession/RScripts_Recession/')
 DataPath <- paste0(PathPrefix, 'Project_Recession/Data/data_2015Dec/')
 RDataPath <- paste0(PathPrefix, 'Project_Recession/RData/data_2015Dec/')
 PlotPath <- paste0(PathPrefix, 'Project_Recession/Plots/')
-Filename.Header <- paste0(PathPrefix, 'RScripts/HeaderFile_lmcg.R')
+Filename.Header <- paste0(RScriptPath, 'HeaderFile_Recession.R')
 source(Filename.Header)
 
 source(paste(RScriptPath, 'fn_Library_Recession.R', sep=''))
@@ -67,6 +67,13 @@ LS1 <- lsmeans(Num1_FPL100_wt_log, pairwise ~ race*adult_disb)
 Num1_gender <- lsmeans(Num1_FPL100_wt_log, pairwise ~ adult_disb*gender)
 Num1_disb_gender <- lsmeans(Num1_FPL100_wt_log, pairwise ~ adult_disb*gender_ms)
 
+lmerTest::step(
+  Num1_FPL100_wt_log, 
+  reduce.fixed = FALSE, 
+  reduce.random = FALSE,
+  test.effs = 'gender_ms'
+)
+
 #######################################################################
 ## Mixed Effects Model (MEM) of normalized FPL 100 
 #######################################################################
@@ -81,6 +88,7 @@ MEM1_FPL100_wt <- lmer(log(FPL100_noBaseline) ~ 1 + yearqtr + gender_ms + race +
 anova(MEM1_FPL100_wt)
 summary(MEM1_FPL100_wt)
 ## step(MEM2_FPL100_wt)
+
 xtable(anova(MEM1_FPL100_wt))
 
 library(lsmeans)
