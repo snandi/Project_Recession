@@ -10,14 +10,21 @@ rm(list=objects(all.names=TRUE))
 ########################################################################
 ## Run Path definition file                                           ##
 ########################################################################
-RScriptPath <- '~/Project_Recession/RScripts_Recession/'
-DataPath <- '~/Project_Recession/Data/data_2015Dec/'
-RDataPath <- '~/Project_Recession/RData/data_2015Dec/'
-PlotPath <- '~/Project_Recession/Plots/'
-Filename.Header <- paste('~/RScripts/HeaderFile_lmcg.R', sep='')
+PathPrefix <- '~/'
+PathPrefix <- '/Users/patron/Documents/snandi/'
+RScriptPath <- paste0(PathPrefix, 'Project_Recession/RScripts_Recession/')
+DataPath <- paste0(PathPrefix, 'Project_Recession/Data/data_2015Dec/')
+RDataPath <- paste0(PathPrefix, 'Project_Recession/RData/data_2015Dec/')
+PlotPath <- paste0(PathPrefix, 'Project_Recession/Plots/')
+Filename.Header <- paste0(RScriptPath, 'HeaderFile_Recession.R')
 source(Filename.Header)
+
 source(paste(RScriptPath, 'fn_Library_Recession.R', sep=''))
+try(source('../../RScripts/fn_Library_SN.R'))
+try(source('~/RScripts/fn_Library_SN.R'))
+SlidePath <- paste0(PathPrefix, 'Project_Recession/Slides_Recession/')
 ########################################################################
+
 Today <- Sys.Date()
 
 ## Load weights
@@ -31,8 +38,8 @@ Filepath1 <- paste(RDataPath, 'Data15.RData', sep = '')
 load(Filepath1)
 
 length(unique(as.numeric(Data15$ssuid)))
-nrow(unique(Data15[,c('ssuid', 'ehrefper')]))
-nrow(unique(Data15[,c('ssuid', 'epppnum')]))
+# nrow(unique(Data15[,c('ssuid', 'ehrefper')]))
+# nrow(unique(Data15[,c('ssuid', 'epppnum')]))
 ## 22002 unique ssuids, and 1 ehrefper per hh
 
 Data15$yearmon <- as.yearmon(paste(Data15$rhcalmn, Data15$rhcalyr))

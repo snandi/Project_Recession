@@ -9,13 +9,19 @@ rm(list=objects(all.names=TRUE))
 ########################################################################
 ## Run Path definition file                                           ##
 ########################################################################
-RScriptPath <- '~/Project_Recession/RScripts_Recession/'
-DataPath <- '~/Project_Recession/Data/data_2015Dec/'
-RDataPath <- '~/Project_Recession/RData/data_2015Dec/'
-PlotPath <- '~/Project_Recession/Plots/'
-Filename.Header <- paste('~/RScripts/HeaderFile_lmcg.R', sep='')
+PathPrefix <- '~/'
+PathPrefix <- '/Users/patron/Documents/snandi/'
+RScriptPath <- paste0(PathPrefix, 'Project_Recession/RScripts_Recession/')
+DataPath <- paste0(PathPrefix, 'Project_Recession/Data/data_2015Dec/')
+RDataPath <- paste0(PathPrefix, 'Project_Recession/RData/data_2015Dec/')
+PlotPath <- paste0(PathPrefix, 'Project_Recession/Plots/')
+Filename.Header <- paste0(RScriptPath, 'HeaderFile_Recession.R')
 source(Filename.Header)
+
 source(paste(RScriptPath, 'fn_Library_Recession.R', sep=''))
+try(source('../../RScripts/fn_Library_SN.R'))
+try(source('~/RScripts/fn_Library_SN.R'))
+SlidePath <- paste0(PathPrefix, 'Project_Recession/Slides_Recession/')
 ########################################################################
 Today <- Sys.Date()
 
@@ -36,7 +42,7 @@ nrow(unique(Data15[,c('ssuid', 'epppnum')]))
 
 Data15$yearmon <- as.yearmon(paste(Data15$rhcalmn, Data15$rhcalyr))
 Data15$yearqtr <- as.yearqtr(Data15$yearmon)
-Data15 <- Data15[order(Data15$ssuid, Data15$yearmon),]
+Data15 <- Data15[order(Data15$ssuid, Data15$shhadid, Data15$yearmon),]
 
 ##Variable names for safety net:
 #thsocsec: Total Household Social Security Income Recode 
@@ -72,7 +78,8 @@ SafetyNet_yrmon_race <- merge(
 )
 SafetyNet_yrmon_race$Pct <- SafetyNet_yrmon_race$SafetyNetParticipate/SafetyNet_yrmon_race$ssuid
 
-Plot2 <- qplot() + geom_line(aes(x = as.Date(yearmon), y = Pct, color = erace), data = SafetyNet_yrmon_race, size = 1) +
+Plot2 <- qplot() + geom_line(aes(x = as.Date(yearmon), y = Pct, color = erace), 
+                             data = SafetyNet_yrmon_race, size = 1) +
   ggtitle(label = 'Safety net participation of households with disability, by race') +
   xlab(label = '') + ylab(label = 'percentage')
 Plot2
