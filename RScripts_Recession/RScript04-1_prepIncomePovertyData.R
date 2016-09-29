@@ -4,6 +4,8 @@ rm(list=objects(all.names=TRUE))
 
 ########################################################################
 ## This script produces the data for income poverty analysis 
+## This script was last edited on 09/28, adding variable eorigin, to 
+## include hispanics in the analysis
 ########################################################################
 
 ########################################################################
@@ -23,6 +25,39 @@ source('~/RScripts/fn_Library_SN.R')
 
 ########################################################################
 Today <- Sys.Date()
+
+########################################################################
+## STATIC VARIABLES
+########################################################################
+EDUCATION_MAP <- as.data.frame(cbind( 
+  from = c("Not in Universe", "Less Than 1st Grade", "1st, 2nd, 3rd or 4th grade", "5th Or 6th Grade", 
+           "7th Or 8th Grade", "9th Grade", "10th Grade", "11th Grade", "12th grade, no diploma", 
+           "High School Graduate - (diploma", "Some college, but no degree", "Diploma or certificate from a", 
+           "Associate (2-yr) college degree", "Bachelor's degree (for example:", "Master's degree (For example: MA,", 
+           "Professional School degree (for", "Doctorate degree (for example:"),
+  to = c('High School or less', 'High School or less', 'High School or less', 'High School or less', 
+         'High School or less', 'High School or less', 'High School or less', 'High School or less', 
+         'High School or less', 'High School or less', 'Some college, diploma, assoc', 
+         'Some college, diploma, assoc','Some college, diploma, assoc', 'Bachelors or higher', 'Bachelors or higher', 
+         'Bachelors or higher', 'Bachelors or higher')
+), stringsAsFactors = FALSE)
+
+RACE_MAP <- as.data.frame(cbind(
+  from = c("White alone", "Black alone", "Asian alone", "Residual"),
+  to = c('White', 'Black', 'Others', 'Others')
+), stringsAsFactors = FALSE)
+
+ORIGIN_MAP <- as.data.frame(cbind(
+  from = c("Yes", "No"),
+  to = c('Hispanic', 'Non-Hispanic')
+), stringsAsFactors = FALSE)
+
+MARITAL_STATUS_MAP <- as.data.frame(cbind(
+  from = c("Married, spouse present", "Married, spouse absent",
+           "Widowed", "Divorced", "Separated",
+           "Never Married"),
+  to = c("Married", "Married", rep("Not married", 4))
+))
 
 ## Load weights
 Filename <- paste0(RDataPath, 'Weights_Long.RData')
@@ -54,6 +89,7 @@ Colnames_keep <- c('ssuid',
                    'thtotinc',
                    'rhpov',
                    'erace',
+                   'eorigin',
                    'esex',
                    'ems',
                    'eeducate',
@@ -66,36 +102,42 @@ Data <- subset(Data, yearmon != 'May 2008')
 ########################################################################
 Data$education <- mapvalues(
   Data$eeducate,
-  from = c("Not in Universe", "Less Than 1st Grade", "1st, 2nd, 3rd or 4th grade", "5th Or 6th Grade", 
-           "7th Or 8th Grade", "9th Grade", "10th Grade", "11th Grade", "12th grade, no diploma", 
-           "High School Graduate - (diploma", "Some college, but no degree", "Diploma or certificate from a", 
-           "Associate (2-yr) college degree", "Bachelor's degree (for example:", "Master's degree (For example: MA,", 
-           "Professional School degree (for", "Doctorate degree (for example:"),
-  to = c('High School or less', 'High School or less', 'High School or less', 'High School or less', 
-         'High School or less', 'High School or less', 'High School or less', 'High School or less', 
-         'High School or less', 'High School or less', 'Some college, diploma, assoc', 
-         'Some college, diploma, assoc','Some college, diploma, assoc', 'Bachelors or higher', 'Bachelors or higher', 
-         'Bachelors or higher', 'Bachelors or higher')
+  from = EDUCATION_MAP$from,
+  to = EDUCATION_MAP$to
 )
 
 ########################################################################
-## Get Income Poverty by Race
+## Map Race variable
 ########################################################################
 Data$race <- mapvalues(
   Data$erace,
-  from = c("White alone", "Black alone", "Asian alone", "Residual"),
-  to = c('White', 'Black', 'Others', 'Others')
+  from = RACE_MAP$from,
+  to = RACE_MAP$to
 )
+
+########################################################################
+## Map Origin variable
+########################################################################
+Data$origin <- mapvalues(
+  Data$eorigin,
+  from = ORIGIN_MAP$from,
+  to = ORIGIN_MAP$to
+)
+
+########################################################################
+## Combine Race and Origin
+########################################################################
+Data$race_origin <- as.vector( Data$origin )
+Data$race_origin[Data$origin == 'Non-Hispanic'] <- as.vector( Data$race[Data$origin == 'Non-Hispanic'] )
+Data$race_origin <- as.factor( Data$race_origin )
 
 ########################################################################
 ## Get Income Poverty by Gender & Marital status of head of household
 ########################################################################
 Data$ms <- mapvalues(
   Data$ems,
-  from = c("Married, spouse present", "Married, spouse absent",
-           "Widowed", "Divorced", "Separated",
-           "Never Married"),
-  to = c("Married", "Married", rep("Not married", 4))
+  from = MARITAL_STATUS_MAP$from,
+  to = MARITAL_STATUS_MAP$to
 )
 Data$gender_ms <- with(Data, interaction(esex, ms))
 
