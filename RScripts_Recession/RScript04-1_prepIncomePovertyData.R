@@ -57,7 +57,7 @@ MARITAL_STATUS_MAP <- as.data.frame(cbind(
            "Widowed", "Divorced", "Separated",
            "Never Married"),
   to = c("Married", "Married", rep("Not married", 4))
-))
+), stringsAsFactors = FALSE)
 
 ## Load weights
 Filename <- paste0(RDataPath, 'Weights_Long.RData')
@@ -176,7 +176,8 @@ Data$wt[Data$wt == 0] <- Data$median_wt[Data$wt == 0]
 ## Temp <- aggregate(cbind(thtotinc, rhpov, disb_wrk_ageR2) ~ ssuid + shhadid + yearmon + gender_ms + race, 
 ##                   data = Data15, FUN = mean)
 Temp <- aggregate(
-  cbind(thtotinc, rhpov, adult_disb) ~ ssuid + shhadid + yearqtr + gender_ms + race + erace + education + wt, 
+  cbind(thtotinc, rhpov, adult_disb) ~ ssuid + shhadid + yearqtr + gender_ms + race_origin +
+    education + wt, 
   data = Data,
   FUN = mean
 )
