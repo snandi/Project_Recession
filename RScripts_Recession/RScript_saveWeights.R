@@ -88,6 +88,7 @@ Weights2013$year <- 2013
 Weights_Long <- rbind(Weights_Long, Weights2013)
 
 Weights_Long <- Weights_Long[order(Weights_Long$ssuid, Weights_Long$epppnum, Weights_Long$year),]
+rownames(Weights_Long) <- NULL
 str(Weights_Long)
 
 Filename <- paste0(RDataPath, 'Weights.RData')
