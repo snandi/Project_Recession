@@ -39,7 +39,7 @@ getNamesForPlot <- function(names, ind)
 }
 
 ## plots for LSMEANS or DIFF of LSMEANS
-plotLSMeans <- function(table, response, 
+plotLSMeans <- function(table, response, Ylabel = 'response', 
                         which.plot=c("LSMEANS", "DIFF of LSMEANS"), 
                         main = NULL, cex = 1.4, effs = NULL, mult = TRUE)
 {
@@ -89,16 +89,16 @@ plotLSMeans <- function(table, response,
     # geom_errorbar(aes(ymin = lci, ymax = uci ), colour="black", width=.1) + 
     # geom_errorbar(aes(xmin = lci, xmax = uci ), colour="black", width=.1) + 
     theme(axis.text.x = element_text(angle = 0, hjust = 1, vjust = 0.4), ## was angle 90 
-          axis.title = element_text(size = 30), ## was rel(1.4)
-          axis.text = element_text(size = 30), 
+          axis.title = element_text(size = rel(1)), ## was rel(1.4)
+          axis.text = element_text(size = rel(1)), 
           legend.position = 'top',
-          legend.text = element_text(size = 20), 
-          legend.title = element_text(size = 20))  + 
+          legend.text = element_text(size = rel(1)), 
+          legend.title = element_text(size = rel(1)))  + 
     scale_fill_manual(values  = 
                         c(  "Not Sig" = "grey50", "p-value < 0.01" = "orange", 
                             "p-value < 0.05" = "yellow", 
                             "p-value < 0.001" = "red"), name="Significance")  +
-    xlab(label = '') + ylab(label = 'log(response)')
+    xlab(label = '') + ylab(label = Ylabel)
   #facet_wrap( ~ namesforplots, scales = "free")
   # else{
   #   for(i in 1:length(un.names)){

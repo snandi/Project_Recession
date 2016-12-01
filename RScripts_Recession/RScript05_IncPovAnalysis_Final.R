@@ -12,7 +12,7 @@ rm(list = objects(all.names = TRUE))
 ## Run Path definition file                                           ##
 ########################################################################
 PathPrefix <- '~/'
-PathPrefix <- '/Users/patron/Documents/snandi/'
+# PathPrefix <- '/Users/patron/Documents/snandi/'
 RScriptPath <- paste0(PathPrefix, 'Project_Recession/RScripts_Recession/')
 DataPath <- paste0(PathPrefix, 'Project_Recession/Data/data_2015Dec/')
 RDataPath <- paste0(PathPrefix, 'Project_Recession/RData/data_2015Dec/')

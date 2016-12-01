@@ -50,243 +50,215 @@ rm(Data_forIncPov)
 ########################################################################
 #library(lsmeans)
 
-Data$wt <- Data$wt/1000
+Data$wt <- Data$whfnwgt_qtr/1000
+Data$hhid <- as.factor( Data$hhid )
+Data$yearqtrNum <- as.numeric( Data$yearqtr ) 
+## This is necessary for post hoc test, otherwise it is throwing exception as the 
+## object not being a matrix, when difflsmeans is called
 
-Num1_FPL100_wt <- lme4::lmer( FPL100_num ~ 1 + yearqtr + gender_ms + race + 
-                                    race*adult_disb + adult_disb + adult_disb*gender_ms + 
-                                    adult_disb*gender_ms + adult_disb*yearqtr + (1 | hhid), 
-                                  data = Data, weights = whfnwgt_qtr )
+modelFPL100 <- lme4::lmer( FPL100_num ~ 1 + yearqtrNum + gender + ms + race_origin + adult_disb + 
+                                     gender*ms + race_origin*ms + race_origin*adult_disb + gender*adult_disb + 
+                                     adult_disb*ms + adult_disb*gender*ms + adult_disb*yearqtrNum + 
+                                     (1 | hhid), data = Data, weights = wt 
+)
 
-summary(Num1_FPL100_wt)
-# lmerTest::anova(Num1_FPL100_wt_log) ## 
-# anova(Num1_FPL100_wt_log) ## 
+summary( modelFPL100 )
+# lmerTest::anova( modelFPL100 ) ## 
+# anova( modelFPL100 ) ## 
 
-# Resid1_log <- as.data.frame(cbind(yearqtr = Data$yearqtr, resid = residuals(Num1_FPL100_wt_log)))
-# Resid1_logPlot <- qplot() + geom_point(aes(x = yearqtr, y = resid), data = Resid1_log)
-# xtable(anova(Num1_FPL100_wt_log))
+# Resid1 <- as.data.frame( cbind( yearqtr = Data$yearqtr, resid = residuals( modelFPL100 ) ) )
+# Resid1_Plot <- qplot() + geom_point( aes (x = yearqtr, y = resid ), data = Resid1 )
+# xtable( anova( modelFPL100 ) )
 
 #######################################################################
 ## Post hoc: Race
 #######################################################################
-PostHoc_race <- lmerTest::difflsmeans(
-  model =   Num1_FPL100_wt_log, 
-  test.effs = 'race'
+postHocRaceOrigin <- lmerTest::difflsmeans(
+  model = modelFPL100, 
+  test.effs = 'race_origin'
 )
-Plot_race <- plotLSMeans(
-  response = PostHoc_race$response,
-  table = PostHoc_race$diffs.lsmeans.table, 
+
+plotRaceOrigin <- plotLSMeans(
+  response = postHocRaceOrigin$response,
+  table = postHocRaceOrigin$diffs.lsmeans.table, 
   which.plot = 'DIFF of LSMEANS', 
   mult = TRUE
 )
-Plot_race
-PlotFilename <- paste0(SlidePath, 'PlotPostHoc_', 'race', '.jpeg')
+plotRaceOrigin
+plotFilename <- paste0(PlotPath, 'PlotPostHoc_', 'race_origin', '.jpeg')
 ggsave(
-  filename = PlotFilename, 
-  plot = Plot_race, 
-  device = 'jpg', 
-  width = 30,
-  height = 20,
-  units = 'cm'
+  filename = plotFilename, 
+  plot = plotRaceOrigin, 
+  device = 'jpg'
 )
 
 #######################################################################
 ## Post hoc: gender_ms
 #######################################################################
-PostHoc_gender_ms <- lmerTest::difflsmeans(
-  model =   Num1_FPL100_wt_log, 
+postHocGenderMS <- lmerTest::difflsmeans(
+  model =   modelFPL100, 
   test.effs = 'gender_ms'
 )
-Plot_gender_ms <- plotLSMeans(
-  response = PostHoc_gender_ms$response,
-  table = PostHoc_gender_ms$diffs.lsmeans.table, 
+plotGenderMS <- plotLSMeans(
+  response = postHocGenderMS$response,
+  table = postHocGenderMS$diffs.lsmeans.table, 
   which.plot = 'DIFF of LSMEANS', 
   mult = TRUE
 )
-PlotFilename <- paste0(SlidePath, 'PlotPostHoc_', 'gender_ms', '.jpeg')
+plotFilename <- paste0(PlotPath, 'PlotPostHoc_', 'gender_ms', '.jpeg')
 ggsave(
-  filename = PlotFilename, 
-  plot = Plot_gender_ms, 
-  device = 'jpg', 
-  width = 40,
-  height = 30,
-  units = 'cm'
+  filename = plotFilename, 
+  plot = plotGenderMS, 
+  device = 'jpg'
 )
 
 #######################################################################
 ## Post hoc: Race & Disability
 ########################################################################
-PostHoc_race_disb <- lmerTest::difflsmeans(
-  model =   Num1_FPL100_wt_log, 
-  test.effs = c('race:adult_disb')
+postHocRaceDisb <- lmerTest::difflsmeans(
+  model =   modelFPL100, 
+  test.effs = c('race_origin:adult_disb')
 )
-str(PostHoc_race_disb)
+str(postHocRaceDisb)
 # Plot_gender_ms <- plot(PostHoc_gender_ms)
-Plot_race_disb <- plotLSMeans(
-  response = PostHoc_race_disb$response,
-  table = PostHoc_race_disb$diffs.lsmeans.table, 
+plotRaceDisb <- plotLSMeans(
+  response = postHocRaceDisb$response,
+  table = postHocRaceDisb$diffs.lsmeans.table, 
   which.plot = 'DIFF of LSMEANS', 
   mult = TRUE
 )
-Plot_race_disb
-PlotFilename <- paste0(SlidePath, 'PlotPostHoc_', 'race_disb', '.jpeg')
+plotRaceDisb
+plotFilename <- paste0(PlotPath, 'PlotPostHoc_', 'race_disb', '.jpeg')
 ggsave(
-  filename = PlotFilename, 
-  plot = Plot_race_disb, 
-  device = 'jpg', 
-  width = 40,
-  height = 30,
-  units = 'cm'
+  filename = plotFilename, 
+  plot = plotRaceDisb, 
+  device = 'jpg'
 )
 
 #######################################################################
 ## Post hoc: Gender, MS & Disability
 ########################################################################
-PostHoc_gender_ms_disb <- lmerTest::difflsmeans(
-  model =   Num1_FPL100_wt_log, 
+postHocGenderMSDisb <- lmerTest::difflsmeans(
+  model =   modelFPL100, 
   test.effs = c('gender_ms:adult_disb')
 )
 # str(PostHoc_gender_ms_disb)
 # str(PostHoc_gender_ms_disb$diffs.lsmeans.table)
 # Plot_gender_ms_disb <- plot(PostHoc_gender_ms_disb, which.plot = 'DIFF of LSMEANS')
-Plot_gender_ms_disb <- plotLSMeans(
-  response = PostHoc_gender_ms_disb$response,
-  table = PostHoc_gender_ms_disb$diffs.lsmeans.table, 
+plotGenderMSDisb <- plotLSMeans(
+  response = postHocGenderMSDisb$response,
+  table = postHocGenderMSDisb$diffs.lsmeans.table, 
   which.plot = 'DIFF of LSMEANS', 
   mult = TRUE
 )
-PlotFilename <- paste0(SlidePath, 'PlotPostHoc_', 'gender_ms_disb', '.jpeg')
+plotFilename <- paste0(PlotPath, 'PlotPostHoc_', 'gender_ms_disb', '.jpeg')
 ggsave(
-  filename = PlotFilename, 
-  plot = Plot_gender_ms_disb, 
-  device = 'jpg', 
-  width = 40,
-  height = 30,
-  units = 'cm'
+  filename = plotFilename, 
+  plot = plotGenderMSDisb, 
+  device = 'jpg'
 )
 
 #######################################################################
 ## Mixed Effects Model (MEM) of normalized FPL 100 
 #######################################################################
-Data$FPL100_noBaseline[Data$FPL100_noBaseline == 0] <- 0.001
+# Data$FPL100_noBaseline[Data$FPL100_noBaseline == 0] <- 0.001
 
-MEM2_FPL100_wt_log <- lme4::lmer(log(FPL100_noBaseline) ~ 1 + yearqtr + 
-                             yearqtr*adult_disb + race*adult_disb +
-                             race + gender_ms + adult_disb + wt + 
-                             adult_disb*gender_ms + (1 | hhid), 
-                       data = Data, REML = TRUE)
-summary(MEM2_FPL100_wt_log)
-#xtable(MEM2_FPL100_wt_log)
+modelFPL100NoBaseline <- lmerTest::lmer( FPL100_noBaseline ~ 1 + yearqtrNum + gender + ms + race_origin + adult_disb + 
+                                       gender*ms + race_origin*ms + race_origin*adult_disb + gender*adult_disb + 
+                                       adult_disb*ms + adult_disb*gender*ms + adult_disb*yearqtrNum + 
+                                       (1 | hhid), data = Data, weights = wt
+)
+
+summary( modelFPL100NoBaseline )
+anova( modelFPL100NoBaseline, type = 1 )
+
+#xtable(modelFPL100NoBaseline)
 
 #######################################################################
 ## Post hoc: Race
 #######################################################################
-PostHoc_race <- lmerTest::difflsmeans(
-  model = MEM2_FPL100_wt_log, 
-  test.effs = 'race'
+postHocRaceOriginNoBaseline <- lmerTest::difflsmeans(
+  model = modelFPL100NoBaseline, 
+  test.effs = 'race_origin'
 )
-Plot_race_Norm <- plotLSMeans(
-  response = PostHoc_race$response,
-  table = PostHoc_race$diffs.lsmeans.table, 
+postHocRaceOriginNoBaseline
+plotRaceOriginNoBaseline <- plotLSMeans(
+  response = postHocRaceOriginNoBaseline$response,
+  table = postHocRaceOriginNoBaseline$diffs.lsmeans.table, 
   which.plot = 'DIFF of LSMEANS', 
   mult = TRUE
 )
-PlotFilename <- paste0(SlidePath, 'PlotPostHocNorm_', 'race', '.jpeg')
+plotFilename <- paste0(PlotPath, 'PlotPostHocNorm_', 'race', '.jpeg')
 ggsave(
-  filename = PlotFilename, 
-  plot = Plot_race_Norm, 
-  device = 'jpg', 
-  width = 40,
-  height = 30,
-  units = 'cm'
+  filename = plotFilename, 
+  plot = plotRaceOriginNoBaseline, 
+  device = 'jpg'
 )
 
 #######################################################################
 ## Post hoc: gender_ms
 #######################################################################
-PostHoc_gender_ms <- lmerTest::difflsmeans(
-  model = MEM2_FPL100_wt_log, 
+postHocGenderMSNoBaseline <- lmerTest::difflsmeans(
+  model = modelFPL100NoBaseline, 
   test.effs = 'gender_ms'
 )
-Plot_gender_ms <- plotLSMeans(
-  response = PostHoc_gender_ms$response,
-  table = PostHoc_gender_ms$diffs.lsmeans.table, 
+postHocGenderMSNoBaseline
+plotGenderMSNoBaseline <- plotLSMeans(
+  response = postHocGenderMSNoBaseline$response,
+  table = postHocGenderMSNoBaseline$diffs.lsmeans.table, 
   which.plot = 'DIFF of LSMEANS', 
   mult = TRUE
 )
-PlotFilename <- paste0(SlidePath, 'PlotPostHocNorm_', 'gender_ms', '.jpeg')
+plotFilename <- paste0(PlotPath, 'PlotPostHocNorm_', 'gender_ms', '.jpeg')
 ggsave(
-  filename = PlotFilename, 
-  plot = Plot_gender_ms, 
-  device = 'jpg', 
-  width = 40,
-  height = 30,
-  units = 'cm'
+  filename = plotFilename, 
+  plot = plotGenderMSNoBaseline, 
+  device = 'jpg'
 )
 
 #######################################################################
 ## Post hoc: Race & Disability
 #######################################################################
-PostHoc_race_disb <- lmerTest::difflsmeans(
-  model = MEM2_FPL100_wt_log, 
-  test.effs = c('adult_disb:race')
+postHocRaceDisbNoBaseline <- lmerTest::difflsmeans(
+  model = modelFPL100NoBaseline, 
+  test.effs = c('adult_disb:race_origin')
 )
-str(PostHoc_race_disb)
+str(postHocRaceDisbNoBaseline)
 # Plot_gender_ms <- plot(PostHoc_gender_ms)
-Plot_race_disb <- plotLSMeans(
-  response = PostHoc_race_disb$response,
-  table = PostHoc_race_disb$diffs.lsmeans.table, 
+plotRaceDisbNoBaseline <- plotLSMeans(
+  response = postHocRaceDisbNoBaseline$response,
+  table = postHocRaceDisbNoBaseline$diffs.lsmeans.table, 
   which.plot = 'DIFF of LSMEANS', 
   mult = TRUE
 )
-Plot_race_disb
-PlotFilename <- paste0(SlidePath, 'PlotPostHocNorm_', 'race_disb', '.jpeg')
+plotRaceDisbNoBaseline
+plotFilename <- paste0(PlotPath, 'PlotPostHocNorm_', 'race_disb', '.jpeg')
 ggsave(
-  filename = PlotFilename, 
-  plot = Plot_race_disb, 
-  device = 'jpg', 
-  width = 40,
-  height = 30,
-  units = 'cm'
+  filename = plotFilename, 
+  plot = plotRaceDisbNoBaseline, 
+  device = 'jpg'
 )
 
 #######################################################################
 ## Post hoc: Gender, MS & Disability
 ########################################################################
-PostHoc_gender_ms_disb <- lmerTest::difflsmeans(
-  model = MEM2_FPL100_wt_log, 
+postHocGenderMSDisbNoBaseline <- lmerTest::difflsmeans(
+  model = modelFPL100NoBaseline, 
   test.effs = c('adult_disb:gender_ms')
 )
-# str(PostHoc_gender_ms_disb)
-# str(PostHoc_gender_ms_disb$diffs.lsmeans.table)
-# Plot_gender_ms_disb <- plot(PostHoc_gender_ms_disb, which.plot = 'DIFF of LSMEANS')
-Plot_gender_ms_disb <- plotLSMeans(
-  response = PostHoc_gender_ms_disb$response,
-  table = PostHoc_gender_ms_disb$diffs.lsmeans.table, 
+# str(postHocGenderMSDisbNoBaseline)
+# str(postHocGenderMSDisbNoBaseline$diffs.lsmeans.table)
+# plotGenderMSDisbNoBaseline <- plot(postHocGenderMSDisbNoBaseline, which.plot = 'DIFF of LSMEANS')
+plotGenderMSDisbNoBaseline <- plotLSMeans(
+  response = postHocGenderMSDisbNoBaseline$response,
+  table = postHocGenderMSDisbNoBaseline$diffs.lsmeans.table, 
   which.plot = 'DIFF of LSMEANS', 
   mult = TRUE
 )
-PlotFilename <- paste0(SlidePath, 'PlotPostHocNorm_', 'gender_ms_disb', '.jpeg')
+plotFilename <- paste0(PlotPath, 'PlotPostHocNorm_', 'gender_ms_disb', '.jpeg')
 ggsave(
-  filename = PlotFilename, 
-  plot = Plot_gender_ms_disb, 
-  device = 'jpg', 
-  width = 40,
-  height = 30,
-  units = 'cm'
+  filename = plotFilename, 
+  plot = plotGenderMSDisbNoBaseline, 
+  device = 'jpg'
 )
-
-#######################################################################
-## Residuals
-#######################################################################
-Data$Resid_Num1 <- residuals(Num1_FPL100_wt)
-Data$Resid_Num2 <- residuals(Num2_FPL100_wt) 
-Data$Resid_Num3 <- residuals(Num3_FPL100_wt)
-
-Data$Resid_MEM1 <- residuals(MEM1_FPL100_wt)
-Data$Resid_MEM2 <- residuals(MEM2_FPL100_wt)
-Data$Resid_MEM3 <- residuals(MEM3_FPL100_wt)
-
-Filename <- paste0(RDataPath, 'Data_forIncPov_v3_Residuals.RData')
-save(Data, file = Filename)
-
 
