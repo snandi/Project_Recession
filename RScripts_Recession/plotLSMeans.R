@@ -1,4 +1,5 @@
 #library(plyr), MASS, Hmisc, ggplot2
+library(stringr)
 ############################################################################
 #function to identify the colors of bar according to significance of effects
 ############################################################################
@@ -88,16 +89,17 @@ plotLSMeans <- function(table, response, Ylabel = 'response',
     coord_flip() +
     # geom_errorbar(aes(ymin = lci, ymax = uci ), colour="black", width=.1) + 
     # geom_errorbar(aes(xmin = lci, xmax = uci ), colour="black", width=.1) + 
-    theme(axis.text.x = element_text(angle = 0, hjust = 1, vjust = 0.4), ## was angle 90 
+    theme(axis.text.x = element_text(angle = 90, hjust = 1, vjust = 0.4), ## was angle 90 
           axis.title = element_text(size = rel(1)), ## was rel(1.4)
           axis.text = element_text(size = rel(1)), 
           legend.position = 'top',
           legend.text = element_text(size = rel(1)), 
           legend.title = element_text(size = rel(1)))  + 
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + 
     scale_fill_manual(values  = 
                         c(  "Not Sig" = "grey50", "p-value < 0.01" = "orange", 
                             "p-value < 0.05" = "yellow", 
-                            "p-value < 0.001" = "red"), name="Significance")  +
+                            "p-value < 0.001" = "red"), name="")  +
     xlab(label = '') + ylab(label = Ylabel)
   #facet_wrap( ~ namesforplots, scales = "free")
   # else{
@@ -118,5 +120,5 @@ plotLSMeans <- function(table, response, Ylabel = 'response',
   #                               "p-value < 0.001" = "red"), name="Significance")  +
   #       ylab(response) + xlab(names.plot)
   #   }
-# }
+  # }
 }
