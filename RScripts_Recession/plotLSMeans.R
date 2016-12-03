@@ -95,7 +95,7 @@ plotLSMeans <- function(table, response, Ylabel = 'response',
           legend.position = 'top',
           legend.text = element_text(size = rel(1)), 
           legend.title = element_text(size = rel(1)))  + 
-    scale_x_discrete(labels = function(x) str_wrap(x, width = 10)) + 
+    scale_x_discrete(labels = function(x) str_wrap(x, width = 20)) + ## To wrap text
     scale_fill_manual(values  = 
                         c(  "Not Sig" = "grey50", "p-value < 0.01" = "orange", 
                             "p-value < 0.05" = "yellow", 

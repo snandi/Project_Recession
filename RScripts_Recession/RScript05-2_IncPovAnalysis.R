@@ -56,36 +56,43 @@ Data$yearqtrNum <- as.numeric( Data$yearqtr )
 ## This is necessary for post hoc test, otherwise it is throwing exception as the 
 ## object not being a matrix, when difflsmeans is called
 
+time1 <- Sys.time()
 modelFPL100 <- lmerTest::lmer( FPL100_num ~ 1 + yearqtrNum + gender + ms + race_origin + adult_disb + education + 
-                                 race_origin*gender + gender*ms + race_origin*ms + race_origin*adult_disb + gender*adult_disb + 
-                                 ms*adult_disb + gender*ms*adult_disb + adult_disb*yearqtrNum + education*adult_disb + 
+                                 race_origin:gender + gender:ms + race_origin:ms + race_origin:adult_disb + gender:adult_disb + 
+                                 ms:adult_disb + gender:ms:adult_disb + adult_disb:yearqtrNum + education:adult_disb + 
                                  (1 | hhid), data = Data, weights = wt 
 )
 
 lmerTest::summary( modelFPL100 )
 lmerTest::anova( modelFPL100 )
+time2 <- Sys.time()
+print( time2 - time1 )
 
 modelFPL100NoBaseline <- lmerTest::lmer( FPL100_noBaseline ~ 1 + yearqtrNum + gender + ms + race_origin + adult_disb + education + 
                                            race_origin*gender + gender*ms + race_origin*ms + race_origin*adult_disb + gender*adult_disb + 
-                                           adult_disb*ms + adult_disb*gender*ms + adult_disb*yearqtrNum + education*adult_disb + 
+                                           adult_disb*ms + gender*ms*adult_disb + adult_disb*yearqtrNum + education*adult_disb + 
                                            (1 | hhid), data = Data, weights = wt
 )
 
 lmerTest::summary( modelFPL100NoBaseline )
 lmerTest::anova( modelFPL100NoBaseline )
 
+time3 <- Sys.time()
+print( time3 - time2 )
 
-plotFilename <- paste0( PlotPath, 'PlotsPostHoc_RScript05-2.pdf' )
-pdf( file = plotFilename, onefile = TRUE )
 #######################################################################
 ## Post hoc tests
 #######################################################################
-postHocFactors <- c( 'race_origin', 'gender', 'ms', 'education', 'gender:ms', 'race_origin:ms', 
-                     'race_origin:gender', 'race_origin:adult_disb', 'gender:adult_disb', 
-                     'ms:adult_disb', 'adult_disb:gender:ms', 'education:adult_disb'
+postHocFactors <- c( 'race_origin', 'education', 'gender:ms', 'ms:race_origin', 
+                     'gender:race_origin', 'race_origin:adult_disb', 'gender:adult_disb', 
+                     'ms:adult_disb', 'gender:ms:adult_disb', 'adult_disb:education'
 )
 
+plotFilename <- paste0( PlotPath, 'PlotsPostHoc_RScript05-2.pdf' )
+pdf( file = plotFilename, onefile = TRUE )
+
 for( Factor in postHocFactors ){
+  print( Factor )
   postHoc <- lmerTest::difflsmeans(
     model = modelFPL100, 
     test.effs = Factor
@@ -110,8 +117,8 @@ for( Factor in postHocFactors ){
     mult = TRUE
   ) )
   
-  try( postHoc )
-  try( postHocNoBaseline )
+  try( print( postHoc ) )
+  try( print( postHocNoBaseline ) )
   
   try( plot( plotPostHoc ) )
   try( plot( plotPostHocNoBaseline ) )
@@ -121,13 +128,16 @@ for( Factor in postHocFactors ){
 
 dev.off()
 
+time4 <- Sys.time()
+print( time4 - time3 )
+
 # #######################################################################
 # ## Post hoc: Race
 # #######################################################################
-# postHocRaceOrigin <- lmerTest::difflsmeans(
-#   model = modelFPL100, 
-#   test.effs = 'race_origin'
-# )
+postHoc <- lmerTest::difflsmeans(
+  model = modelFPL100,
+  test.effs = 'gender*ms*adult_disb'
+)
 # 
 # plotRaceOrigin <- plotLSMeans(
 #   response = postHocRaceOrigin$response,
