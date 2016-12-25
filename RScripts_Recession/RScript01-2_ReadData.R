@@ -41,7 +41,9 @@ households <- unique(Data1[,c('ssuid', 'shhadid', 'ehrefper')])
 SSUID <- '019128000334'
 ssuids <- unique(Data$ssuid)[1:120]
 Subset <- subset(Data1, ssuid %in% ssuids)
-dim(unique(Subset[,c('ssuid', 'shhadid')]))
+dim(unique(Data[,c('ssuid', 'shhadid')]))
+dim(unique(Disab[,c('ssuid', 'shhadid')]))
+
 ## FilenameSubset <- paste0(RDataPath, 'Subset_', SSUID, '.txt')
 ## write.table(Subset, file = FilenameSubset, row.name = F, sep = '\t',
 ##             quote = FALSE)

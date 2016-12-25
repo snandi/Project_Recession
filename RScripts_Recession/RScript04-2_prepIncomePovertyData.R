@@ -123,6 +123,7 @@ Filepath1 <- paste( RDataPath, 'Data15.RData', sep = '' )
 load( Filepath1 )
 
 length( unique( as.numeric( Data15$ssuid ) ) )
+nrow( unique( Data15[,c( 'ssuid', 'shhadid' )] ) ) ## This identifies unique households
 nrow( unique( Data15[,c( 'ssuid', 'ehrefper' )] ) )
 nrow( unique( Data15[,c( 'ssuid', 'epppnum' )] ) )
 ## 22002 unique ssuids, and 1 ehrefper per hh
