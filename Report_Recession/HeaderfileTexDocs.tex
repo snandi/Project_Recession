@@ -1,1 +1,84 @@
-/ua/snandi/TexScripts/HeaderfileTexDocs.tex
+%%%%%%%%%%%%%%%%%%%%%%%% Packages %%%%%%%%%%%%%%%%%%%%%%%%
+\usepackage{amscd}
+\usepackage{amsmath}
+\usepackage{amssymb}
+\usepackage{amsthm}
+\usepackage{amsxtra}
+\usepackage{animate}
+\usepackage{bbold}
+%\usepackage{bigints}
+\usepackage{caption}    %% For multiple line captions
+\usepackage{color, colortbl}
+\usepackage{dsfont}
+\usepackage{enumerate}
+\usepackage[mathscr]{eucal}
+%\usepackage{fancyhdr}
+\usepackage{float}
+%\usepackage{fullpage}  %% Dont use this for beamer presentations
+\usepackage{geometry}
+\usepackage{graphicx}
+\usepackage{hyperref}
+\usepackage{indentfirst}
+\usepackage{latexsym}
+\usepackage{listings}
+\usepackage{longtable}  %% to add pagebreaks in between table
+\usepackage{lscape}
+\usepackage{mathtools}
+\usepackage{microtype}
+\usepackage{multirow}
+\usepackage{natbib}
+\usepackage{pdfpages}
+\usepackage{setspace}   %% Allows to set double or single space
+\usepackage{tcolorbox}  %% For colored textboxes
+\usepackage{verbatim}
+\usepackage{wrapfig}
+\usepackage{xargs}
+\usepackage{xcolor}
+\DeclareGraphicsExtensions{.pdf,.png,.jpg, .jpeg}
+\definecolor{LightCyan}{rgb}{0.88,1,1}
+
+\usepackage{array}
+\newcolumntype{C}[1]{>{\centering\arraybackslash}p{#1}}  %% For wrapping text in table headers
+
+%%%%%%%%%%%%%%%%%%%%%%%% Commands %%%%%%%%%%%%%%%%%%%%%%%%
+\newcommand{\Sup}{\textsuperscript}
+\newcommand{\Exp}{\mathds{E}}
+\newcommand{\Prob}{\mathds{P}}
+\newcommand{\Z}{\mathds{Z}}
+\newcommand{\Ind}{\mathds{1}}
+\newcommand{\A}{\mathcal{A}}
+\newcommand{\F}{\mathcal{F}}
+%\newcommand{\G}{\mathcal{G}}
+\newcommand{\I}{\mathcal{I}}
+\newcommand{\R}{\mathcal{R}}
+\newcommand{\Y}{\mathcal{Y}}
+\newcommand{\Real}{\mathbb{R}}
+\newcommand{\be}{\begin{equation}}
+\newcommand{\ee}{\end{equation}}
+\newcommand{\bes}{\begin{equation*}}
+\newcommand{\ees}{\end{equation*}}
+\newcommand{\union}{\bigcup}
+\newcommand{\intersect}{\bigcap}
+\newcommand{\Ybar}{\overline{Y}}
+\newcommand{\ybar}{\bar{y}}
+\newcommand{\Xbar}{\overline{X}}
+\newcommand{\xbar}{\bar{x}}
+\newcommand{\betahat}{\hat{\beta}}
+\newcommand{\Yhat}{\widehat{Y}}
+\newcommand{\yhat}{\hat{y}}
+\newcommand{\Xhat}{\widehat{X}}
+\newcommand{\xhat}{\hat{x}}
+\newcommand{\E}[1]{\operatorname{E}\left[ #1 \right]}
+%\newcommand{\Var}[1]{\operatorname{Var}\left( #1 \right)}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\Cov}[2]{\operatorname{Cov}\left( #1,#2 \right)}
+\newcommand{\N}[2][1=\mu, 2=\sigma^2]{\operatorname{N}\left( #1,#2 \right)}
+\newcommand{\bp}[1]{\left( #1 \right)}
+\newcommand{\bsb}[1]{\left[ #1 \right]}
+\newcommand{\bcb}[1]{\left\{ #1 \right\}}
+\newcommand*{\permcomb}[4][0mu]{{{}^{#3}\mkern#1#2_{#4}}}
+\newcommand*{\perm}[1][-3mu]{\permcomb[#1]{P}}
+\newcommand*{\comb}[1][-1mu]{\permcomb[#1]{C}}
+\newcommand{\indep}{\rotatebox[origin=c]{90}{$\models$}}
+
+\DeclareMathOperator*{\argmin}{arg\,min}
