@@ -4,17 +4,19 @@ rm( list=objects( all.names=TRUE ) )
 
 ########################################################################
 ## This script produces the data for income poverty analysis 
-## This script was last edited on 09/28, adding variable eorigin, to 
-## include hispanics in the analysis
+## This script added variable eorigin, to include hispanics in the analysis
 ## This uses whfnwgt as the survey weights, instead of Weights_Long.RData
+## This removes observations from 2008 Q2 and 2013 Q3
 ########################################################################
 
-################################################################## 
-## Prepares data for income poverty with FPL100 and FPL200, after
-## meeting with Yajuan on 11/18. This normalizes based on the 
-## baseline value
-## Also, this one uses yearqtr instead of yearmon
-##################################################################
+
+dropSomeMonths <- function( dropMonths = c( 'May 2008', 'Jun 2008', 'Jul 2013' ), Data ){
+  dropMonthsYrMon <- as.yearmon( dropMonths )
+  keepMonths <- unique( Data$yearmon ) %w/o% dropMonths
+  Data <- subset( Data, yearmon %in% keepMonths )
+  return( Data )  
+}
+
 fn_DataforIncPov_v3 <- function( Data ){
   Data$rhpov2 <- 2 * Data$rhpov_qtr
   
@@ -31,9 +33,6 @@ fn_DataforIncPov_v3 <- function( Data ){
   Data$FPL100_num <- Data$thtotinc_qtr/Data$rhpov_qtr
   Data$FPL200_num <- Data$thtotinc_qtr/Data$rhpov2
   
-#   Data$FPL100_num[Data$FPL100_num == 0] <- 0.001
-#   Data$FPL200_num[Data$FPL200_num == 0] <- 0.001
-  
   ## Normalize FPL100
   SplitByssuid <- split( x = Data, f = as.factor( Data$ssuid ) )
   Data$FPL100_noBaseline <- do.call( what = c, args = lapply( X = SplitByssuid, FUN = normalize_baseline, Colname = 'FPL100_num' ) )
@@ -42,25 +41,8 @@ fn_DataforIncPov_v3 <- function( Data ){
   ## Normalize FPL200
   Data$FPL200_noBaseline <- do.call( what = c, args = lapply( X = SplitByssuid, FUN = normalize_baseline, Colname = 'FPL200_num' ) )
   
-#   ## Lag FPL100
-#   Data$FPL100_num_Lag <- do.call( what = c, args = lapply( X = SplitByssuid, FUN = fn_lagData, Colname = 'FPL100_num' ) )
-#   
-#   ## Lag FPL200
-#   Data$FPL200_num_Lag <- do.call( what = c, args = lapply( X = SplitByssuid, FUN = fn_lagData, Colname = 'FPL200_num' ) )
-  
   try( rm( SplitByssuid ) )
   gc( )
-  
-#   ## Lag FPL100_Norm
-#   SplitByssuid <- split( x = Data, f = as.factor( Data$ssuid ) )
-#   Data$FPL100_norm_Lag <- do.call( what = c, args = lapply( X = SplitByssuid, FUN = fn_lagData, Colname = 'FPL100_noBaseline' ) )
-#   rownames( Data ) <- NULL
-#   
-#   ## Lag FPL200_Norm
-#   Data$FPL200_norm_Lag <- do.call( what = c, args = lapply( X = SplitByssuid, FUN = fn_lagData, Colname = 'FPL200_noBaseline' ) )
-#   
-#   try( rm( SplitByssuid ) )
-#   gc( )
   
   comment( Data ) <- 'The lower the value of Pct_rhpov, the worse off the household is'
   return( Data )
@@ -119,8 +101,8 @@ MARITAL_STATUS_MAP <- as.data.frame( cbind(
 ########################################################################
 ## load sipp08_MASTER.RData
 ########################################################################
-Filepath1 <- paste( RDataPath, 'Data15.RData', sep = '' )
-load( Filepath1 )
+filepathData <- paste( RDataPath, 'Data15.RData', sep = '' )
+load( filepathData )
 
 length( unique( as.numeric( Data15$ssuid ) ) )
 nrow( unique( Data15[,c( 'ssuid', 'shhadid' )] ) ) ## This identifies unique households
@@ -149,7 +131,8 @@ Colnames_keep <- c( 'ssuid',
                    'eeducate',
                    'adult_disb' )
 Data <- unique( Data15[, Colnames_keep] )
-Data <- subset( Data, yearmon != 'May 2008' )
+
+Data <- dropSomeMonths( dropMonths = c( 'May 2008', 'Jun 2008', 'Jul 2013' ), Data = Data )
 
 ########################################################################
 ## Map education levels
