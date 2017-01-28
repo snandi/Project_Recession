@@ -55,4 +55,6 @@ Data$yearqtrNum <- as.numeric( Data$yearqtr )
 demographicsVarList <- c('hhid', 'adult_disb', 'gender', 'ms', 'gender_ms', 'race_origin', 
                          'education')
 
-DataDemographics <- unique( Data[, demographicsVarList])
+DataDemographics <- unique( Data[, demographicsVarList ] )
+View( DataDemographics )
+
