@@ -7,6 +7,7 @@
 \input{HeaderfileTexDocs}
 
 \begin{document}
+\doublespacing
 %\SweaveOpts{concordance=TRUE}
 \bibliographystyle{plain}  %Choose a bibliograhpic style
 
@@ -32,12 +33,15 @@ For this analysis data from US Census Bureau's SIPP 2008 panel survey was used. 
 Total monthly household income was divided by monthly federal poverty level (FPL) and then averaged over quarters to estimate FPL100 ratio. An FPL100 ratio lower than one in any quarter indicated the household was below 100\% Federal poverty level in that quarter. Averaging monthly values over a quarter reduced the noise in the response variable by eliminating the month-by-month variability in the income data. In the sample, the monthly income data ranged from -\$27,180 to \$108,900, the average being \$5240 and median \$3,874. The negative incomes were associated with households owning business that incurred lossed in those months. The FPL100 ratio ranged from -17.95 to 89.48, with the average being 3.817 and the median 2.924. In the sample, 7,865 out of 33,547 households (23.44\%) had at least one working age adult with disability during the observed time period, as identified in wave-6 of the survey. Data from July 2008 (2008-Q3) through May 2013 (2013-Q1) were analyzed. This period overlapped with twelve of the eighteen months {\footnote{\href{http://www.nber.org/cycles/}{NBER Recession Cycles}}} of the ``Great recession'' and its long wake. 
 
 \subsection{Mixed-effects model for income poverty}
-A mixed (fixed and random) effects model was fit to estimate the impact of the presence of a working-age adult with disability in a household on its FPL100 ratio. Let $Y$ denote the vector or responses (FPL100 ratio). Let $\theta$ denote the vector of fixed effect factors like gender, marital status, education level, race, origin of household head and disability, along with their interactions. Let $\beta$ denote another fixed effect of time, represented as quarters, starting from 2008-Q3 and ending in 2013-Q1. Let $b$ denote the household level random effect (random intercept). Then, the mixed-effects \cite{Fitzmaurice_2012_Applied} model for the responses, for each household $i$ can be written as
+A mixed (fixed and random) effects model was fit to estimate the impact of the presence of a working-age adult with disability in a household on its FPL100 ratio. Let $Y$ denote the vector or responses (FPL100 ratio). Let $\theta$ denote the vector of fixed effect factors like gender, marital status, education level, race, origin of household head, along with their interactions. Let $\beta$ denote another fixed effect of time, represented as quarters, starting from 2008-Q3 and ending in 2013-Q1. Let $b$ denote the household level random effect (random intercept). Then, the mixed-effects (\cite{Fitzmaurice_2012_Applied}) model for the responses, for each household $i$ can be written as
 \begin{equation}
 Y_{ij} = X_i\theta + \beta t_j + b_i + \epsilon_{ij}
 \end{equation}
-where, $\epsilon_{ij}$ are regarded as measurement errors, $i$ goes from $1$ to $H$, the number of households, $j$ goes from $1$ to $T$, the total number of quarterly observations for every household. 
- 
+where, $\epsilon_{ij}$ are regarded as measurement errors, $i$ goes from $1$ to $H$, the number of households, $j$ goes from $1$ to $T$, the total number of quarterly observations for every household. In this model, the response from the $i^{th}$ household at time $t_j$ is assumed to differ from the population mean $X_i\theta + \beta t_j$ by a household effect $b_i$ and a within household measurement error $\epsilon_{ij}$. The within household and between household errors are assumed to be normal and independent ($b_i \sim \N(0, \sigma^2_b),\ \ \epsilon_{ij} \sim \N(0, \sigma^2), \ \ b_i \indep \epsilon_{ij}, \forall i, j$). The effect of ``time'' is a fixed effect and it could be considered part of the fixed effect design matrix $X$. However, the problem of interest is to test a linear hypothesis about the disability-by-time interaction, to detect the effect of disability on the mean response over the period of the study. Hence, the ``time'' covariate is denoted separately. During estimation it will be estimated as a fixed effect. 
+
+All analysis were conducted using the statistical software R (\cite{R}), version 3.3.1. The mixed effects models were fit using the R-package ``lme4'' (\cite{R-lme4}) and all hypothesis tests were done using the R package ``lmerTest'' (\cite{Kuznetsova_etal_2015_R-lmerTest}). The final model was fit with some of the fixed effect factors along with their interactions after performing ``backward elimination'' on the full model. Elimination of the fixed effects were done by the principle of marginality, that is: the highest order interactions are tested first: if they are significant, the lower order effects were included in the model without testing for significance. The p-values for the fixed effects are estimated from the F statistics, with ``Satterthwaite'' approximation (\cite{Satterthwaite_1946_Biometrics}) denominator degrees of freedom. The p-values for the random effect were computed from likelihood ratio tests (\cite{Morrell_1998_Biometrics}). 
+
+
 \section{Results}
 
 
