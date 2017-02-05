@@ -60,8 +60,6 @@ plotLSMeans <- function(table, response, Ylabel = 'response',
   else
     names <- getNamesForPlot(rownames(table),1)   
   
-  
-  
   namesForPlot <- names$namesForPlot
   namesForLevels <- names$namesForLevels
   un.names <- unique(namesForPlot)

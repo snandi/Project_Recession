@@ -46,175 +46,92 @@ All analysis were conducted using the statistical software R (\cite{R}), version
 In order to isolate the effect of the {\emph{great recession}} on income poverty (response), measured by FPL100-ratio, the values of the response at the beginning of study period (2008-Q3) were subtracted from each household's responses. Consequently, all FPL100-ratios of all households at 2008-Q3 were zero. The same model as in eq \ref{eq:MixedEffects1} was fit to this baseline-corrected responses. The problem of interest was to test a linear hypothesis about the disability-by-time interaction. 
 
 \section{Results}
-ANOVA TABLE of first model\\
-
-% latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Tue Jan 31 19:39:05 2017
-\begin{table}[ht]
-\footnotesize
-\centering
-\begin{tabular}{lrrrrrr}
-  \hline
- & Sum Sq & Mean Sq & NumDF & DenDF & F.value & Pr($>$F) \\ 
-  \hline
-  yearqtrNum & 145.47 & 145.47 & 1.00 & 541289.64 & 12.07 & 0.0005 \\ 
-  race\_origin & 5752.68 & 2876.34 & 3.00 & 61173.45 & 238.71 & 0.0000 \\ 
-  adult\_disb & 4091.86 & 4091.86 & 1.00 &  &  &  \\ 
-  education & 29404.45 & 14702.23 & 2.00 & 138172.11 & 1220.15 & 0.0000 \\ 
-  gender:race\_origin & 104.06 & 34.69 & 3.00 & 171428.50 & 2.88 & 0.0345 \\ 
-  gender:ms & 1813.16 & 1813.16 & 1.00 & 357150.73 & 150.47 & 0.0000 \\ 
-  ms:race\_origin & 2070.73 & 690.24 & 3.00 & 390659.60 & 57.28 & 0.0000 \\ 
-  race\_origin:adult\_disb & 26.90 & 8.97 & 3.00 & 61969.87 & 0.74 & 0.5255 \\ 
-  gender:adult\_disb & 237.05 & 237.05 & 1.00 & 155731.47 & 19.67 & 0.0000 \\ 
-  ms:adult\_disb & 0.12 & 0.12 & 1.00 & 373284.89 & 0.01 & 0.9222 \\ 
-  yearqtrNum:adult\_disb & 145.47 & 145.47 & 1.00 & 541289.64 & 12.07 & 0.0005 \\ 
-  adult\_disb:education & 109.34 & 54.67 & 2.00 & 138155.91 & 4.54 & 0.0107 \\ 
-  gender:ms:adult\_disb & 56.78 & 56.78 & 1.00 & 354664.50 & 4.71 & 0.0299 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-ANOVA TABLE of model with no baseline\\
-% latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Tue Jan 31 19:46:11 2017
-\begin{table}[ht]
-\footnotesize
-\centering
-\begin{tabular}{lrrrrrr}
-  \hline
- & Sum Sq & Mean Sq & NumDF & DenDF & F.value & Pr($>$F) \\ 
-  \hline
-  yearqtrNum & 138.47 & 138.47 & 1.00 & 544073.07 & 11.52 & 0.0007 \\ 
-  race\_origin & 151.47 & 75.73 & 3.00 & 55510.96 & 6.30 & 0.0018 \\ 
-  adult\_disb & 22.10 & 22.10 & 1.00 &  &  &  \\ 
-  education & 72.76 & 36.38 & 2.00 & 107788.31 & 3.03 & 0.0485 \\ 
-  gender:race\_origin & 181.68 & 60.56 & 3.00 & 131972.69 & 5.04 & 0.0017 \\ 
-  gender:ms & 721.70 & 721.70 & 1.00 & 278695.88 & 60.04 & 0.0000 \\ 
-  ms:race\_origin & 556.33 & 185.44 & 3.00 & 312406.87 & 15.43 & 0.0000 \\ 
-  race\_origin:adult\_disb & 21.56 & 7.19 & 3.00 & 55461.90 & 0.60 & 0.6163 \\ 
-  gender:adult\_disb & 19.75 & 19.75 & 1.00 & 120125.79 & 1.64 & 0.1999 \\ 
-  ms:adult\_disb & 31.83 & 31.83 & 1.00 & 292894.97 & 2.65 & 0.1037 \\ 
-  yearqtrNum:adult\_disb & 138.47 & 138.47 & 1.00 & 544073.07 & 11.52 & 0.0007 \\ 
-  adult\_disb:education & 35.49 & 17.75 & 2.00 & 107764.38 & 1.48 & 0.2285 \\ 
-  gender:ms:adult\_disb & 14.38 & 14.38 & 1.00 & 276123.49 & 1.20 & 0.2740 \\ 
-   \hline
-\end{tabular}
-\end{table}
-
-% Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
-% Date and time: Tue, Jan 31, 2017 - 07:28:23 PM
-\begin{table}[!htbp] \centering 
-\tiny
-  \caption{} 
-  \label{} 
-\begin{tabular}{@{\extracolsep{5pt}}lcc} 
-\\[-1.8ex]\hline 
-\hline \\[-1.8ex] 
- & \multicolumn{2}{c}{\textit{Dependent variable:}} \\ 
-\cline{2-3} 
-\\[-1.8ex] & FPL100\_num & FPL100\_noBaseline \\ 
-\\[-1.8ex] & (1) & (2)\\ 
-\hline \\[-1.8ex] 
- yearqtrNum & $-$0.05$^{***}$ & $-$0.05$^{***}$ \\ 
-  & (0.002) & (0.002) \\ 
-  & & \\ 
- genderFemale & $-$0.13$^{**}$ & 0.16$^{**}$ \\ 
-  & (0.07) & (0.06) \\ 
-  & & \\ 
- msNot married & $-$0.24$^{***}$ & $-$0.11$^{**}$ \\ 
-  & (0.05) & (0.05) \\ 
-  & & \\ 
- race\_originHispanic & $-$0.11 & $-$0.10 \\ 
-  & (0.09) & (0.08) \\ 
-  & & \\ 
- race\_originOthers & 0.67$^{***}$ & $-$0.14 \\ 
-  & (0.10) & (0.09) \\ 
-  & & \\ 
- race\_originWhite & 1.10$^{***}$ & $-$0.01 \\ 
-  & (0.07) & (0.07) \\ 
-  & & \\ 
- adult\_disbyes & $-$30.84$^{***}$ & $-$29.69$^{***}$ \\ 
-  & (8.74) & (8.72) \\ 
-  & & \\ 
- educationSome college, diploma, assoc & 0.52$^{***}$ & $-$0.06$^{**}$ \\ 
-  & (0.03) & (0.03) \\ 
-  & & \\ 
- educationBachelors or higher & 1.87$^{***}$ & 0.04 \\ 
-  & (0.03) & (0.03) \\ 
-  & & \\ 
- genderFemale:race\_originHispanic & $-$0.05 & $-$0.17$^{**}$ \\ 
-  & (0.09) & (0.08) \\ 
-  & & \\ 
- genderFemale:race\_originOthers & $-$0.31$^{***}$ & $-$0.38$^{***}$ \\ 
-  & (0.11) & (0.10) \\ 
-  & & \\ 
- genderFemale:race\_originWhite & $-$0.10 & $-$0.17$^{***}$ \\ 
-  & (0.07) & (0.06) \\ 
-  & & \\ 
- genderFemale:msNot married & $-$0.55$^{***}$ & $-$0.32$^{***}$ \\ 
-  & (0.04) & (0.04) \\ 
-  & & \\ 
- msNot married:race\_originHispanic & 0.35$^{***}$ & 0.15$^{**}$ \\ 
-  & (0.06) & (0.06) \\ 
-  & & \\ 
- msNot married:race\_originOthers & $-$0.05 & 0.06 \\ 
-  & (0.08) & (0.08) \\ 
-  & & \\ 
- msNot married:race\_originWhite & $-$0.24$^{***}$ & $-$0.13$^{***}$ \\ 
-  & (0.05) & (0.05) \\ 
-  & & \\ 
- race\_originHispanic:adult\_disbyes & 0.06 & 0.10 \\ 
-  & (0.13) & (0.12) \\ 
-  & & \\ 
- race\_originOthers:adult\_disbyes & 0.08 & 0.15 \\ 
-  & (0.15) & (0.13) \\ 
-  & & \\ 
- race\_originWhite:adult\_disbyes & $-$0.05 & 0.05 \\ 
-  & (0.10) & (0.09) \\ 
-  & & \\ 
- genderFemale:adult\_disbyes & 0.14$^{**}$ & 0.02 \\ 
-  & (0.06) & (0.06) \\ 
-  & & \\ 
- msNot married:adult\_disbyes & $-$0.09 & 0.02 \\ 
-  & (0.06) & (0.05) \\ 
-  & & \\ 
- yearqtrNum:adult\_disbyes & 0.02$^{***}$ & 0.01$^{***}$ \\ 
-  & (0.004) & (0.004) \\ 
-  & & \\ 
- adult\_disbyes:educationSome college, diploma, assoc & $-$0.10$^{*}$ & 0.09$^{*}$ \\ 
-  & (0.06) & (0.05) \\ 
-  & & \\ 
- adult\_disbyes:educationBachelors or higher & $-$0.21$^{***}$ & 0.04 \\ 
-  & (0.07) & (0.07) \\ 
-  & & \\ 
- genderFemale:msNot married:adult\_disbyes & 0.17$^{**}$ & 0.08 \\ 
-  & (0.08) & (0.07) \\ 
-  & & \\ 
- (Intercept) & 106.32$^{***}$ & 106.18$^{***}$ \\ 
-  & (4.15) & (4.14) \\ 
-\hline\\[-1.8ex]
-{\bf Random Effects} & Std.Dev. & Std.Dev.\\
-\hline\\[-1.8ex]
-hhid - (Intercept) & 2.80 & 2.36\\
-\\
-Residual Standard Deviation & 3.47 & 3.47\\
-  & & \\ 
-\hline \\[-1.8ex] 
-Observations & 570,006 & 570,006 \\ 
-Log Likelihood & $-$1,247,068.00 & $-$1,240,888.00 \\ 
-Akaike Inf. Crit. & 2,494,192.00 & 2,481,833.00 \\ 
-Bayesian Inf. Crit. & 2,494,507.00 & 2,482,148.00 \\ 
-\hline 
-\hline \\[-1.8ex] 
-\textit{Note:}  & \multicolumn{2}{r}{$^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-\end{tabular} 
-\end{table} 
 
 
 \section{Limitations}
 \begin{enumerate}
 \item Although a linear mixed effects regression model discovered some conventional and some interesting patterns in the relationships between response and demographic factors, along with disability, the trajectory of income poverty over the study period for some households were not linear. This modeling approach does not capture trajectory shapes of individual households. A non-parametric fitting of the income poverty trajectories could be tried as a pre-processing step before testing for differences in behavior between different groups of households. 
 \end{enumerate}
+
+\newpage
+\section{Tables}
+
+\noindent
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Sun Feb  5 15:23:24 2017
+\begin{table}[H]
+\small
+\centering
+\begin{tabular}{lrrrrr}
+  \hline
+ & Sum Sq & Mean Sq & NumDF & F.value & p.value \\ 
+  \hline
+  yearqtrNum & 145.47 & 145.47 & 1 & 12.07 & 0.0005 \\ 
+  race\_origin & 5752.68 & 2876.34 & 3 & 238.71 & 0.0000 \\ 
+  education & 29404.45 & 14702.23 & 2 & 1220.15 & 0.0000 \\ 
+  gender:race\_origin & 104.06 & 34.69 & 3 & 2.88 & 0.0345 \\ 
+  gender:ms & 1813.16 & 1813.16 & 1 & 150.47 & 0.0000 \\ 
+  ms:race\_origin & 2070.73 & 690.24 & 3 & 57.28 & 0.0000 \\ 
+  race\_origin:adult\_disb & 26.90 & 8.97 & 3 & 0.74 & 0.5255 \\ 
+  gender:adult\_disb & 237.05 & 237.05 & 1 & 19.67 & 0.0000 \\ 
+  ms:adult\_disb & 0.12 & 0.12 & 1 & 0.01 & 0.9222 \\ 
+  yearqtrNum:adult\_disb & 145.47 & 145.47 & 1 & 12.07 & 0.0005 \\ 
+  adult\_disb:education & 109.34 & 54.67 & 2 & 4.54 & 0.0107 \\ 
+  gender:ms:adult\_disb & 56.78 & 56.78 & 1 & 4.71 & 0.0299 \\ 
+  \hline
+\end{tabular}
+\caption{Model 1: FPL100 vs demographic factors, time and disability}
+\label{tab:Table1Anova1}
+\end{table}
+
+\noindent
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Sun Feb  5 15:31:49 2017
+\begin{table}[H]
+\small
+\centering
+\begin{tabular}{lrrrrr}
+  \hline
+ & Sum Sq & Mean Sq & NumDF & F.value & p.value \\ 
+  \hline
+  yearqtrNum & 138.47 & 138.47 & 1 & 11.52 & 0.0007 \\ 
+  race\_origin & 151.47 & 75.73 & 3 & 6.30 & 0.0018 \\ 
+  education & 72.76 & 36.38 & 2 & 3.03 & 0.0485 \\ 
+  gender:race\_origin & 181.68 & 60.56 & 3 & 5.04 & 0.0017 \\ 
+  gender:ms & 721.70 & 721.70 & 1 & 60.04 & 0.0000 \\ 
+  ms:race\_origin & 556.33 & 185.44 & 3 & 15.43 & 0.0000 \\ 
+  race\_origin:adult\_disb & 21.56 & 7.19 & 3 & 0.60 & 0.6163 \\ 
+  gender:adult\_disb & 19.75 & 19.75 & 1 & 1.64 & 0.1999 \\ 
+  ms:adult\_disb & 31.83 & 31.83 & 1 & 2.65 & 0.1037 \\ 
+  yearqtrNum:adult\_disb & 138.47 & 138.47 & 1 & 11.52 & 0.0007 \\ 
+  adult\_disb:education & 35.49 & 17.75 & 2 & 1.48 & 0.2285 \\ 
+  gender:ms:adult\_disb & 14.38 & 14.38 & 1 & 1.20 & 0.2740 \\ 
+   \hline
+\end{tabular}
+\caption{Model 2: FPL100 vs demographic factors, time and disability \\ with baseline differences in FPL100 eliminated} 
+\label{tab:Table2Anova2}
+\end{table}
+
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Sun Feb  5 16:29:55 2017
+\begin{table}[H]
+\small
+\centering
+\begin{tabular}{lrrrrrr}
+  \hline
+Factor Levels & Est 1 & Std Err 1 & p-value 1 & Est 2 & Std Err 2 & p-value 2 \\ 
+  \hline
+  Female Married -  Female Not married & 0.74 & 0.03 & 0.0000 & 0.74 & 0.03 & 0.0000 \\ 
+    Male Married -  Female Not married & 0.92 & 0.04 & 0.0000 & 0.92 & 0.04 & 0.0000 \\ 
+    Male Not married -  Female Not married & 0.65 & 0.04 & 0.0000 & 0.65 & 0.04 & 0.0000 \\ 
+    Male Married -  Male Not married & 0.27 & 0.03 & 0.0000 & 0.27 & 0.03 & 0.0000 \\ 
+    Male Married -  Female Married & 0.18 & 0.04 & 0.0000 & 0.18 & 0.04 & 0.0000 \\ 
+    Female Married -  Male Not married & 0.09 & 0.04 & 0.0436 & 0.09 & 0.04 & 0.0436 \\ 
+   \hline
+\end{tabular}
+\caption{Post-hoc Tukey test of gender and ms}
+\label{tab:Table3GenderMS}
+\end{table}
 
 \newpage
 \bibliography{bibTex_Reference}

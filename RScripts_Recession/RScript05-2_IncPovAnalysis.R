@@ -8,6 +8,34 @@ rm(list = objects(all.names = TRUE))
 ## 1. This uses Data_forIncPov_v5_newWts.RData
 ## 2. This does not fit log(FPL100)
 ########################################################################
+formatAnovaTableForXtable <- function( anovaTable ){
+  anovaTableDF <- na.omit( as.data.frame( anovaTable ) )
+  colnames( anovaTableDF ) <- c( "Sum Sq", "Mean Sq", "NumDF", "DenDF", "F.value", "p.value" )
+  anovaTableDF$DenDF <- NULL
+  return( anovaTableDF )
+}
+
+mergePostHocTables <- function( postHoc1, postHoc2 ){
+  
+  ttplot1 <- as.data.frame( postHoc1$diffs.lsmeans.table )
+  rownames( ttplot1 ) <- gsub( pattern = Factor, replacement = '', x = rownames( ttplot1 ) )
+  ttplot1$`Factor Levels` <- rownames( ttplot1 )
+  
+  ttplot2 <- postHoc2$diffs.lsmeans.table
+  rownames( ttplot2 ) <- gsub( pattern = Factor, replacement = '', x = rownames( ttplot2 ) )
+  ttplot2$`Factor Levels` <- rownames( ttplot2 )
+  
+  columnsToMerge <- c( 'Factor Levels', 'Estimate', 'Standard Error', 't-value', 'p-value' )
+  ttplot <- merge( x = ttplot1[,columnsToMerge], y = ttplot2[,columnsToMerge], 
+                   by = 'Factor Levels', all = T )  
+  
+  ttplot <- ttplot[ order( ttplot$`t-value.y`, ttplot$`t-value.x`, decreasing = T ), ]
+  colnames( ttplot ) <- c( 'Factor Levels', 'Est 1', 'Std Err 1', 't1', 'p-value 1', 
+                           'Est 2', 'Std Err 2', 't2', 'p-value 2' )
+  ttplot$t1 <- ttplot$t2 <- NULL
+  
+  return( ttplot )
+}
 
 ########################################################################
 ## Run Path definition file                                           ##
@@ -63,22 +91,41 @@ modelFPL100 <- lmerTest::lmer( FPL100_num ~ 1 + yearqtrNum + gender + ms + race_
                                  (1 | hhid), data = Data, weights = wt 
 )
 
-lmerTest::summary( modelFPL100 )
-lmerTest::anova( modelFPL100 )
+# lmerTest::summary( modelFPL100 )
+# lmerTest::anova( modelFPL100 )
 time2 <- Sys.time()
 print( time2 - time1 )
 
+modelFPL100_Anova <- lmerTest::anova( modelFPL100 )
+modelFPL100_Summary <- lmerTest::summary( modelFPL100 )
+
+modelFPL100_AnovaDF <- formatAnovaTableForXtable( anovaTable = modelFPL100_Anova )
+print( xtable( modelFPL100_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ) , 
+       caption = "Model 1: FPL100 vs demographic factors, time and disability", 
+       floating = TRUE, latex.environments = "center"
+) )
+
+#######################################################################
+## Mixed Effects Model (MEM) of Income Poverty Ratio, controlled for 
+## Baseline value of FPL100
+########################################################################
 modelFPL100NoBaseline <- lmerTest::lmer( FPL100_noBaseline ~ 1 + yearqtrNum + gender + ms + race_origin + adult_disb + education + 
                                            race_origin*gender + gender*ms + race_origin*ms + race_origin*adult_disb + gender*adult_disb + 
                                            adult_disb*ms + gender*ms*adult_disb + adult_disb*yearqtrNum + education*adult_disb + 
                                            (1 | hhid), data = Data, weights = wt
 )
 
-lmerTest::summary( modelFPL100NoBaseline )
-lmerTest::anova( modelFPL100NoBaseline )
+modelFPL100NoBaseline_Summary <- lmerTest::summary( modelFPL100NoBaseline )
+modelFPL100NoBaseline_Anova <- lmerTest::anova( modelFPL100NoBaseline )
 
 time3 <- Sys.time()
 print( time3 - time2 )
+
+modelFPL100NoBaseline_AnovaDF <- formatAnovaTableForXtable( anovaTable = modelFPL100NoBaseline_Anova )
+print( xtable( modelFPL100NoBaseline_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ) , 
+               caption = "Model 2: FPL100 vs demographic factors, time and disability \n with baseline differences in FPL100 eliminated", 
+               floating = TRUE, latex.environments = "center"
+) )
 
 #######################################################################
 ## Post hoc tests
@@ -88,8 +135,9 @@ postHocFactors <- c( 'race_origin', 'education', 'gender:ms', 'ms:race_origin',
                      'ms:adult_disb', 'gender:ms:adult_disb', 'adult_disb:education'
 )
 
-plotFilename <- paste0( PlotPath, 'PlotsPostHoc_RScript05-2.pdf' )
-pdf( file = plotFilename, onefile = TRUE )
+Factor <- postHocFactors[3]
+# plotFilename <- paste0( PlotPath, 'PlotsPostHoc_RScript05-2.pdf' )
+# pdf( file = plotFilename, onefile = TRUE )
 
 for( Factor in postHocFactors ){
   print( Factor )
@@ -97,7 +145,7 @@ for( Factor in postHocFactors ){
     model = modelFPL100, 
     test.effs = Factor
   )
-  
+    
   plotPostHoc <- try( plotLSMeans(
     response = postHoc$response,
     table = postHoc$diffs.lsmeans.table, 
@@ -109,24 +157,30 @@ for( Factor in postHocFactors ){
     model = modelFPL100NoBaseline, 
     test.effs = Factor
   )
-  
+
   plotPostHocNoBaseline <- try( plotLSMeans(
     response = postHocNoBaseline$response,
     table = postHocNoBaseline$diffs.lsmeans.table, 
     which.plot = 'DIFF of LSMEANS', 
     mult = TRUE
   ) )
-  
+
+  CAPTION <- paste( 'Post-hoc Tukey test of', Factor )
+  postHocMerged <- mergePostHocTables( postHoc1 = postHoc, postHoc2 = postHocNoBaseline )
+  postHocMerged <- mergePostHocTables( postHoc1 = postHoc, postHoc2 = postHoc )
+  print( xtable( postHocMerged, digits = c( 0, 0, 2, 2, 4, 2, 2, 4 ), 
+                 caption = CAPTION ), include.rownames = FALSE )
+    
   try( print( postHoc ) )
   try( print( postHocNoBaseline ) )
   
-  try( plot( plotPostHoc ) )
-  try( plot( plotPostHocNoBaseline ) )
+  # try( plot( plotPostHoc ) )
+  # try( plot( plotPostHocNoBaseline ) )
   
   try( rm( postHoc, postHocNoBaseline, plotPostHoc, plotPostHocNoBaseline ) )
 }
 
-dev.off()
+# dev.off()
 
 time4 <- Sys.time()
 print( time4 - time3 )

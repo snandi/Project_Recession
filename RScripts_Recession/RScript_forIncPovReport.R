@@ -56,5 +56,5 @@ demographicsVarList <- c('hhid', 'adult_disb', 'gender', 'ms', 'gender_ms', 'rac
                          'education')
 
 DataDemographics <- unique( Data[, demographicsVarList ] )
-View( DataDemographics )
+# View( DataDemographics )
 
