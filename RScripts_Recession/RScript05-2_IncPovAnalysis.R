@@ -98,6 +98,7 @@ print( time2 - time1 )
 
 modelFPL100_Anova <- lmerTest::anova( modelFPL100 )
 modelFPL100_Summary <- lmerTest::summary( modelFPL100 )
+print( modelFPL100_Summary )
 
 modelFPL100_AnovaDF <- formatAnovaTableForXtable( anovaTable = modelFPL100_Anova )
 print( xtable( modelFPL100_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ) , 
@@ -116,6 +117,7 @@ modelFPL100NoBaseline <- lmerTest::lmer( FPL100_noBaseline ~ 1 + yearqtrNum + ge
 )
 
 modelFPL100NoBaseline_Summary <- lmerTest::summary( modelFPL100NoBaseline )
+print( modelFPL100NoBaseline_Summary )
 modelFPL100NoBaseline_Anova <- lmerTest::anova( modelFPL100NoBaseline )
 
 time3 <- Sys.time()
@@ -166,10 +168,9 @@ for( Factor in postHocFactors ){
   ) )
 
   CAPTION <- paste( 'Post-hoc Tukey test of', Factor )
-  postHocMerged <- mergePostHocTables( postHoc1 = postHoc, postHoc2 = postHocNoBaseline )
-  postHocMerged <- mergePostHocTables( postHoc1 = postHoc, postHoc2 = postHoc )
-  print( xtable( postHocMerged, digits = c( 0, 0, 2, 2, 4, 2, 2, 4 ), 
-                 caption = CAPTION ), include.rownames = FALSE )
+  postHocMerged <- try( mergePostHocTables( postHoc1 = postHoc, postHoc2 = postHocNoBaseline ) )
+  try( print( xtable( postHocMerged, digits = c( 0, 0, 2, 2, 4, 2, 2, 4 ), 
+                 caption = CAPTION ), include.rownames = FALSE ) )
     
   try( print( postHoc ) )
   try( print( postHocNoBaseline ) )
@@ -192,7 +193,7 @@ postHoc <- lmerTest::difflsmeans(
   model = modelFPL100,
   test.effs = 'gender*ms*adult_disb'
 )
-# 
+
 # plotRaceOrigin <- plotLSMeans(
 #   response = postHocRaceOrigin$response,
 #   table = postHocRaceOrigin$diffs.lsmeans.table, 
@@ -206,4 +207,4 @@ postHoc <- lmerTest::difflsmeans(
 #   plot = plotRaceOrigin, 
 #   device = 'jpg'
 # )
-# 
+ 
