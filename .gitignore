@@ -27,3 +27,5 @@ RData
 RData/*
 Slides_Recession
 Plots/
+*.bbl
+*.blg
