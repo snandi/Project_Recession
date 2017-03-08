@@ -20,6 +20,7 @@ PlotPath <- paste0(PathPrefix, 'Project_Recession/Plots/')
 Filename.Header <- paste0(RScriptPath, 'HeaderFile_Recession.R')
 source(Filename.Header)
 
+library(RFunctionsSN)
 source(paste(RScriptPath, 'fn_Library_Recession.R', sep=''))
 try(source('../../RScripts/fn_Library_SN.R'))
 try(source('~/RScripts/fn_Library_SN.R'))

@@ -1,24 +1,25 @@
-library(chron)
-library(doParallel)
-library(dplyr)
-library(foreach)
-library(ggplot2)
-library(ggthemes)
-library(Hmisc)
-library(lme4)
-library(lmerTest)
-library(MASS)
-library(Matrix)
-library(parallel)
-library(plyr)
-library(reshape2)
-library(RFunctionsSN)
-library(survival)
-library(xtable)
-library(zoo)
+library( chron )
+library( doParallel )
+library( dplyr )
+library( foreach )
+library( ggplot2 )
+library( ggthemes )
+library( Hmisc )
+library( lme4 )
+library( lmerTest )
+library( MASS )
+library( Matrix )
+library( parallel )
+library( plyr )
+library( reshape2 )
+library( RFunctionsSN )
+library( stargazer )
+library( survival )
+library( xtable )
+library( zoo )
 
-# fn_getPackages <- function(){
-#   Packages <- c(
+# fn_getPackages <- function( ){
+#   Packages <- c( 
 #     'boot',  
 #     'car',
 #     'caret',                        ## For prediction algorithms like boosting, random forest, etc 
@@ -37,7 +38,7 @@ library(zoo)
 #     'gam', 
 #     'glmnet', 
 #     'gmodels',
-#     'ggfortify',                    ## For plotting lm() and glm() diagnostic plots
+#     'ggfortify',                    ## For plotting lm( ) and glm( ) diagnostic plots
 #     'ggplot2',
 #     'GGally',                       ## For plotting functions like ggpairs
 #     'graphics', 
@@ -121,25 +122,25 @@ library(zoo)
 #     'xtable', 
 #     'zipcode'
 #   )
-#   return(Packages)  
+#   return( Packages )  
 # }
 # 
-# Packages <- fn_getPackages()
+# Packages <- fn_getPackages( )
 # 
-# ## Choose USA (IA) as the CRAN mirror
-# Mirrors <- getCRANmirrors(all = FALSE, local.only = FALSE)
-# chooseCRANmirror(graphics = F, ind = which(Mirrors$Name == 'USA (IA)'))
+# ## Choose USA ( IA ) as the CRAN mirror
+# Mirrors <- getCRANmirrors( all = FALSE, local.only = FALSE )
+# chooseCRANmirror( graphics = F, ind = which( Mirrors$Name == 'USA ( IA )' ) )
 # 
 # Packages_Installed <- Packages
 # ## For loop for requiring packages and installing them if something doesnt exist
-# for(Package in Packages){
-#   if(require(package=Package, character.only = T, quietly = T) == F){
-#     print(paste(Package, 'not Installed'))
+# for( Package in Packages ){
+#   if( require( package=Package, character.only = T, quietly = T ) == F ){
+#     print( paste( Package, 'not Installed' ) )
 #     Packages_Installed <- Packages_Installed[Packages_Installed != Package]
-#     #     try(install.packages(Package, dependencies = TRUE))
+#     #     try( install.packages( Package, dependencies = TRUE ) )
 #   } else{
-#     #    print(paste(Package, 'already exists'))
-#     require(package = Package, character.only = T, quietly = T)
+#     #    print( paste( Package, 'already exists' ) )
+#     require( package = Package, character.only = T, quietly = T )
 #   }
 # }
 # 

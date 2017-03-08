@@ -85,10 +85,11 @@ Data$yearqtrNum <- as.numeric( Data$yearqtr )
 ## object not being a matrix, when difflsmeans is called
 
 time1 <- Sys.time()
-modelFPL100 <- lmerTest::lmer( FPL100_num ~ 1 + yearqtrNum + gender + ms + race_origin + adult_disb + education + 
-                                 race_origin:gender + gender:ms + race_origin:ms + race_origin:adult_disb + gender:adult_disb + 
-                                 ms:adult_disb + gender:ms:adult_disb + adult_disb:yearqtrNum + education:adult_disb + 
-                                 (1 | hhid), data = Data, weights = wt 
+modelFPL100 <- lmerTest::lmer( 
+  FPL100_num ~ 1 + yearqtrNum + gender + ms + race_origin + adult_disb + education + 
+    race_origin:gender + gender:ms + race_origin:ms + race_origin:adult_disb + gender:adult_disb + 
+    ms:adult_disb + gender:ms:adult_disb + adult_disb:yearqtrNum + education:adult_disb + 
+    (1 | hhid), data = Data, weights = wt 
 )
 
 # lmerTest::summary( modelFPL100 )
@@ -110,10 +111,11 @@ print( xtable( modelFPL100_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ) ,
 ## Mixed Effects Model (MEM) of Income Poverty Ratio, controlled for 
 ## Baseline value of FPL100
 ########################################################################
-modelFPL100NoBaseline <- lmerTest::lmer( FPL100_noBaseline ~ 1 + yearqtrNum + gender + ms + race_origin + adult_disb + education + 
-                                           race_origin*gender + gender*ms + race_origin*ms + race_origin*adult_disb + gender*adult_disb + 
-                                           adult_disb*ms + gender*ms*adult_disb + adult_disb*yearqtrNum + education*adult_disb + 
-                                           (1 | hhid), data = Data, weights = wt
+modelFPL100NoBaseline <- lmerTest::lmer( 
+  FPL100_noBaseline ~ 1 + yearqtrNum + gender + ms + race_origin + adult_disb + education + 
+    race_origin*gender + gender*ms + race_origin*ms + race_origin*adult_disb + gender*adult_disb + 
+    adult_disb*ms + gender*ms*adult_disb + adult_disb*yearqtrNum + education*adult_disb + 
+    (1 | hhid), data = Data, weights = wt
 )
 
 modelFPL100NoBaseline_Summary <- lmerTest::summary( modelFPL100NoBaseline )
@@ -128,6 +130,14 @@ print( xtable( modelFPL100NoBaseline_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ) ,
                caption = "Model 2: FPL100 vs demographic factors, time and disability \n with baseline differences in FPL100 eliminated", 
                floating = TRUE, latex.environments = "center"
 ) )
+
+#######################################################################
+## Print summaries of the two models
+########################################################################
+# source( paste( RScriptPath, 'stargazer_lme4.R', sep='' ) )
+# stargazer( modelFPL100NoBaseline_Summary$coefficients, modelFPL100_Summary$coefficients, type = 'latex' )
+summaryNoBaseline <- round( modelFPL100NoBaseline_Summary$coefficients[,c("Estimate", "Std. Error", "Pr(>|t|)")], 4 )
+summaryWithBaseline <- round( modelFPL100_Summary$coefficients[,c("Estimate", "Std. Error", "Pr(>|t|)")], 4 )
 
 #######################################################################
 ## Post hoc tests
