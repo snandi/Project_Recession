@@ -9,21 +9,28 @@ rm(list = objects(all.names = TRUE))
 ## 2. This does not fit log(FPL100)
 ########################################################################
 formatAnovaTableForXtable <- function( anovaTable ){
+  if( class( anovaTable )[1] != 'anova' ){
+    stop( "Argument not an Anova table" )
+  }
   anovaTableDF <- na.omit( as.data.frame( anovaTable ) )
   colnames( anovaTableDF ) <- c( "Sum Sq", "Mean Sq", "NumDF", "DenDF", "F.value", "p.value" )
   anovaTableDF$DenDF <- NULL
+  anovaTableDF <- anovaTableDF[ order( anovaTableDF$`p.value`, decreasing = F ), ]
   return( anovaTableDF )
 }
 
+formatPostHocTables <- function( postHocTable ){
+  postHocTableDF <- as.data.frame( postHocTable$diffs.lsmeans.table )
+  rownames( postHocTableDF ) <- gsub( pattern = Factor, replacement = '', x = rownames( postHocTableDF ) )
+  postHocTableDF$`Factor Levels` <- rownames( postHocTableDF )
+  postHocTableDF <- postHocTableDF[ order( postHocTableDF$`p-value`, decreasing = F ), ]
+  return( postHocTableDF )
+}
+
 mergePostHocTables <- function( postHoc1, postHoc2 ){
-  
-  ttplot1 <- as.data.frame( postHoc1$diffs.lsmeans.table )
-  rownames( ttplot1 ) <- gsub( pattern = Factor, replacement = '', x = rownames( ttplot1 ) )
-  ttplot1$`Factor Levels` <- rownames( ttplot1 )
-  
-  ttplot2 <- postHoc2$diffs.lsmeans.table
-  rownames( ttplot2 ) <- gsub( pattern = Factor, replacement = '', x = rownames( ttplot2 ) )
-  ttplot2$`Factor Levels` <- rownames( ttplot2 )
+
+  ttplot1 <- formatPostHocTables( postHocTable = postHoc1 )
+  ttplot2 <- formatPostHocTables( postHocTable = postHoc2 )
   
   columnsToMerge <- c( 'Factor Levels', 'Estimate', 'Standard Error', 't-value', 'p-value' )
   ttplot <- merge( x = ttplot1[,columnsToMerge], y = ttplot2[,columnsToMerge], 
@@ -139,6 +146,32 @@ print( xtable( modelFPL100NoBaseline_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ) ,
 summaryNoBaseline <- round( modelFPL100NoBaseline_Summary$coefficients[,c("Estimate", "Std. Error", "Pr(>|t|)")], 4 )
 summaryWithBaseline <- round( modelFPL100_Summary$coefficients[,c("Estimate", "Std. Error", "Pr(>|t|)")], 4 )
 
+print( summaryWithBaseline )
+
+print( summaryNoBaseline )
+
+#######################################################################
+## Model with Disabled only
+########################################################################
+DataDisb <- subset( Data, adult_disb == "yes" )
+
+modelFPL100NoBaselineDisab <- lmerTest::lmer( 
+  FPL100_noBaseline ~ 1 + yearqtrNum + gender + ms + race_origin + education + 
+    race_origin*gender + gender*ms + race_origin*ms + (1 | hhid), 
+  data = DataDisb, weights = wt
+)
+
+modelFPL100NoBaselineDisab_Anova <- lmerTest::anova( modelFPL100NoBaselineDisab )
+modelFPL100NoBaselineDisab_Summary <- lmerTest::summary( modelFPL100NoBaselineDisab )
+print( modelFPL100NoBaselineDisab_Summary )
+
+modelFPL100NoBaselineDisab_AnovaDF <- formatAnovaTableForXtable( anovaTable = modelFPL100NoBaselineDisab_Anova )
+print( xtable( modelFPL100NoBaselineDisab_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ) , 
+               caption = "Model 3: FPL100 vs demographic factors, time and disability, disability only", 
+               floating = TRUE, latex.environments = "center"
+) )
+
+
 #######################################################################
 ## Post hoc tests
 #######################################################################
@@ -152,7 +185,10 @@ Factor <- postHocFactors[3]
 # pdf( file = plotFilename, onefile = TRUE )
 
 for( Factor in postHocFactors ){
+  print( "#############################################################" )
   print( Factor )
+  print( "#############################################################" )
+  
   postHoc <- lmerTest::difflsmeans(
     model = modelFPL100, 
     test.effs = Factor
@@ -179,15 +215,18 @@ for( Factor in postHocFactors ){
 
   CAPTION <- paste( 'Post-hoc Tukey test of', Factor )
   postHocMerged <- try( mergePostHocTables( postHoc1 = postHoc, postHoc2 = postHocNoBaseline ) )
+  postHocMerged <- postHocMerged[ order( postHocMerged$`p-value 2`, postHocMerged$`p-value 1`, 
+                                         decreasing = F ), ]
+  
   try( print( xtable( postHocMerged, digits = c( 0, 0, 2, 2, 4, 2, 2, 4 ), 
-                 caption = CAPTION ), include.rownames = FALSE ) )
+                 caption = CAPTION ), include.rownames = FALSE ), )
     
   try( print( postHoc ) )
   try( print( postHocNoBaseline ) )
   
   # try( plot( plotPostHoc ) )
   # try( plot( plotPostHocNoBaseline ) )
-  
+  print( "#############################################################" )  
   try( rm( postHoc, postHocNoBaseline, plotPostHoc, plotPostHocNoBaseline ) )
 }
 
@@ -196,25 +235,43 @@ for( Factor in postHocFactors ){
 time4 <- Sys.time()
 print( time4 - time3 )
 
-# #######################################################################
-# ## Post hoc: Race
-# #######################################################################
-postHoc <- lmerTest::difflsmeans(
-  model = modelFPL100,
-  test.effs = 'gender*ms*adult_disb'
-)
+#######################################################################
+## Post hoc tests for disability only
+#######################################################################
+print( "#############################################################" )
+print( "Post hoc tests for disability only" )
+print( "#############################################################" )
 
-# plotRaceOrigin <- plotLSMeans(
-#   response = postHocRaceOrigin$response,
-#   table = postHocRaceOrigin$diffs.lsmeans.table, 
-#   which.plot = 'DIFF of LSMEANS', 
-#   mult = TRUE
-# )
-# plotRaceOrigin
-# plotFilename <- paste0(PlotPath, 'PlotPostHoc_', 'race_origin', '.jpeg')
-# ggsave(
-#   filename = plotFilename, 
-#   plot = plotRaceOrigin, 
-#   device = 'jpg'
-# )
- 
+postHocFactors <- c( 'race_origin', 'education', 'gender:ms', 'ms:race_origin', 
+                     'gender:race_origin' )
+
+for( Factor in postHocFactors ){
+  print( "#############################################################" )  
+  print( Factor )
+  print( "#############################################################" )
+
+  postHocNoBaseline <- lmerTest::difflsmeans(
+    model = modelFPL100NoBaselineDisab, 
+    test.effs = Factor
+  )
+  
+  plotPostHocNoBaseline <- try( plotLSMeans(
+    response = postHocNoBaseline$response,
+    table = postHocNoBaseline$diffs.lsmeans.table, 
+    which.plot = 'DIFF of LSMEANS', 
+    mult = TRUE
+  ) )
+  
+  CAPTION <- paste( 'Post-hoc Tukey test of', Factor )
+  columnsToMerge <- c( 'Factor Levels', 'Estimate', 'Standard Error', 't-value', 'p-value' )  
+  postHocNoBaselineDF <- formatPostHocTables( postHocTable = postHocNoBaseline )
+  try( print( xtable( postHocNoBaselineDF[, columnsToMerge], digits = c( 0, 0, 2, 2, 2, 4 ), 
+                      caption = CAPTION ), include.rownames = FALSE ), )
+  
+  try( print( postHocNoBaseline ) )
+  
+  print( "#############################################################" )
+
+  try( rm( postHocNoBaseline, plotPostHocNoBaseline ) )
+}
+
