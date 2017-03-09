@@ -213,7 +213,7 @@ for( Factor in postHocFactors ){
     mult = TRUE
   ) )
 
-  CAPTION <- paste( 'Post-hoc Tukey test of', Factor )
+  CAPTION <- paste( 'Post-hoc test of', Factor )
   postHocMerged <- try( mergePostHocTables( postHoc1 = postHoc, postHoc2 = postHocNoBaseline ) )
   postHocMerged <- postHocMerged[ order( postHocMerged$`p-value 2`, postHocMerged$`p-value 1`, 
                                          decreasing = F ), ]
@@ -262,7 +262,7 @@ for( Factor in postHocFactors ){
     mult = TRUE
   ) )
   
-  CAPTION <- paste( 'Post-hoc Tukey test of', Factor )
+  CAPTION <- paste( 'Post-hoc test of', Factor )
   columnsToMerge <- c( 'Factor Levels', 'Estimate', 'Standard Error', 't-value', 'p-value' )  
   postHocNoBaselineDF <- formatPostHocTables( postHocTable = postHocNoBaseline )
   try( print( xtable( postHocNoBaselineDF[, columnsToMerge], digits = c( 0, 0, 2, 2, 2, 4 ), 

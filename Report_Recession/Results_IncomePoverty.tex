@@ -40,18 +40,41 @@ Y_{ij} = X_i\theta + \beta t_j + b_i + \epsilon_{ij}
 \end{equation}
 where, $\epsilon_{ij}$ are regarded as measurement errors, $i$ goes from $1$ to $H$, the number of households, $j$ goes from $1$ to $T$, the total number of quarterly observations for every household. In this model, the response from the $i^{th}$ household at time $t_j$ is assumed to differ from the population mean $X_i\theta + \beta t_j$ by a household effect $b_i$ and a within household measurement error $\epsilon_{ij}$. The within household and between household errors are assumed to be normal and independent ($b_i \sim \N(0, \sigma^2_b),\ \ \epsilon_{ij} \sim \N(0, \sigma^2), \ \ b_i \indep \epsilon_{ij}, \forall i, j$). The effect of ``time'' is a fixed effect and it could be considered part of the fixed effect design matrix $X$. However, the problem of interest is to test a linear hypothesis about the disability-by-time interaction, to detect the effect of disability on the mean response over the period of the study. Hence, the ``time'' covariate is denoted separately. During estimation it will be estimated as a fixed effect. 
 
+\noindent
+{\bf{Demographic factors}}\\
+The demographic factors were considered as fixed effects. The factors included in this analysis were {\emph{gender}}, {\emph{marital status}}, {\emph{education}}, and {\emph{race/origin}} of household head. The {\emph{Race/Origin}} factor included ``non-hispanic white'', ``non-hispanic black'', ``hispanic'' and ``others''. For simplicity, ``white'' and ``black'' would indicate categories ``non-hispanic white'' and ``non-hispanic black''. Gender of household head had two categories: ``male'' and ``female''. Education of household head has three categories: ``high-school or less'', ``some college, diploma, associated degrees'' and ``bachelors or higher''. Marital status of household heads has two categories: ``married'' and ``not married''. Divorced or widowed household heads were considered in the ``not married'' category. 
+
+\noindent
+{\bf{Computational software}}\\
 All analysis were conducted using the statistical software R (\cite{R}), version 3.3.1. The mixed effects models were fit using the R-package ``lme4'' (\cite{R-lme4}) and all hypothesis tests were done using the R package ``lmerTest'' (\cite{Kuznetsova_etal_2015_R-lmerTest}). The final model was fit with some of the fixed effect factors along with their interactions after performing ``backward elimination'' on the full model. Elimination of the fixed effects were done by the principle of marginality, that is: the highest order interactions are tested first: if they are significant, the lower order effects were included in the model without testing for significance. The p-values for the fixed effects are estimated from the F statistics, with ``Satterthwaite'' approximation (\cite{Satterthwaite_1946_Biometrics}) denominator degrees of freedom. The p-values for the random effect were computed from likelihood ratio tests (\cite{Morrell_1998_Biometrics}). 
 
 \subsection{Model for income poverty, with baseline correction} \label{baselineCorrection}
 In order to isolate the effect of the {\emph{great recession}} on income poverty (response), measured by FPL100-ratio, the values of the response at the beginning of study period (2008-Q3) were subtracted from each household's responses. Consequently, all FPL100-ratios of all households at 2008-Q3 were zero. The same model as in eq \ref{eq:MixedEffects1} was fit to this baseline-corrected responses. The problem of interest was to test a linear hypothesis about the disability-by-time interaction. 
 
 \subsection{Post-hoc tests}
-Post-hoc tests were conducted between levels of all demographic factors and their interactions, by calculating differences of ``Least Squares Means'' using R package ``lmerTest'' (\cite{Kuznetsova_etal_2015_R-lmerTest}), with ``Satterthwaite'' approximation (\cite{Satterthwaite_1946_Biometrics}) of the denominator degrees of freedom. 
+Post-hoc tests were conducted between categories of all demographic factors and their interactions, by calculating differences of ``Least Squares Means'' using R package ``lmerTest'' (\cite{Kuznetsova_etal_2015_R-lmerTest}), with ``Satterthwaite'' approximation (\cite{Satterthwaite_1946_Biometrics}) of the denominator degrees of freedom. 
 
 \section{Results}
 Table \ref{tab:FixedEffectsBetas} shows the coefficients of time (measured in year-quarters), and disability and the interaction between them. The first model includes the baseline FPL100-ratio and the second model does not. The rationale for the second model is explained in section \ref{baselineCorrection}. Both these models include the demographic factors. ANOVA tables of these demographic factors are in tables \ref{tab:Anova1} and \ref{tab:Anova2} respectively, for the two models. The coefficients in the two models are comparable. For example, $\beta_{\text{time}} = -0.0515, p < 0.01$ in model 1, indicating, FPL100-ratio decreased by $0.05$ every quarter, during the study period. The coefficient of {\emph{Disability}} is $\beta_D = -30.8394, p < 0.01$ in model 1 indicate that households with a working age adult with disability had their FPL100-ratios $30.84$ lower, on an average, compared to households without any working age adult with disability. Next, we observe that the coefficient of interaction between time and disability ($\beta_{t*D} = 0.0151, p < 0.05$) is positive. This implies that the slope of FPL100-ratio with time for households with disability is $-0.0364 (-0.0515 + 0.0151)$, which is less negative than the households without disability. This apparent contradictory finding leads us to conclude that households with disability although had significantly worse FPL100-ratio throughout the study period, the households without disability experienced more severe declines in their FPL100-ratios. This could throw some light on the impact of different supplementary coverage programs on households with disability. 
 
 Although the coefficients of the two different models (without and with baseline correction) were similar, we feel Model 2 is more appropriate for reasons explained in \ref{baselineCorrection}. For all the demographic factors and for interactions between them, post-hoc tests were conducted to identify the pairwise differences in mean FPL100-ratios of different subgroups. 
+
+\noindent
+{\bf{Race/Origin}} \\
+In table \ref{tab:RaceOrigin} we can see that regardless of disability, in Model1, households with a ``black'' ($\mu_{\text{diff}} = -0.53, p = 0.0000$) or ``hispanic'' ($\mu_{\text{diff}} = -0.46, p = 0.0000$) race/origin as household head is worse off compared to those with ``others'' race/origin. The discrepancy is higher between ``black'' and ``white'' household heads ($\mu_{\text{diff}} = -0.90, p = 0.0000$). When corrected for baseline, the relationships reverse in sign, indicating that during the study period, ``black'' and ``hispanic'' households fared marginally better than ``white'' and ``others''. When considering only the households with disability (table \ref{tab:DisabRaceOrigin}), there is no significant difference between the different races. \\
+\noindent
+{\bf{Education}} \\
+In table \ref{tab:Education}, we see that regardless of disability, in Model1, households in ``high school or less'' is worse off than ``some college, diploma'' ($\mu_{\text{diff}} = -0.47, p = 0.0000$), which is in turn worse off than ``bachelors or higher'' ($\mu_{\text{diff}} = -1.29, p = 0.0000$). In Model 2, only the difference between ``some college, diploma'' and ``bachelors or higher'' groups are significant ($\mu_{\text{diff}} = -0.08, p = 0.014$. When considering only the households with disability (table \ref{tab:DisabEducation}), there is no significant difference between the different education groups. \\
+\noindent
+{\bf{Interaction of Gender and Marital status}} \\
+In table \ref{tab:GenderMS}, we see that in Model 1 ``female, not married'' households are worse off than ``male, married'' ($\mu_{\text{diff}} = -0.92, p = 0.0000$), than ``female, married'' ($\mu_{\text{diff}} = -0.75, p = 0.0000$) and ``male, not married'' ($\mu_{\text{diff}} = -0.65, p = 0.0000$). In Model 2, similar relationships hold, with smaller mean difference. Even when considering only the households with disability (table \ref{tab:DisabGenderMS}), the same relationships hold between the groups. We conclude that ``female, not married'' households fared the most poorly through our study period. \\
+\noindent
+{\bf{Interaction of Gender and Race/Origin}} \\
+Focusing on the households In table \ref{tab:GenderRaceOrigin}, we see that in Model 1,      \\
+\noindent
+{\bf{Interaction of Race/Origin and Marital status}} \\
+In table
+
 
 \section{Limitations}
 \begin{enumerate}
@@ -89,181 +112,206 @@ Year-Quarter*Disability	&	$0.0151^{**}$		&	$0.0147^{**}$		\\
 
 \noindent
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Sun Feb  5 15:23:24 2017
+% Wed Mar  8 11:16:09 2017
 \begin{table}[H]
 \footnotesize
 \centering
-\begin{tabular}{lrrrrr}
+\begin{tabular}{rrrrrr}
   \hline
- & Sum Sq & Mean Sq & NumDF & F.value & p.value \\ 
+  Factor & Sum Sq & Mean Sq & NumDF & F.value & p.value \\ 
   \hline
-  Time (quarter) & 145.47 & 145.47 & 1 & 12.07 & 0.0005 \\ 
   race\_origin & 5752.68 & 2876.34 & 3 & 238.71 & 0.0000 \\ 
-  education & 29404.45 & 14702.23 & 2 & 1220.15 & 0.0000 \\ 
-  gender:race\_origin & 104.06 & 34.69 & 3 & 2.88 & 0.0345 \\ 
+  education & 29404.45 & 14702.22 & 2 & 1220.14 & 0.0000 \\ 
   gender:ms & 1813.16 & 1813.16 & 1 & 150.47 & 0.0000 \\ 
   ms:race\_origin & 2070.73 & 690.24 & 3 & 57.28 & 0.0000 \\ 
-  race\_origin:adult\_disb & 26.90 & 8.97 & 3 & 0.74 & 0.5255 \\ 
   gender:adult\_disb & 237.05 & 237.05 & 1 & 19.67 & 0.0000 \\ 
-  ms:adult\_disb & 0.12 & 0.12 & 1 & 0.01 & 0.9222 \\ 
-  Time (quarter):adult\_disb & 145.47 & 145.47 & 1 & 12.07 & 0.0005 \\ 
+  yearqtrNum & 145.47 & 145.47 & 1 & 12.07 & 0.0005 \\ 
+  yearqtrNum:adult\_disb & 145.47 & 145.47 & 1 & 12.07 & 0.0005 \\ 
   adult\_disb:education & 109.34 & 54.67 & 2 & 4.54 & 0.0107 \\ 
   gender:ms:adult\_disb & 56.78 & 56.78 & 1 & 4.71 & 0.0299 \\ 
+  gender:race\_origin & 104.06 & 34.69 & 3 & 2.88 & 0.0345 \\ 
+  race\_origin:adult\_disb & 26.90 & 8.97 & 3 & 0.74 & 0.5255 \\ 
+  ms:adult\_disb & 0.12 & 0.12 & 1 & 0.01 & 0.9222 \\ 
   \hline
 \end{tabular}
-\caption{Model 1: FPL100 vs demographic factors, time and disability}
+\caption{Model 1: FPL100 vs demographic factors, time and disability} 
 \label{tab:Anova1}
 \end{table}
 
 \noindent
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Sun Feb  5 15:31:49 2017
+% Wed Mar  8 11:33:06 2017
 \begin{table}[H]
 \footnotesize
 \centering
-\begin{tabular}{lrrrrr}
+\begin{tabular}{rrrrrr}
   \hline
- & Sum Sq & Mean Sq & NumDF & F.value & p.value \\ 
+  Factor & Sum Sq & Mean Sq & NumDF & F.value & p.value \\ 
   \hline
-  Time (quarter) & 138.47 & 138.47 & 1 & 11.52 & 0.0007 \\ 
-  race\_origin & 151.47 & 75.73 & 3 & 6.30 & 0.0018 \\ 
-  education & 72.76 & 36.38 & 2 & 3.03 & 0.0485 \\ 
-  gender:race\_origin & 181.68 & 60.56 & 3 & 5.04 & 0.0017 \\ 
   gender:ms & 721.70 & 721.70 & 1 & 60.04 & 0.0000 \\ 
   ms:race\_origin & 556.33 & 185.44 & 3 & 15.43 & 0.0000 \\ 
-  race\_origin:adult\_disb & 21.56 & 7.19 & 3 & 0.60 & 0.6163 \\ 
-  gender:adult\_disb & 19.75 & 19.75 & 1 & 1.64 & 0.1999 \\ 
+  yearqtrNum & 138.47 & 138.47 & 1 & 11.52 & 0.0007 \\ 
+  yearqtrNum:adult\_disb & 138.47 & 138.47 & 1 & 11.52 & 0.0007 \\ 
+  gender:race\_origin & 181.68 & 60.56 & 3 & 5.04 & 0.0017 \\ 
+  race\_origin & 151.47 & 75.73 & 3 & 6.30 & 0.0018 \\ 
+  education & 72.76 & 36.38 & 2 & 3.03 & 0.0485 \\ 
   ms:adult\_disb & 31.83 & 31.83 & 1 & 2.65 & 0.1037 \\ 
-  Time (quarter):adult\_disb & 138.47 & 138.47 & 1 & 11.52 & 0.0007 \\ 
+  gender:adult\_disb & 19.75 & 19.75 & 1 & 1.64 & 0.1999 \\ 
   adult\_disb:education & 35.49 & 17.75 & 2 & 1.48 & 0.2285 \\ 
   gender:ms:adult\_disb & 14.38 & 14.38 & 1 & 1.20 & 0.2740 \\ 
-   \hline
+  race\_origin:adult\_disb & 21.56 & 7.19 & 3 & 0.60 & 0.6163 \\ 
+  \hline
 \end{tabular}
-\caption{Model 2: FPL100 vs demographic factors, time and disability in baseline corrected model} 
+\caption{Model 2: FPL100 vs demographic factors, time and disability with baseline differences in FPL100 eliminated} 
 \label{tab:Anova2}
 \end{table}
 
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Sun Feb  5 17:14:30 2017
+% Wed Mar  8 11:35:11 2017
+\begin{table}[H]
+\footnotesize
+\centering
+\begin{tabular}{rrrrrr}
+  \hline
+  Factor & Sum Sq & Mean Sq & NumDF & F.value & p.value \\ 
+  \hline
+  yearqtrNum & 1190.80 & 1190.80 & 1 & 132.39 & 0.0000 \\ 
+  ms & 218.99 & 218.99 & 1 & 24.35 & 0.0000 \\ 
+  ms:race\_origin & 279.40 & 93.13 & 3 & 10.35 & 0.0000 \\ 
+  gender:ms & 161.88 & 161.88 & 1 & 18.00 & 0.0000 \\ 
+  gender & 38.03 & 38.03 & 1 & 4.23 & 0.0398 \\ 
+  race\_origin & 60.03 & 20.01 & 3 & 2.22 & 0.0831 \\ 
+  gender:race\_origin & 42.92 & 14.31 & 3 & 1.59 & 0.1893 \\ 
+  education & 19.70 & 9.85 & 2 & 1.10 & 0.3345 \\ 
+  \hline
+\end{tabular}
+\caption{Model 3: FPL100 vs demographic factors, time and disability, disability only} 
+\label{tab:Anova3}
+\end{table}
+
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Wed Mar  8 11:41:59 2017
 \begin{table}[H]
 \footnotesize
 \centering
 \begin{tabular}{lrrrrrr}
   \hline
-Factor Levels & Est 1 & Std Err 1 & p-value 1 & Est 2 & Std Err 2 & p-value 2 \\ 
+  Factor categories & Est 1 & Std Err 1 & p-value 1 & Est 2 & Std Err 2 & p-value 2 \\ 
   \hline
- Black - Others & -0.53 & 0.07 & 0.0000 & 0.22 & 0.07 & 0.0007 \\ 
+   Black - Others & -0.53 & 0.07 & 0.0000 & 0.22 & 0.07 & 0.0007 \\ 
    Black - White & -0.90 & 0.05 & 0.0000 & 0.14 & 0.04 & 0.0022 \\ 
    Hispanic - Others & -0.46 & 0.07 & 0.0000 & 0.16 & 0.07 & 0.0184 \\ 
    Hispanic - White & -0.83 & 0.05 & 0.0000 & 0.07 & 0.05 & 0.1144 \\ 
-   Black - Hispanic & -0.07 & 0.07 & 0.2663 & 0.06 & 0.06 & 0.2924 \\ 
    Others - White & -0.37 & 0.06 & 0.0000 & -0.08 & 0.05 & 0.1159 \\ 
-   \hline
+   Black - Hispanic & -0.07 & 0.07 & 0.2663 & 0.06 & 0.06 & 0.2924 \\ 
+  \hline
 \end{tabular}
-\caption{Post-hoc Tukey test of race-origin} 
+\caption{Post-hoc test of Race/Origin} 
 \label{tab:RaceOrigin}
 \end{table}
 
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Sun Feb  5 17:18:14 2017
+% Wed Mar  8 11:46:27 2017
 \begin{table}[H]
 \footnotesize
 \centering
 \begin{tabular}{lrrrrrr}
   \hline
-Factor Levels & Est 1 & Std Err 1 & p-value 1 & Est 2 & Std Err 2 & p-value 2 \\ 
+  Factor categories & Est 1 & Std Err 1 & p-value 1 & Est 2 & Std Err 2 & p-value 2 \\ 
   \hline
- High School or less - Some college, diploma, assoc & -0.47 & 0.03 & 0.0000 & 0.02 & 0.03 & 0.4373 \\ 
-   High School or less - Bachelors or higher & -1.76 & 0.04 & 0.0000 & -0.06 & 0.03 & 0.0849 \\ 
    Some college, diploma, assoc - Bachelors or higher & -1.29 & 0.03 & 0.0000 & -0.08 & 0.03 & 0.0140 \\ 
-   \hline
+   High School or less - Bachelors or higher & -1.76 & 0.04 & 0.0000 & -0.06 & 0.03 & 0.0849 \\ 
+   High School or less - Some college, diploma, assoc & -0.47 & 0.03 & 0.0000 & 0.02 & 0.03 & 0.4373 \\ 
+  \hline
 \end{tabular}
-\caption{Post-hoc Tukey test of education} 
+\caption{Post-hoc test of education} 
 \label{tab:Education}
 \end{table}
 
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Sun Feb  5 17:23:51 2017
+% Wed Mar  8 11:53:10 2017
 \begin{table}[H]
 \footnotesize
 \centering
 \begin{tabular}{lrrrrrr}
   \hline
-Factor Levels & Est 1 & Std Err 1 & p-value 1 & Est 2 & Std Err 2 & p-value 2 \\ 
+  Factor categories & Est 1 & Std Err 1 & p-value 1 & Est 2 & Std Err 2 & p-value 2 \\ 
   \hline
-  Female Married -  Female Not married & 0.74 & 0.03 & 0.0000 & 0.36 & 0.03 & 0.0000 \\ 
+    Female Married -  Female Not married & 0.74 & 0.03 & 0.0000 & 0.36 & 0.03 & 0.0000 \\ 
     Male Married -  Female Not married & 0.92 & 0.04 & 0.0000 & 0.37 & 0.04 & 0.0000 \\ 
     Male Not married -  Female Not married & 0.65 & 0.04 & 0.0000 & 0.29 & 0.04 & 0.0000 \\ 
     Male Married -  Male Not married & 0.27 & 0.03 & 0.0000 & 0.08 & 0.03 & 0.0110 \\ 
     Female Married -  Male Not married & 0.09 & 0.04 & 0.0436 & 0.07 & 0.04 & 0.0950 \\ 
     Male Married -  Female Married & 0.18 & 0.04 & 0.0000 & 0.01 & 0.04 & 0.8001 \\ 
-   \hline
+  \hline
 \end{tabular}
-\caption{Post-hoc Tukey test of gender and marital status} 
+\caption{Post-hoc test of gender and marital status} 
 \label{tab:GenderMS}
 \end{table}
 
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Sun Feb  5 17:44:35 2017
+% Wed Mar  8 12:16:16 2017
 \begin{table}[H]
 \footnotesize
 \centering
 \begin{tabular}{lrrrrrr}
   \hline
-Factor Levels & Est 1 & Std Err 1 & p-value 1 & Est 2 & Std Err 2 & p-value 2 \\ 
+  Factor categories & Est 1 & Std Err 1 & p-value 1 & Est 2 & Std Err 2 & p-value 2 \\ 
   \hline
-  Married White -  Not married White & 0.75 & 0.02 & 0.0000 & 0.37 & 0.02 & 0.0000 \\ 
-    Married Black -  Not married White & -0.27 & 0.06 & 0.0000 & 0.44 & 0.06 & 0.0000 \\ 
-    Married Hispanic -  Not married White & -0.37 & 0.06 & 0.0000 & 0.30 & 0.05 & 0.0000 \\ 
-    Married Black -  Not married Others & 0.01 & 0.09 & 0.8911 & 0.43 & 0.08 & 0.0000 \\ 
-    Married Black -  Not married Black & 0.52 & 0.05 & 0.0000 & 0.24 & 0.05 & 0.0000 \\ 
-    Not married Black -  Not married White & -0.78 & 0.05 & 0.0000 & 0.20 & 0.05 & 0.0000 \\ 
+    Married White 	-  Not married White & 0.75 & 0.02 & 0.0000 & 0.37 & 0.02 & 0.0000 \\ 
+    Married Black 	-  Not married White & -0.27 & 0.06 & 0.0000 & 0.44 & 0.06 & 0.0000 \\ 
+    Married Hispanic 	-  Not married White & -0.37 & 0.06 & 0.0000 & 0.30 & 0.05 & 0.0000 \\ 
+    Married Black 	-  Not married Black & 0.52 & 0.05 & 0.0000 & 0.24 & 0.05 & 0.0000 \\ 
+    Not married Black 	-  Not married White & -0.78 & 0.05 & 0.0000 & 0.20 & 0.05 & 0.0000 \\ 
+    Not married Others 	-  Married White & -1.03 & 0.07 & 0.0000 & -0.36 & 0.06 & 0.0000 \\ 
+    Married Black 	-  Not married Others & 0.01 & 0.09 & 0.8911 & 0.43 & 0.08 & 0.0000 \\ 
     Not married Hispanic -  Not married White & -0.54 & 0.06 & 0.0000 & 0.21 & 0.05 & 0.0001 \\ 
-    Married Hispanic -  Not married Others & -0.09 & 0.09 & 0.3030 & 0.29 & 0.08 & 0.0001 \\ 
-    Married Black -  Not married Hispanic & 0.27 & 0.08 & 0.0006 & 0.23 & 0.07 & 0.0013 \\ 
-    Married Black -  Married Others & -0.56 & 0.09 & 0.0000 & 0.25 & 0.08 & 0.0013 \\ 
-    Married Others -  Not married White & 0.29 & 0.07 & 0.0000 & 0.19 & 0.06 & 0.0026 \\ 
-    Married Others -  Not married Others & 0.57 & 0.07 & 0.0000 & 0.18 & 0.06 & 0.0048 \\ 
-    Not married Hispanic -  Not married Others & -0.26 & 0.09 & 0.0026 & 0.20 & 0.08 & 0.0095 \\ 
-    Not married Black -  Not married Others & -0.51 & 0.08 & 0.0000 & 0.19 & 0.07 & 0.0103 \\ 
-    Married Hispanic -  Not married Hispanic & 0.17 & 0.04 & 0.0001 & 0.09 & 0.04 & 0.0271 \\ 
-    Married Black -  Married Hispanic & 0.10 & 0.08 & 0.1926 & 0.14 & 0.07 & 0.0476 \\ 
-    Married Hispanic -  Married Others & -0.66 & 0.08 & 0.0000 & 0.11 & 0.08 & 0.1352 \\ 
-    Married Black -  Married White & -1.02 & 0.06 & 0.0000 & 0.07 & 0.05 & 0.1899 \\ 
-    Not married Hispanic -  Married Others & -0.83 & 0.09 & 0.0000 & 0.02 & 0.08 & 0.7908 \\ 
-    Not married Others -  Not married White & -0.28 & 0.07 & 0.0001 & 0.01 & 0.06 & 0.8850 \\ 
-    Not married Black -  Married Others & -1.07 & 0.08 & 0.0000 & 0.01 & 0.07 & 0.8958 \\ 
-    Not married Black -  Not married Hispanic & -0.25 & 0.07 & 0.0006 & -0.01 & 0.07 & 0.8662 \\ 
-    Married Hispanic -  Married White & -1.12 & 0.06 & 0.0000 & -0.07 & 0.05 & 0.1894 \\ 
-    Not married Black -  Married Hispanic & -0.42 & 0.07 & 0.0000 & -0.10 & 0.06 & 0.1051 \\ 
-    Married Others -  Married White & -0.46 & 0.07 & 0.0000 & -0.18 & 0.06 & 0.0041 \\ 
+    Married Hispanic 	-  Not married Others & -0.09 & 0.09 & 0.3030 & 0.29 & 0.08 & 0.0001 \\ 
+    Not married Black 	-  Married White & -1.54 & 0.05 & 0.0000 & -0.17 & 0.05 & 0.0004 \\ 
+    Married Black 	-  Married Others & -0.56 & 0.09 & 0.0000 & 0.25 & 0.08 & 0.0013 \\ 
+    Married Black 	-  Not married Hispanic & 0.27 & 0.08 & 0.0006 & 0.23 & 0.07 & 0.0013 \\ 
+    Married Others 	-  Not married White & 0.29 & 0.07 & 0.0000 & 0.19 & 0.06 & 0.0026 \\ 
     Not married Hispanic -  Married White & -1.29 & 0.06 & 0.0000 & -0.16 & 0.05 & 0.0029 \\ 
-    Not married Black -  Married White & -1.54 & 0.05 & 0.0000 & -0.17 & 0.05 & 0.0004 \\ 
-    Not married Others -  Married White & -1.03 & 0.07 & 0.0000 & -0.36 & 0.06 & 0.0000 \\ 
-   \hline
+    Married Others 	-  Married White & -0.46 & 0.07 & 0.0000 & -0.18 & 0.06 & 0.0041 \\ 
+    Married Others 	-  Not married Others & 0.57 & 0.07 & 0.0000 & 0.18 & 0.06 & 0.0048 \\ 
+    Not married Hispanic -  Not married Others & -0.26 & 0.09 & 0.0026 & 0.20 & 0.08 & 0.0095 \\ 
+    Not married Black 	-  Not married Others & -0.51 & 0.08 & 0.0000 & 0.19 & 0.07 & 0.0103 \\ 
+    Married Hispanic 	-  Not married Hispanic & 0.17 & 0.04 & 0.0001 & 0.09 & 0.04 & 0.0271 \\ 
+    Married Black 	-  Married Hispanic & 0.10 & 0.08 & 0.1926 & 0.14 & 0.07 & 0.0476 \\ 
+    Not married Black 	-  Married Hispanic & -0.42 & 0.07 & 0.0000 & -0.10 & 0.06 & 0.1051 \\ 
+    Married Hispanic 	-  Married Others & -0.66 & 0.08 & 0.0000 & 0.11 & 0.08 & 0.1352 \\ 
+    Married Hispanic 	-  Married White & -1.12 & 0.06 & 0.0000 & -0.07 & 0.05 & 0.1894 \\ 
+    Married Black 	-  Married White & -1.02 & 0.06 & 0.0000 & 0.07 & 0.05 & 0.1899 \\ 
+    Not married Hispanic -  Married Others & -0.83 & 0.09 & 0.0000 & 0.02 & 0.08 & 0.7908 \\ 
+    Not married Black 	-  Not married Hispanic & -0.25 & 0.07 & 0.0006 & -0.01 & 0.07 & 0.8662 \\ 
+    Not married Others 	-  Not married White & -0.28 & 0.07 & 0.0001 & 0.01 & 0.06 & 0.8850 \\ 
+    Not married Black 	-  Married Others & -1.07 & 0.08 & 0.0000 & 0.01 & 0.07 & 0.8958 \\ 
+  \hline
 \end{tabular}
-\caption{Post-hoc Tukey test of MS and race origin} 
-\label{tab:Table7RaceOriginMS}
+\caption{Post-hoc test of marital status and race/origin} 
+\label{tab:RaceOriginMS}
 \end{table}
 
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Sun Feb  5 18:04:30 2017
+% Wed Mar  8 12:39:19 2017
 \begin{table}[H]
 \footnotesize
 \centering
 \begin{tabular}{lrrrrrr}
   \hline
-Factor Levels & Est 1 & Std Err 1 & p-value 1 & Est 2 & Std Err 2 & p-value 2 \\ 
+  Factor categories & Est 1 & Std Err 1 & p-value 1 & Est 2 & Std Err 2 & p-value 2 \\ 
   \hline
-  Male White -  Female White & 0.40 & 0.03 & 0.0000 & 0.14 & 0.03 & 0.0000 \\ 
+    Male White -  Female White & 0.40 & 0.03 & 0.0000 & 0.14 & 0.03 & 0.0000 \\ 
     Female Black -  Female Others & -0.38 & 0.09 & 0.0000 & 0.41 & 0.08 & 0.0000 \\ 
-    Male Hispanic -  Female Others & 0.02 & 0.09 & 0.8198 & 0.40 & 0.08 & 0.0000 \\ 
-    Male Black -  Female Others & -0.08 & 0.09 & 0.3988 & 0.38 & 0.08 & 0.0000 \\ 
     Female Black -  Female White & -0.85 & 0.06 & 0.0000 & 0.22 & 0.05 & 0.0000 \\ 
     Male Others -  Female Others & 0.60 & 0.09 & 0.0000 & 0.35 & 0.08 & 0.0000 \\ 
+    Female Others -  Male White & -0.87 & 0.08 & 0.0000 & -0.33 & 0.07 & 0.0000 \\ 
+    Male Black -  Female Others & -0.08 & 0.09 & 0.3988 & 0.38 & 0.08 & 0.0000 \\ 
+    Male Hispanic -  Female Others & 0.02 & 0.09 & 0.8198 & 0.40 & 0.08 & 0.0000 \\ 
     Male Hispanic -  Female White & -0.45 & 0.06 & 0.0000 & 0.21 & 0.06 & 0.0003 \\ 
     Male Black -  Female White & -0.56 & 0.07 & 0.0000 & 0.19 & 0.06 & 0.0012 \\ 
     Female Hispanic -  Female Others & -0.33 & 0.09 & 0.0003 & 0.26 & 0.08 & 0.0013 \\ 
+    Female Others -  Female White & -0.48 & 0.08 & 0.0000 & -0.19 & 0.07 & 0.0055 \\ 
     Male Hispanic -  Female Hispanic & 0.35 & 0.06 & 0.0000 & 0.14 & 0.06 & 0.0162 \\ 
     Male Others -  Female White & 0.13 & 0.08 & 0.0901 & 0.16 & 0.07 & 0.0190 \\ 
     Female Black -  Female Hispanic & -0.05 & 0.08 & 0.5194 & 0.15 & 0.07 & 0.0323 \\ 
@@ -271,140 +319,169 @@ Factor Levels & Est 1 & Std Err 1 & p-value 1 & Est 2 & Std Err 2 & p-value 2 \\
     Female Black -  Male White & -1.25 & 0.06 & 0.0000 & 0.08 & 0.05 & 0.1262 \\ 
     Female Hispanic -  Female White & -0.81 & 0.06 & 0.0000 & 0.07 & 0.05 & 0.1650 \\ 
     Male Hispanic -  Male White & -0.85 & 0.06 & 0.0000 & 0.07 & 0.06 & 0.2074 \\ 
+    Female Hispanic -  Male White & -1.20 & 0.06 & 0.0000 & -0.07 & 0.06 & 0.2291 \\ 
+    Female Hispanic -  Male Others & -0.93 & 0.09 & 0.0000 & -0.09 & 0.08 & 0.2903 \\ 
     Male Black -  Male White & -0.95 & 0.07 & 0.0000 & 0.05 & 0.06 & 0.3831 \\ 
     Female Black -  Male Others & -0.98 & 0.09 & 0.0000 & 0.06 & 0.08 & 0.4639 \\ 
     Male Hispanic -  Male Others & -0.58 & 0.09 & 0.0000 & 0.05 & 0.08 & 0.5439 \\ 
+    Male Black -  Female Black & 0.30 & 0.06 & 0.0000 & -0.03 & 0.06 & 0.6399 \\ 
     Male Black -  Male Others & -0.68 & 0.09 & 0.0000 & 0.03 & 0.08 & 0.7174 \\ 
     Male Others -  Male White & -0.27 & 0.08 & 0.0004 & 0.02 & 0.07 & 0.7651 \\ 
-    Female Black -  Male Hispanic & -0.40 & 0.08 & 0.0000 & 0.01 & 0.07 & 0.9142 \\ 
     Male Black -  Male Hispanic & -0.10 & 0.08 & 0.2292 & -0.02 & 0.08 & 0.7893 \\ 
-    Male Black -  Female Black & 0.30 & 0.06 & 0.0000 & -0.03 & 0.06 & 0.6399 \\ 
-    Female Hispanic -  Male Others & -0.93 & 0.09 & 0.0000 & -0.09 & 0.08 & 0.2903 \\ 
-    Female Hispanic -  Male White & -1.20 & 0.06 & 0.0000 & -0.07 & 0.06 & 0.2291 \\ 
-    Female Others -  Female White & -0.48 & 0.08 & 0.0000 & -0.19 & 0.07 & 0.0055 \\ 
-    Female Others -  Male White & -0.87 & 0.08 & 0.0000 & -0.33 & 0.07 & 0.0000 \\ 
+    Female Black -  Male Hispanic & -0.40 & 0.08 & 0.0000 & 0.01 & 0.07 & 0.9142 \\ 
    \hline
 \end{tabular}
-\caption{Post-hoc Tukey test of gender with race and origin} 
+\caption{Post-hoc test of gender with race/origin} 
 \label{tab:GenderRaceOrigin}
 \end{table}
 
+{\bf{The following tables are only for households with a working-age adult with disability.}} \\
+
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Sun Feb  5 18:25:01 2017
+% Wed Mar  8 13:32:09 2017
 \begin{table}[H]
 \footnotesize
 \centering
-\begin{tabular}{lrrrrrr}
+\begin{tabular}{lrrrr}
   \hline
-Factor Levels & Est 1 & Std Err 1 & p-value 1 & Est 2 & Std Err 2 & p-value 2 \\ 
+  Factor categories & Estimate & Standard Error & t-value & p-value \\ 
   \hline
-  Black no -  Others no & -0.49 & 0.08 & 0.0000 & 0.30 & 0.07 & 0.0000 \\ 
-    Black no -  White no & -0.93 & 0.05 & 0.0000 & 0.16 & 0.05 & 0.0008 \\ 
-    Hispanic no -  Others no & -0.45 & 0.08 & 0.0000 & 0.18 & 0.07 & 0.0088 \\ 
-    Black no -  White yes & -0.37 & 0.06 & 0.0000 & 0.12 & 0.06 & 0.0262 \\ 
-    Black no -  Hispanic no & -0.04 & 0.07 & 0.5328 & 0.11 & 0.06 & 0.0627 \\ 
-    Black no -  Others yes & -0.06 & 0.11 & 0.5774 & 0.15 & 0.10 & 0.1193 \\ 
-    Black yes -  White yes & -0.88 & 0.08 & 0.0000 & 0.11 & 0.07 & 0.1246 \\ 
-    Black yes -  Others yes & -0.57 & 0.12 & 0.0000 & 0.14 & 0.11 & 0.1845 \\ 
-    Hispanic yes -  White yes & -0.77 & 0.09 & 0.0000 & 0.10 & 0.08 & 0.2029 \\ 
-    Hispanic yes -  Others yes & -0.46 & 0.13 & 0.0003 & 0.13 & 0.11 & 0.2438 \\ 
-    Hispanic no -  White no & -0.89 & 0.05 & 0.0000 & 0.04 & 0.05 & 0.3396 \\ 
-    Hispanic no -  Others yes & -0.02 & 0.11 & 0.8663 & 0.04 & 0.10 & 0.6885 \\ 
-    Black no -  Hispanic yes & 0.40 & 0.10 & 0.0001 & 0.02 & 0.09 & 0.8183 \\ 
-    Hispanic no -  White yes & -0.33 & 0.06 & 0.0000 & 0.01 & 0.05 & 0.8813 \\ 
-    Black no -  Black yes & 0.51 & 0.09 & 0.0000 & 0.01 & 0.08 & 0.9069 \\ 
-    Black yes -  Hispanic yes & -0.11 & 0.11 & 0.3524 & 0.01 & 0.10 & 0.9127 \\ 
-    White no -  Others yes & 0.87 & 0.10 & 0.0000 & -0.00 & 0.09 & 0.9615 \\ 
-    Others yes -  White yes & -0.31 & 0.10 & 0.0029 & -0.03 & 0.09 & 0.7329 \\ 
-    White no -  White yes & 0.56 & 0.04 & 0.0000 & -0.04 & 0.04 & 0.3359 \\ 
-    Hispanic no -  Hispanic yes & 0.44 & 0.10 & 0.0000 & -0.09 & 0.09 & 0.2905 \\ 
-    Hispanic no -  Black yes & 0.55 & 0.09 & 0.0000 & -0.10 & 0.08 & 0.1965 \\ 
-    Others no -  Others yes & 0.43 & 0.12 & 0.0002 & -0.14 & 0.10 & 0.1705 \\ 
-    White no -  Hispanic yes & 1.33 & 0.09 & 0.0000 & -0.14 & 0.08 & 0.0812 \\ 
-    White no -  Black yes & 1.44 & 0.08 & 0.0000 & -0.15 & 0.07 & 0.0345 \\ 
-    Others no -  White no & -0.44 & 0.06 & 0.0000 & -0.14 & 0.06 & 0.0148 \\ 
-    Others no -  White yes & 0.12 & 0.07 & 0.0878 & -0.17 & 0.06 & 0.0066 \\ 
-    Others no -  Hispanic yes & 0.89 & 0.11 & 0.0000 & -0.28 & 0.09 & 0.0035 \\ 
-    Others no -  Black yes & 1.00 & 0.10 & 0.0000 & -0.29 & 0.09 & 0.0010 \\ 
-   \hline
+   Black - White & 0.14 & 0.07 & 2.09 & 0.0366 \\ 
+   Black - Others & 0.17 & 0.10 & 1.74 & 0.0825 \\ 
+   Hispanic - White & 0.11 & 0.07 & 1.56 & 0.1199 \\ 
+   Hispanic - Others & 0.14 & 0.10 & 1.38 & 0.1681 \\ 
+   Others - White & -0.03 & 0.08 & -0.36 & 0.7214 \\ 
+   Black - Hispanic & 0.03 & 0.09 & 0.32 & 0.7471 \\ 
+  \hline
 \end{tabular}
-\caption{Post-hoc Tukey test of race and origin with adult disb} 
+\caption{Post-hoc test of race/origin} 
 \label{tab:DisabRaceOrigin}
 \end{table}
 
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Sun Feb  5 18:30:59 2017
+% Wed Mar  8 13:32:32 2017
 \begin{table}[H]
 \footnotesize
 \centering
-\begin{tabular}{lrrrrrr}
+\begin{tabular}{lrrrr}
   \hline
-Factor Levels & Est 1 & Std Err 1 & p-value 1 & Est 2 & Std Err 2 & p-value 2 \\ 
+  Factor categories & Estimate & Standard Error & t-value & p-value \\ 
   \hline
-  Male no -  Female no & 0.52 & 0.03 & 0.0000 & 0.18 & 0.03 & 0.0000 \\ 
-    Male yes -  Female yes & 0.30 & 0.05 & 0.0000 & 0.12 & 0.04 & 0.0071 \\ 
-    Male no -  Female yes & 0.90 & 0.06 & 0.0000 & 0.09 & 0.05 & 0.0993 \\ 
-    Male no -  Male yes & 0.60 & 0.06 & 0.0000 & -0.04 & 0.05 & 0.4796 \\ 
-    Female no -  Female yes & 0.37 & 0.05 & 0.0000 & -0.10 & 0.05 & 0.0450 \\ 
-    Female no -  Male yes & 0.07 & 0.06 & 0.2366 & -0.22 & 0.06 & 0.0001 \\ 
-   \hline
+   High School or less - Bachelors or higher & -0.07 & 0.05 & -1.48 & 0.1395 \\ 
+   Some college, diploma, assoc - Bachelors or higher & -0.05 & 0.05 & -1.08 & 0.2819 \\ 
+   High School or less - Some college, diploma, assoc & -0.02 & 0.04 & -0.57 & 0.5690 \\ 
+  \hline
 \end{tabular}
-\caption{Post-hoc Tukey test of gender with adult disb} 
-\label{tab:DisabGender}
-\end{table}
-
-% latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Sun Feb  5 18:36:53 2017
-\begin{table}[H]
-\footnotesize
-\centering
-\begin{tabular}{lrrrrrr}
-  \hline
-Factor Levels & Est 1 & Std Err 1 & p-value 1 & Est 2 & Std Err 2 & p-value 2 \\ 
-  \hline
-  Married no -  Not married no & 0.50 & 0.03 & 0.0000 & 0.25 & 0.02 & 0.0000 \\ 
-    Married yes -  Not married yes & 0.50 & 0.04 & 0.0000 & 0.19 & 0.04 & 0.0000 \\ 
-    Married no -  Not married yes & 0.99 & 0.06 & 0.0000 & 0.16 & 0.05 & 0.0020 \\ 
-    Married no -  Married yes & 0.48 & 0.05 & 0.0000 & -0.04 & 0.05 & 0.4381 \\ 
-    Not married no -  Not married yes & 0.49 & 0.05 & 0.0000 & -0.10 & 0.05 & 0.0443 \\ 
-    Not married no -  Married yes & -0.02 & 0.06 & 0.7627 & -0.29 & 0.05 & 0.0000 \\ 
-   \hline
-\end{tabular}
-\caption{Post-hoc Tukey test of MS and adult disb} 
-\label{tab:DisabMS}
-\end{table}
-
-% latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Sun Feb  5 18:50:25 2017
-\begin{table}[H]
-\tiny
-\centering
-\begin{tabular}{lrrrrrr}
-  \hline
-Factor Levels & Est 1 & Std Err 1 & p-value 1 & Est 2 & Std Err 2 & p-value 2 \\ 
-  \hline
-  no High School or less -  no Some college, diploma, assoc & -0.52 & 0.03 & 0.0000 & 0.06 & 0.03 & 0.0141 \\ 
-    yes High School or less -  no Some college, diploma, assoc & -0.90 & 0.06 & 0.0000 & 0.09 & 0.05 & 0.0783 \\ 
-    yes Some college, diploma, assoc -  no Bachelors or higher & -1.83 & 0.06 & 0.0000 & 0.01 & 0.05 & 0.8611 \\ 
-    yes High School or less -  no Bachelors or higher & -2.25 & 0.06 & 0.0000 & -0.01 & 0.05 & 0.7743 \\ 
-    no High School or less -  yes High School or less & 0.38 & 0.06 & 0.0000 & -0.02 & 0.05 & 0.6311 \\ 
-    yes High School or less -  yes Some college, diploma, assoc & -0.42 & 0.05 & 0.0000 & -0.02 & 0.05 & 0.5944 \\ 
-    yes Some college, diploma, assoc -  yes Bachelors or higher & -1.24 & 0.06 & 0.0000 & -0.05 & 0.06 & 0.3737 \\ 
-    no High School or less -  yes Some college, diploma, assoc & -0.04 & 0.06 & 0.5078 & -0.05 & 0.05 & 0.3525 \\ 
-    no Bachelors or higher -  yes Bachelors or higher & 0.60 & 0.07 & 0.0000 & -0.06 & 0.06 & 0.3495 \\ 
-    yes High School or less -  yes Bachelors or higher & -1.66 & 0.06 & 0.0000 & -0.07 & 0.06 & 0.2040 \\ 
-    no High School or less -  no Bachelors or higher & -1.87 & 0.03 & 0.0000 & -0.04 & 0.03 & 0.1950 \\ 
-    no High School or less -  yes Bachelors or higher & -1.28 & 0.07 & 0.0000 & -0.10 & 0.06 & 0.1152 \\ 
-    no Some college, diploma, assoc -  yes Some college, diploma, assoc & 0.48 & 0.06 & 0.0000 & -0.11 & 0.05 & 0.0297 \\ 
-    no Some college, diploma, assoc -  yes Bachelors or higher & -0.75 & 0.07 & 0.0000 & -0.16 & 0.06 & 0.0090 \\ 
-    no Some college, diploma, assoc -  no Bachelors or higher & -1.35 & 0.03 & 0.0000 & -0.10 & 0.03 & 0.0002 \\ 
-   \hline
-\end{tabular}
-\caption{Post-hoc Tukey test of adult disb and education} 
+\caption{Post-hoc test of education} 
 \label{tab:DisabEducation}
 \end{table}
 
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Wed Mar  8 13:33:07 2017
+\begin{table}[H]
+\footnotesize
+\centering
+\begin{tabular}{lrrrr}
+  \hline
+  Factor categories & Estimate & Standard Error & t-value & p-value \\ 
+  \hline
+    Male Married -  Female Not married & 0.29 & 0.06 & 4.92 & 0.0000 \\ 
+    Female Married -  Female Not married & 0.31 & 0.05 & 6.69 & 0.0000 \\ 
+    Male Not married -  Female Not married & 0.22 & 0.06 & 3.93 & 0.0001 \\ 
+    Male Married -  Male Not married & 0.07 & 0.05 & 1.44 & 0.1509 \\ 
+    Female Married -  Male Not married & 0.09 & 0.06 & 1.40 & 0.1629 \\ 
+    Male Married -  Female Married & -0.02 & 0.06 & -0.35 & 0.7251 \\ 
+  \hline
+\end{tabular}
+\caption{Post-hoc test of gender and marital status} 
+\label{tab:DisabGenderMS}
+\end{table}
 
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Wed Mar  8 13:35:12 2017
+\begin{table}[H]
+\footnotesize
+\centering
+\begin{tabular}{lrrrr}
+  \hline
+  Factor categories & Estimate & Standard Error & t-value & p-value \\ 
+  \hline
+    Married Black -  Not married Black & 0.37 & 0.07 & 5.04 & 0.0000 \\ 
+    Married Black -  Not married White & 0.49 & 0.08 & 5.94 & 0.0000 \\ 
+    Married White -  Not married White & 0.34 & 0.03 & 10.06 & 0.0000 \\ 
+    Not married Hispanic -  Not married White & 0.31 & 0.08 & 3.74 & 0.0002 \\ 
+    Married Black -  Not married Others & 0.40 & 0.12 & 3.34 & 0.0008 \\ 
+    Married Hispanic -  Not married White & 0.25 & 0.08 & 3.16 & 0.0016 \\ 
+    Not married Black -  Married White & -0.22 & 0.07 & -3.06 & 0.0022 \\ 
+    Married Black -  Married Others & 0.30 & 0.12 & 2.58 & 0.0100 \\ 
+    Not married Others -  Married White & -0.25 & 0.10 & -2.53 & 0.0113 \\ 
+    Married Black -  Married Hispanic & 0.25 & 0.11 & 2.34 & 0.0190 \\ 
+    Married Others -  Not married White & 0.20 & 0.10 & 2.05 & 0.0401 \\ 
+    Not married Black -  Not married Hispanic & -0.19 & 0.10 & -1.88 & 0.0603 \\ 
+    Married Black -  Married White & 0.15 & 0.08 & 1.85 & 0.0643 \\ 
+    Not married Hispanic -  Not married Others & 0.22 & 0.12 & 1.84 & 0.0662 \\ 
+    Not married Black -  Not married White & 0.12 & 0.07 & 1.72 & 0.0863 \\ 
+    Married Black -  Not married Hispanic & 0.18 & 0.11 & 1.66 & 0.0975 \\ 
+    Married Others -  Married White & -0.15 & 0.09 & -1.56 & 0.1186 \\ 
+    Married Hispanic -  Not married Others & 0.16 & 0.12 & 1.32 & 0.1855 \\ 
+    Not married Black -  Married Hispanic & -0.12 & 0.10 & -1.27 & 0.2028 \\ 
+    Married Hispanic -  Married White & -0.09 & 0.08 & -1.23 & 0.2184 \\ 
+    Married Others -  Not married Others & 0.11 & 0.10 & 1.00 & 0.3162 \\ 
+    Not married Hispanic -  Married Others & 0.12 & 0.12 & 1.00 & 0.3182 \\ 
+    Married Hispanic -  Not married Hispanic & -0.07 & 0.07 & -0.92 & 0.3560 \\ 
+    Not married Others -  Not married White & 0.09 & 0.10 & 0.90 & 0.3678 \\ 
+    Not married Black -  Married Others & -0.07 & 0.11 & -0.65 & 0.5154 \\ 
+    Married Hispanic -  Married Others & 0.05 & 0.11 & 0.45 & 0.6497 \\ 
+    Not married Hispanic -  Married White & -0.03 & 0.08 & -0.35 & 0.7267 \\ 
+    Not married Black -  Not married Others & 0.03 & 0.11 & 0.30 & 0.7670 \\ 
+  \hline
+\end{tabular}
+\caption{Post-hoc test of marital status with race/origin} 
+\label{tab:DisabMSRaceOrigin}
+\end{table}
+
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Wed Mar  8 13:37:15 2017
+\begin{table}[H]
+\footnotesize
+\centering
+\begin{tabular}{lrrrr}
+  \hline
+  Factor categories & Estimate & Standard Error & t-value & p-value \\ 
+  \hline
+    Female Black -  Female White & 0.24 & 0.07 & 3.17 & 0.0015 \\ 
+    Male White -  Female White & 0.13 & 0.04 & 3.01 & 0.0026 \\ 
+    Female Black -  Female Others & 0.32 & 0.12 & 2.76 & 0.0057 \\ 
+    Male Hispanic -  Female White & 0.22 & 0.09 & 2.37 & 0.0180 \\ 
+    Male Hispanic -  Female Others & 0.30 & 0.13 & 2.35 & 0.0188 \\ 
+    Female Others -  Male White & -0.21 & 0.10 & -2.10 & 0.0359 \\ 
+    Male Black -  Female Others & 0.25 & 0.13 & 1.98 & 0.0477 \\ 
+    Male Others -  Female Others & 0.24 & 0.12 & 1.92 & 0.0544 \\ 
+    Male Black -  Female White & 0.17 & 0.09 & 1.83 & 0.0680 \\ 
+    Female Hispanic -  Female Others & 0.21 & 0.12 & 1.71 & 0.0866 \\ 
+    Female Hispanic -  Female White & 0.13 & 0.08 & 1.52 & 0.1283 \\ 
+    Male Others -  Female White & 0.16 & 0.11 & 1.48 & 0.1384 \\ 
+    Female Black -  Male White & 0.11 & 0.08 & 1.42 & 0.1568 \\ 
+    Female Black -  Female Hispanic & 0.11 & 0.10 & 1.07 & 0.2845 \\ 
+    Male Hispanic -  Male White & 0.09 & 0.09 & 0.98 & 0.3286 \\ 
+    Male Hispanic -  Female Hispanic & 0.09 & 0.10 & 0.94 & 0.3494 \\ 
+    Female Others -  Female White & -0.08 & 0.10 & -0.82 & 0.4099 \\ 
+    Male Black -  Female Black & -0.07 & 0.10 & -0.72 & 0.4742 \\ 
+    Female Black -  Male Others & 0.08 & 0.12 & 0.67 & 0.5026 \\ 
+    Male Hispanic -  Male Others & 0.06 & 0.13 & 0.49 & 0.6272 \\ 
+    Male Black -  Male Hispanic & -0.05 & 0.12 & -0.43 & 0.6694 \\ 
+    Male Black -  Male White & 0.04 & 0.09 & 0.41 & 0.6788 \\ 
+    Male Black -  Female Hispanic & 0.04 & 0.12 & 0.35 & 0.7233 \\ 
+    Male Others -  Male White & 0.03 & 0.11 & 0.25 & 0.8022 \\ 
+    Female Hispanic -  Male Others & -0.03 & 0.13 & -0.23 & 0.8175 \\ 
+    Female Black -  Male Hispanic & 0.02 & 0.11 & 0.15 & 0.8805 \\ 
+    Male Black -  Male Others & 0.01 & 0.13 & 0.09 & 0.9274 \\ 
+    Female Hispanic -  Male White & -0.00 & 0.08 & -0.03 & 0.9762 \\ 
+   \hline
+\end{tabular}
+\caption{Post-hoc test of gender with race/origin} 
+\label{tab:DisabGenderRaceOrigin}
+\end{table}
 
 \newpage
 \bibliography{bibTex_Reference}
