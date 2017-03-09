@@ -107,17 +107,25 @@ rm( Data_forIncPov )
 #library( lsmeans )
 
 time1 <- Sys.time( )
+# FULLmodelFPL100 <- lmerTest::lmer( 
+#   FPL100_num ~ 1 + Time + I( Time^2 ) + adult_disb + gender + ms + race_origin + education + 
+#     adult_disb*gender + adult_disb*ms + adult_disb*race_origin + adult_disb*education + adult_disb*Time +
+#     gender*ms + gender*race_origin + gender*education +
+#     ms*race_origin + ms*education + race_origin*education +
+#     ( 1 | hhid ), data = Data, weights = wt 
+# )
+# finalModel <- lmerTest::step( model = FULLmodelFPL100 )
+
 modelFPL100 <- lmerTest::lmer( 
-  FPL100_num ~ 1 + Time + I( Time^2 ) + gender + ms + race_origin + adult_disb + education + 
-    race_origin:gender + gender:ms + race_origin:ms + race_origin:adult_disb + gender:adult_disb + 
-    ms:adult_disb + gender:ms:adult_disb + adult_disb:Time + education:adult_disb + 
+  FPL100_num ~ 1 + Time + I( Time^2 ) + adult_disb + gender + ms + race_origin + education + 
+    adult_disb*gender + adult_disb*education + adult_disb*Time +
+    gender*ms + gender*education + ms*race_origin + ms*education + race_origin*education +
     ( 1 | hhid ), data = Data, weights = wt 
 )
-
-# lmerTest::summary( modelFPL100 )
-# lmerTest::anova( modelFPL100 )
 time2 <- Sys.time( )
 print( time2 - time1 )
+# lmerTest::summary( modelFPL100 )
+# lmerTest::anova( modelFPL100 )
 
 modelFPL100_Anova <- lmerTest::anova( modelFPL100 )
 modelFPL100_Summary <- lmerTest::summary( modelFPL100 )
@@ -134,10 +142,10 @@ print( xtable( modelFPL100_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ) ,
 ## Baseline value of FPL100
 ########################################################################
 modelFPL100NoBaseline <- lmerTest::lmer( 
-  FPL100_noBaseline ~ 1 + Time + I( Time^2 ) + gender + ms + race_origin + adult_disb + education + 
-    race_origin*gender + gender*ms + race_origin*ms + race_origin*adult_disb + gender*adult_disb + 
-    adult_disb*ms + gender*ms*adult_disb + adult_disb*Time + education*adult_disb + 
-    ( 1 | hhid ), data = Data, weights = wt
+  FPL100_noBaseline ~ 1 + Time + I( Time^2 ) + adult_disb + gender + ms + race_origin + education + 
+    adult_disb*gender + adult_disb*education + adult_disb*Time +
+    gender*ms + gender*education + ms*race_origin + ms*education + race_origin*education +
+    ( 1 | hhid ), data = Data, weights = wt 
 )
 
 modelFPL100NoBaseline_Summary <- lmerTest::summary( modelFPL100NoBaseline )
@@ -149,7 +157,7 @@ print( time3 - time2 )
 
 modelFPL100NoBaseline_AnovaDF <- formatAnovaTableForXtable( anovaTable = modelFPL100NoBaseline_Anova )
 print( xtable( modelFPL100NoBaseline_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ) , 
-               caption = "Model 2: FPL100 vs demographic factors, time and disability \n with baseline differences in FPL100 eliminated", 
+               caption = "Model 2: FPL100 vs demographic factors, time and disability with baseline correction", 
                floating = TRUE, latex.environments = "center"
 ) )
 
@@ -158,8 +166,8 @@ print( xtable( modelFPL100NoBaseline_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ) ,
 ########################################################################
 # source( paste( RScriptPath, 'stargazer_lme4.R', sep='' ) )
 # stargazer( modelFPL100NoBaseline_Summary$coefficients, modelFPL100_Summary$coefficients, type = 'latex' )
-summaryNoBaseline <- round( modelFPL100NoBaseline_Summary$coefficients[,c( "Estimate", "Std. Error", "Pr( >|t| )" )], 4 )
-summaryWithBaseline <- round( modelFPL100_Summary$coefficients[,c( "Estimate", "Std. Error", "Pr( >|t| )" )], 4 )
+summaryNoBaseline <- round( modelFPL100NoBaseline_Summary$coefficients[,c( "Estimate", "Std. Error", "Pr(>|t|)" )], 4 )
+summaryWithBaseline <- round( modelFPL100_Summary$coefficients[,c( "Estimate", "Std. Error", "Pr(>|t|)" )], 4 )
 
 print( summaryWithBaseline )
 
@@ -170,10 +178,17 @@ print( summaryNoBaseline )
 ########################################################################
 DataDisb <- subset( Data, adult_disb == "yes" )
 
+# FULLmodelFPL100NoBaselineDisab <- lmerTest::lmer( 
+#   FPL100_noBaseline ~ 1 + Time + I( Time^2 ) + gender + ms + race_origin + education + 
+#     gender*ms + gender*race_origin + gender*education +
+#     ms*race_origin + ms*education + race_origin*education +
+#     ( 1 | hhid ), data = DataDisb, weights = wt
+# )
+# finalModel <- lmerTest::step( model = FULLmodelFPL100NoBaselineDisab )
 modelFPL100NoBaselineDisab <- lmerTest::lmer( 
   FPL100_noBaseline ~ 1 + Time + I( Time^2 ) + gender + ms + race_origin + education + 
-    race_origin*gender + gender*ms + race_origin*ms + ( 1 | hhid ), 
-  data = DataDisb, weights = wt
+    gender*ms + ms*race_origin + ms*education + race_origin*education +
+    ( 1 | hhid ), data = DataDisb, weights = wt
 )
 
 modelFPL100NoBaselineDisab_Anova <- lmerTest::anova( modelFPL100NoBaselineDisab )
@@ -186,27 +201,28 @@ print( xtable( modelFPL100NoBaselineDisab_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 
                floating = TRUE, latex.environments = "center"
 ) )
 
-
 #######################################################################
 ## Model with Non Disabled only
 ########################################################################
 DataNoDisb <- subset( Data, adult_disb == "no" )
 
-modelFPL100NoBaselineNoDisab2 <- lmerTest::lmer( 
+modelFPL100NoBaselineNoDisab <- lmerTest::lmer( 
   FPL100_noBaseline ~ 1 + Time + I( Time^2 ) + gender + ms + race_origin + education + 
-    race_origin*gender + gender*ms + race_origin*ms + ( 1 | hhid ), 
-  data = DataNoDisb, weights = wt
+    gender*ms + ms*race_origin + ms*education + race_origin*education +
+    ( 1 | hhid ), data = DataNoDisb, weights = wt
 )
-modelFPL100NoBaselineNoDisab2_Anova <- lmerTest::anova( modelFPL100NoBaselineNoDisab2 )
-modelFPL100NoBaselineNoDisab2_Summary <- lmerTest::summary( modelFPL100NoBaselineNoDisab2 )
-print( modelFPL100NoBaselineNoDisab2_Summary )
+modelFPL100NoBaselineNoDisab_Anova <- lmerTest::anova( modelFPL100NoBaselineNoDisab )
+modelFPL100NoBaselineNoDisab_Summary <- lmerTest::summary( modelFPL100NoBaselineNoDisab )
+print( modelFPL100NoBaselineNoDisab_Anova )
+print( modelFPL100NoBaselineNoDisab_Summary )
 
 #######################################################################
 ## Post hoc tests
 #######################################################################
-postHocFactors <- c( 'race_origin', 'education', 'gender:ms', 'ms:race_origin', 
-                     'gender:race_origin', 'race_origin:adult_disb', 'gender:adult_disb', 
-                     'ms:adult_disb', 'gender:ms:adult_disb', 'adult_disb:education'
+postHocFactors <- c( 'gender', 'ms', 'race_origin', 'education', 
+                     'adult_disb:gender', 'adult_disb:education', 
+                     'gender:ms', 'gender:education', 'ms:race_origin', 'ms:education',
+                     'race_origin:education'
 )
 
 Factor <- postHocFactors[3]
@@ -271,8 +287,8 @@ print( "#############################################################" )
 print( "Post hoc tests for disability only" )
 print( "#############################################################" )
 
-postHocFactors <- c( 'race_origin', 'education', 'gender:ms', 'ms:race_origin', 
-                     'gender:race_origin' )
+postHocFactors <- c( 'gender', 'ms', 'race_origin', 'education', 'gender:ms', 'ms:race_origin', 
+                     'ms:education', 'race_origin:education' )
 
 for( Factor in postHocFactors ){
   print( "#############################################################" )  
