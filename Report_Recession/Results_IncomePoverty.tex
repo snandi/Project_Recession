@@ -39,16 +39,22 @@ A mixed (fixed and random) effects model was fit to estimate the impact of the p
 Y_{ij} = \beta_0 + \beta t_j + X_i\Theta + b_i + \epsilon_{ij}
 \label{eq:MixedEffects1}
 \end{equation}
-where, $\epsilon_{ij}$ are regarded as measurement errors, $i$ goes from $1$ to $H$, the number of households, $j$ goes from $1$ to $T$, the total number of quarterly observations for every household. In this model, the response from the $i^{th}$ household at time $t_j$ is assumed to differ from the population mean $X_i\Theta + \beta t_j$ by a household effect $b_i$ and a within household measurement error $\epsilon_{ij}$. The within household and between household errors are assumed to be normal and independent ($b_i \sim \N(0, \sigma^2_b),\ \ \epsilon_{ij} \sim \N(0, \sigma^2), \ \ b_i \indep \epsilon_{ij}, \forall i, j$). The effect of ``time'' is a fixed effect and it could be considered part of the fixed effect design matrix $X$. However, the problem of interest is to test a linear hypothesis about the disability-by-time interaction, to detect the effect of disability on the mean response over the period of the study. Hence, the ``time'' covariate is denoted separately. During estimation it will be estimated as a fixed effect. Below is the model that will be fit: 
+where, $\epsilon_{ij}$ are regarded as measurement errors, $i$ goes from $1$ to $H$, the number of households, $j$ goes from $1$ to $T$, the total number of quarterly observations for every household. In this model, the response from the $i^{th}$ household at time $t_j$ is assumed to differ from the population mean $X_i\Theta + \beta t_j$ by a household effect $b_i$ and a within household measurement error $\epsilon_{ij}$. The within household and between household errors are assumed to be normal and independent ($b_i \sim \N(0, \sigma^2_b),\ \ \epsilon_{ij} \sim \N(0, \sigma^2), \ \ b_i \indep \epsilon_{ij}, \forall i, j$). The effect of ``time'' is a fixed effect and it could be considered part of the fixed effect design matrix $X$. However, the problem of interest is to test a linear hypothesis about the disability-by-time interaction, to detect the effect of disability on the mean response over the period of the study. Hence, the ``time'' covariate is denoted separately. During estimation it will be estimated as a fixed effect. 
+
+The bottom, or trough, of the great recession was reached in the second quarter of 2009 (marking the technical end of the recession, defined as at least two consecutive quarters of declining GDP) \footnote{Business Cycle Dating Committee, National Bureau of Economic Research (NBER)}. According to NBER, June 2009 was the final month of the recession. We wanted to check if this was reflected in the FPL100-ratio as a downward trend in the initial quarters followed by an upward trend. A simple linear term in ``time'' would be insufficient. We added a second order term $\text{time}^2$ to test the change in direction of trend. The second order term was added after centering the original ``time'' variable, to avoid introducing multicollinearity. 
+
+Below is the model that will be fit: 
 \vspace{-0.5cm}
 \begin{equation}
-Y_{ij} = \beta_0 + \beta t_j + \delta \Ind_{D_i} + \gamma(\Ind_{D_i}*t_j) + X_i\Theta + b_i + \epsilon_{ij}
+Y_{ij} = \beta_0 + \beta_1 t_j + \beta_2 t_j^2 + \delta \Ind_{D_i} + \gamma(\Ind_{D_i}*t_j) + X_i\Theta + b_i + \epsilon_{ij}
 \label{eq:MixedEffects2}
 \end{equation}
 
 where, $\Ind_{D_i} = 1$, if household $i$ has a working age adult with disability, else $\Ind_{D_i} = 0$. The hypotheses of interests are: \\
-$H_0: \beta = 0, \text{  vs  } H_a: \beta \ne 0$ tested if FPL100-ratio changed over time \\
+$H_0: \beta_1 = 0, \text{  vs  } H_a: \beta_1 \ne 0$ tested if FPL100-ratio changed over time \\
+$H_0: \beta_2 = 0, \text{  vs  } H_a: \beta_2 \ne 0$ tested if the trend of FPL100-ratio changed direction \\
 $H_0: \delta = 0, \text{  vs  } H_a: \delta \ne 0$ tested if disability had any effect on FPL100-ratio\\
+$H_0: \gamma = 0, \text{  vs  } H_a: \gamma \ne 0$ tested if disability had any effect on the slope of FPL100-ratio during the study period\\
 $H_0: \Theta = 0, \text{  vs  } H_a: \Theta \ne 0$ tested if demographic factors had any effect on FPL100-ratio. \\
 In addition, interactions between demographic factors, and between disability and demograhic factors were also tested. 
 
