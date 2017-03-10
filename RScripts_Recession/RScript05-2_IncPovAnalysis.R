@@ -45,7 +45,7 @@ formatPostHocTables <- function( postHocTable, multipleCorrection = TRUE,
   postHocTableDF$`Factor Levels` <- rownames( postHocTableDF )
   
   if( multipleCorrection ){
-    postHocTableDF$`p.value` <- p.adjust( p = postHocTableDF$`p.value`, method = multipleCorrectionMethod )
+    postHocTableDF$`p-value` <- p.adjust( p = postHocTableDF$`p-value`, method = multipleCorrectionMethod )
   }
   
   postHocTableDF <- postHocTableDF[ order( postHocTableDF$`p-value`, decreasing = F ), ]
@@ -219,8 +219,7 @@ print( modelFPL100NoBaselineNoDisab_Summary )
 #######################################################################
 ## Post hoc tests
 #######################################################################
-postHocFactors <- c( 'gender', 'ms', 'race_origin', 'education', 
-                     'adult_disb:gender', 'adult_disb:education', 
+postHocFactors <- c( 'race_origin', 'education', 
                      'gender:ms', 'gender:education', 'ms:race_origin', 'ms:education',
                      'race_origin:education'
 )
