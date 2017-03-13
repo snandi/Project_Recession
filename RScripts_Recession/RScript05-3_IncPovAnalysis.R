@@ -34,6 +34,7 @@ formatAnovaTableForXtable <- function( anovaTable, multipleCorrection = TRUE,
     anovaTableDF$`p.value` <- p.adjust( p = anovaTableDF$`p.value`, method = multipleCorrectionMethod )
   }
   anovaTableDF <- anovaTableDF[ order( anovaTableDF$`p.value`, decreasing = F ), ]
+  row.names( anovaTableDF ) <- sapply( X = row.names( anovaTableDF ), FUN = getFactorName )
   return( anovaTableDF )
 }
 
@@ -48,6 +49,8 @@ formatPostHocTables <- function( postHocTable, multipleCorrection = TRUE,
   }
   
   postHocTableDF <- postHocTableDF[ order( postHocTableDF$`p-value`, decreasing = F ), ]
+  postHocTableDF$`Factor Levels` <- sapply( X = postHocTableDF$`Factor Levels`, FUN = getFactorName )
+  row.names( postHocTableDF ) <- sapply( X = row.names( postHocTableDF ), FUN = getFactorName )
   return( postHocTableDF )
 }
 
@@ -66,7 +69,6 @@ source( Filename.Header )
 source( paste( RScriptPath, 'fn_Library_Recession.R', sep='' ) )
 source( paste( RScriptPath, 'plotLSMeans.R', sep='' ) )
 
-########################################################################
 Today <- Sys.Date( )
 
 ########################################################################
@@ -88,7 +90,6 @@ rm( Data_forIncPov )
 ########################################################################
 #library( lsmeans )
 
-time1 <- Sys.time( )
 # FULLmodelFPL100 <- lmerTest::lmer( 
 #   FPL100_num ~ 1 + Time + I( Time^2 ) + adult_disb + gender + ms + race_origin + education + 
 #     adult_disb*gender + adult_disb*ms + adult_disb*race_origin + adult_disb*education + adult_disb*Time +
@@ -104,8 +105,6 @@ modelFPL100 <- lmerTest::lmer(
     gender*ms + gender*education + ms*race_origin + ms*education + race_origin*education +
     ( 1 | hhid ), data = Data, weights = wt 
 )
-time2 <- Sys.time( )
-print( time2 - time1 )
 # lmerTest::summary( modelFPL100 )
 # lmerTest::anova( modelFPL100 )
 
@@ -118,19 +117,12 @@ modelFPL100_Summary <- lmerTest::summary( modelFPL100 )
 print( modelFPL100_Summary )
 
 modelFPL100_AnovaDF <- formatAnovaTableForXtable( anovaTable = modelFPL100_Anova )
-print( xtable( modelFPL100_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ) , 
-               caption = "Model 1: FPL100 vs demographic factors, time and disability", 
-               floating = TRUE, latex.environments = "center"
-) )
+CAPTION <- "FPL100 vs demographic factors and time and disability status", 
+LABEL <- 'tab:Anova1'
 
-#######################################################################
-## Print summaries of the two models
-########################################################################
-# source( paste( RScriptPath, 'stargazer_lme4.R', sep='' ) )
-# stargazer( modelFPL100_Summary$coefficients, modelFPL100_Summary$coefficients, type = 'latex' )
-summaryWithBaseline <- round( modelFPL100_Summary$coefficients[,c( "Estimate", "Std. Error", "Pr(>|t|)" )], 4 )
-
-print( summaryWithBaseline )
+print( xtable( modelFPL100_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ) , align = 'lrrrrr', 
+               caption = CAPTION, label = LABEL, floating = TRUE, latex.environments = "center" ), 
+       table.placement = "H" )
 
 #######################################################################
 ## Model with Disabled only
@@ -155,10 +147,11 @@ modelFPL100Disab_Summary <- lmerTest::summary( modelFPL100Disab )
 print( modelFPL100Disab_Summary )
 
 modelFPL100Disab_AnovaDF <- formatAnovaTableForXtable( anovaTable = modelFPL100Disab_Anova )
-print( xtable( modelFPL100Disab_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ) , 
-               caption = "Model 3: FPL100 vs demographic factors, time and disability, disability only", 
-               floating = TRUE, latex.environments = "center"
-) )
+CAPTION <- "FPL100 vs demographic factors and time, for households with Disability" 
+LABEL <- 'tab:Anova2'
+print( xtable( modelFPL100Disab_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ), align = 'lrrrrr', 
+               caption = CAPTION, label = LABEL, floating = TRUE, latex.environments = "center" ),
+       table.placement = "H" )
 
 #######################################################################
 ## Model with Non Disabled only
@@ -175,6 +168,13 @@ modelFPL100NoDisab_Summary <- lmerTest::summary( modelFPL100NoDisab )
 print( modelFPL100NoDisab_Anova )
 print( modelFPL100NoDisab_Summary )
 
+modelFPL100NoDisab_AnovaDF <- formatAnovaTableForXtable( anovaTable = modelFPL100NoDisab_Anova )
+CAPTION <- "FPL100 vs demographic factors and time, for households with No Disability" 
+LABEL <- 'tab:Anova3'
+print( xtable( modelFPL100NoDisab_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ), align = 'lrrrrr', 
+               caption = CAPTION, label = LABEL, floating = TRUE, latex.environments = "center"),
+       table.placement = "H" )
+
 #######################################################################
 ## Post hoc tests
 #######################################################################
@@ -184,8 +184,6 @@ postHocFactors <- c( 'race_origin', 'education',
 )
 
 Factor <- postHocFactors[3]
-# plotFilename <- paste0( PlotPath, 'PlotsPostHoc_RScript05-2.pdf' )
-# pdf( file = plotFilename, onefile = TRUE )
 
 for( Factor in postHocFactors ){
   print( "#############################################################" )
@@ -197,30 +195,19 @@ for( Factor in postHocFactors ){
     test.effs = Factor
   )
   
-  plotPostHoc <- try( plotLSMeans( 
-    response = postHoc$response,
-    table = postHoc$diffs.lsmeans.table, 
-    which.plot = 'DIFF of LSMEANS', 
-    mult = TRUE
-  ) )
-    
-  CAPTION <- paste( 'Post-hoc test of', Factor )
+  CAPTION <- paste( 'Post-hoc test of', getFactorName( Factor ) )
+  LABEL <- paste0( 'tab:', Factor )
   columnsToDisplay <- c( 'Factor Levels', 'Estimate', 'Standard Error', 't-value', 'p-value' )  
   postHocDF <- formatPostHocTables( postHocTable = postHoc )
   try( print( xtable( postHocDF[, columnsToDisplay], align = 'llrrrr', digits = c( 0, 0, 2, 2, 2, 4 ), 
-                      caption = CAPTION ), include.rownames = FALSE ) )
+                      caption = CAPTION, label = LABEL ), include.rownames = FALSE, table.placement = "H" ) )
   
   try( print( postHoc ) )
   
-  # try( plot( plotPostHoc ) )
-  # try( plot( plotPostHocNoBaseline ) )
-  try( rm( postHoc, plotPostHoc ) )
+  try( rm( postHoc ) )
 }
 
 # dev.off( )
-
-time4 <- Sys.time( )
-print( time4 - time3 )
 
 #######################################################################
 ## Post hoc tests for disability only
@@ -242,23 +229,15 @@ for( Factor in postHocFactors ){
     test.effs = Factor
   )
   
-  plotPostHoc <- try( plotLSMeans( 
-    response = postHoc$response,
-    table = postHoc$diffs.lsmeans.table, 
-    which.plot = 'DIFF of LSMEANS', 
-    mult = TRUE
-  ) )
-  
-  CAPTION <- paste( 'Post-hoc test of', Factor )
+  CAPTION <- paste( 'Post-hoc test of', getFactorName( Factor ), 'for households with Disability' )
+  LABEL <- paste0( 'tab:', Factor, 'Disb' )
   columnsToMerge <- c( 'Factor Levels', 'Estimate', 'Standard Error', 't-value', 'p-value' )  
   postHocDF <- formatPostHocTables( postHocTable = postHoc )
   try( print( xtable( postHocDF[, columnsToMerge], align = 'llrrrr', digits = c( 0, 0, 2, 2, 2, 4 ), 
-                      caption = CAPTION ), include.rownames = FALSE ) )
+                      caption = CAPTION, label = LABEL ), include.rownames = FALSE, 
+              table.placement = "H" ) )
   
   try( print( postHoc ) )
-  
-  print( "#############################################################" )
-  
-  try( rm( postHoc, plotPostHoc ) )
+  try( rm( postHoc ) )
 }
 

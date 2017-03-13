@@ -1,3 +1,23 @@
+getFactorName <- function( Factor ){
+  factorMap <- c( 'Disability', 'Gender', 'Marital status', 'Ethnicity', 'Education', 
+                  'Disability & Gender', 'Disability & Marital status', 'Disability & Ethnicity', 
+                  'Disability & Education', 'Disability & Time', 'Gender & Marital status', 
+                  'Gender & Ethnicity', 'Gender & Education', 'Marital status & Ethnicity', 
+                  'Marital status & Education', 'Ethnicity & Education' )
+  
+  names( factorMap ) <- c( 'adult_disb', 'gender', 'ms', 'race_origin', 'education', 'adult_disb:gender', 
+                           'adult_disb:ms', 'adult_disb:race_origin', 'adult_disb:education', 'adult_disb:Time', 
+                           'gender:ms', 'gender:race_origin', 'gender:education', 'ms:race_origin', 'ms:education', 
+                           'race_origin:education' )
+  if( Factor %in% names( factorMap ) ){
+    factorName <- factorMap[[ Factor ]]
+  } else{
+    factorName <- Factor
+  }
+  return( factorName )
+}
+
+
 ################################################################## 
 ## Separate safety net program analysis
 ################################################################## 
