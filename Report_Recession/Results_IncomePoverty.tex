@@ -48,14 +48,14 @@ The bottom, or trough, of the great recession was reached in the second quarter 
 Below is the model that will be fit: 
 \vspace{-0.5cm}
 \begin{equation}
-Y_{ij} = \beta_0 + \beta_1 t_j + \beta_2 t_j^2 + \delta \Ind_{D_i} + \gamma(\Ind_{D_i}*t_j) + X_i\Theta + b_i + \epsilon_{ij}
+Y_{ij} = \beta_0 + \beta_1 t_j + \beta_2 t_j^2 + \beta_D \Ind_{D_i} + \gamma(\Ind_{D_i}*t_j) + X_i\Theta + b_i + \epsilon_{ij}
 \label{eq:MixedEffects2}
 \end{equation}
 
 where, $\Ind_{D_i} = 1$, if household $i$ has a working age adult with disability, else $\Ind_{D_i} = 0$. The hypotheses of interests are: \\
 $H_0: \beta_1 = 0, \text{  vs  } H_a: \beta_1 \ne 0$ tested if FPL100-ratio changed over time \\
 $H_0: \beta_2 = 0, \text{  vs  } H_a: \beta_2 \ne 0$ tested if the trend of FPL100-ratio changed direction \\
-$H_0: \delta = 0, \text{  vs  } H_a: \delta \ne 0$ tested if disability had any effect on FPL100-ratio\\
+$H_0: \beta_D = 0, \text{  vs  } H_a: \beta_D \ne 0$ tested if disability had any effect on FPL100-ratio\\
 $H_0: \gamma = 0, \text{  vs  } H_a: \gamma \ne 0$ tested if disability had any effect on the slope of FPL100-ratio during the study period\\
 $H_0: \Theta = 0, \text{  vs  } H_a: \Theta \ne 0$ tested if demographic factors had any effect on FPL100-ratio. \\
 In addition, interactions between demographic factors, and between disability and demograhic factors were also tested. 
@@ -75,13 +75,12 @@ Post-hoc tests were conducted between categories of all demographic factors and 
 When conducting post-hoc tests for demographic factors and their interactions, due to multiple categories of these factors the size of the tests might be inflated. Sequentially rejective {\emph{Bonferroni procedure}} (\cite{Holm_1979_SJS}) and {\emph{Benjamini-Hochberg procedure}} (\cite{Benjamini_Hochberg_1995_JRSSB}) remain the two most popular multiple testing correction procedures. Holm's sequentially rejective Bonferroni procedure controls the family-wise type-I error rate (FWER) and is more powerful than the classical Bonferroni procedure. Benjamini-Hochberg controls the false discovery rate (FDR) which is the expected value of false discovery proportion. Controlling FWER usually proves to be too conservative. Hence, we used the Benjamini-Hochberg procedure , which is less conservative, but more powerful than Bonferroni correction. All post-hoc test p-values reported are Benjamini-Hochberg corrected.
 
 \section{Results}
-Table \ref{tab:FixedEffectsBetas} shows the coefficients of time (measured in year-quarters), and disability and the interaction between them. The model includes the demographic factors, as explained in equation \ref{eq:MixedEffects2}. ANOVA table of these demographic factors is in table \ref{tab:Anova1}. The $\beta_{\text{time}} = -0.0515, p < 0.01$ in the model, indicating, FPL100-ratio decreased by $0.05$ every year, during the study period. The coefficient of {\emph{Disability}} is $\beta_D = -0.506, p < 0.01$  indicates that households with a working age adult with disability had their FPL100-ratios $0.506$ lower, on an average, compared to households without any working age adult with disability. Next, we observe that the coefficient of interaction between time and disability ($\beta_{t*D} = 0.0150, p < 0.01$) is positive. This implies that the slope of FPL100-ratio for households with disability is $-0.0443 (-0.0553 + 0.0150)$, which is less negative than the households without disability. This apparently contradictory finding leads us to conclude that households with disability although had ``significantly'' worse FPL100-ratio throughout the study period, the households without disability experienced more severe declines in their FPL100-ratios. This could throw some light on the impact of different supplementary coverage programs on households with disability. 
+Table \ref{tab:FixedEffectsBetas} shows the coefficients of time (measured in year-quarters), and disability and the interaction between them. The model includes the demographic factors, as explained in equation \ref{eq:MixedEffects2}. ANOVA table of these demographic factors is in table \ref{tab:Anova1}. The $\beta_1 = -0.0553, p < 0.01$ in the model, indicating, FPL100-ratio decreased by $0.0553$ every year, during the study period. The coefficient of {\emph{Disability}} is $\beta_D = -0.5061, p < 0.01$  indicating households with a working age adult with disability had their FPL100-ratios $0.5061$ lower, on an average, compared to households without any working age adult with disability. Next, we observe that the coefficient of interaction between time and disability ($\gamma = 0.0150, p < 0.01$) is positive. This implies that the slope of FPL100-ratio for households with disability is $-0.0443 (-0.0553 + 0.0150)$, which is less negative than the households without disability. This apparently contradictory finding leads us to conclude that households with disability although had ``significantly'' worse FPL100-ratio throughout the study period, the households without disability experienced more severe declines in their FPL100-ratios. This could throw some light on the impact of different supplementary coverage programs on households with disability. The coefficient of the quadratic term of Time ($\beta_2 = 0.0073, p < 0.01$) indicates rate of change of slope is positive. In other words, although the FPL100-ratio decreased over time (as $\beta_1 < 0$), it either became flat or even started increasing towards the latter parts of the study period. 
 
-For all the demographic factors and for interactions between them, post-hoc tests were conducted to identify the pairwise differences in mean FPL100-ratios of different subgroups. 
-
+It was clear that households with a working age adult with Disability were worse of in terms of FPL100-ratio, when compared to households without one. A separate model was fit with the same demographic variables (and their interactions) for only those households with a working age adult with Disability. The anova table for this model is in table \ref{tab:Anova2}. For all the demographic factors and for interactions between them, post-hoc tests were conducted to identify the pairwise differences in mean FPL100-ratios of different subgroups. \\
 \noindent
 {\bf{Gender of household head}} \\
-
+Gender is statistically significant. In model 1, household with a ``female'' head has, on an average, lower FPL100-ratio ($\theta_{\text{female} - \text{male}} = -0.113, p < 0.01$) in the sample. \\
 \noindent
 {\bf{Marital status of household head}} \\
 
