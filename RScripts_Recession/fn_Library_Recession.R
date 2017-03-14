@@ -1,9 +1,9 @@
 getFactorName <- function( Factor ){
   factorMap <- c( 'Disability', 'Gender', 'Marital status', 'Ethnicity', 'Education', 
-                  'Disability & Gender', 'Disability & Marital status', 'Disability & Ethnicity', 
-                  'Disability & Education', 'Disability & Time', 'Gender & Marital status', 
-                  'Gender & Ethnicity', 'Gender & Education', 'Marital status & Ethnicity', 
-                  'Marital status & Education', 'Ethnicity & Education' )
+                  'Disability and Gender', 'Disability and Marital status', 'Disability and Ethnicity', 
+                  'Disability and Education', 'Disability and Time', 'Gender and Marital status', 
+                  'Gender and Ethnicity', 'Gender and Education', 'Marital status and Ethnicity', 
+                  'Marital status and Education', 'Ethnicity and Education' )
   
   names( factorMap ) <- c( 'adult_disb', 'gender', 'ms', 'race_origin', 'education', 'adult_disb:gender', 
                            'adult_disb:ms', 'adult_disb:race_origin', 'adult_disb:education', 'adult_disb:Time', 

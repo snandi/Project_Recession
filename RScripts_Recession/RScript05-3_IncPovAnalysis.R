@@ -7,6 +7,11 @@ rm( list = objects( all.names = TRUE ) )
 ## RScript05-2, with the following differences
 ## 1. This analyzes FPL100Num, with baselines 
 ########################################################################
+saveModel <- function( modelData, modelFilename ){
+  modelFilepath <- paste0( RDataPath, modelFilename )
+  save( modelData, file = modelFilepath )
+}
+
 preprocessAndSaveData <- function( Data, filenameModelData = 'Data_forIncPovModel_v5.RData' ){
   Data$year <- substr( x = Data$yearqtr, start = 1, stop = 4 )
   Data$year <- as.factor( Data$year )
@@ -21,7 +26,7 @@ preprocessAndSaveData <- function( Data, filenameModelData = 'Data_forIncPovMode
   save( Data_forIncPovModel, file = filenameData )
   return( Data_forIncPovModel )
 }
-
+# 
 formatAnovaTableForXtable <- function( anovaTable, multipleCorrection = TRUE, 
                                        multipleCorrectionMethod = 'BH' ){
   if( class( anovaTable )[1] != 'anova' ){
@@ -33,7 +38,7 @@ formatAnovaTableForXtable <- function( anovaTable, multipleCorrection = TRUE,
   if( multipleCorrection ){
     anovaTableDF$`p.value` <- p.adjust( p = anovaTableDF$`p.value`, method = multipleCorrectionMethod )
   }
-  anovaTableDF <- anovaTableDF[ order( anovaTableDF$`p.value`, decreasing = F ), ]
+  anovaTableDF <- anovaTableDF[ order( anovaTableDF[,'p.value'], -anovaTableDF[,'F.value'], decreasing = F ), ]
   row.names( anovaTableDF ) <- sapply( X = row.names( anovaTableDF ), FUN = getFactorName )
   return( anovaTableDF )
 }
@@ -48,7 +53,10 @@ formatPostHocTables <- function( postHocTable, multipleCorrection = TRUE,
     postHocTableDF$`p-value` <- p.adjust( p = postHocTableDF$`p-value`, method = multipleCorrectionMethod )
   }
   
-  postHocTableDF <- postHocTableDF[ order( postHocTableDF$`p-value`, decreasing = F ), ]
+  #   postHocTableDF <- postHocTableDF[ order( postHocTableDF$`p-value`, decreasing = F ), ]
+  postHocTableDF <- postHocTableDF[ order( postHocTableDF[,'p.value'], -abs( postHocTableDF[,'t-value'] ), 
+                                           decreasing = F ), ]
+  
   postHocTableDF$`Factor Levels` <- sapply( X = postHocTableDF$`Factor Levels`, FUN = getFactorName )
   row.names( postHocTableDF ) <- sapply( X = row.names( postHocTableDF ), FUN = getFactorName )
   return( postHocTableDF )
@@ -117,12 +125,14 @@ modelFPL100_Summary <- lmerTest::summary( modelFPL100 )
 print( modelFPL100_Summary )
 
 modelFPL100_AnovaDF <- formatAnovaTableForXtable( anovaTable = modelFPL100_Anova )
-CAPTION <- "FPL100 vs demographic factors and time and disability status", 
+CAPTION <- "FPL100 vs demographic factors and time and disability status" 
 LABEL <- 'tab:Anova1'
 
 print( xtable( modelFPL100_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ) , align = 'lrrrrr', 
                caption = CAPTION, label = LABEL, floating = TRUE, latex.environments = "center" ), 
        table.placement = "H" )
+
+saveModel( modelData = modelFPL100, modelFilename = 'modelFPL100.RData' )
 
 #######################################################################
 ## Model with Disabled only
@@ -138,7 +148,8 @@ DataDisb <- subset( Data, adult_disb == "yes" )
 # finalModel <- lmerTest::step( model = FULLmodelFPL100Disab )
 modelFPL100Disab <- lmerTest::lmer( 
   FPL100 ~ 1 + Time + I( Time^2 ) + gender + ms + race_origin + education + 
-    gender*ms + ms*race_origin + ms*education + race_origin*education +
+    gender*Time + ms*Time + race_origin*Time + education*Time + 
+    gender*ms*Time + race_origin*I(Time^2) +
     ( 1 | hhid ), data = DataDisb, weights = wt
 )
 
@@ -152,6 +163,7 @@ LABEL <- 'tab:Anova2'
 print( xtable( modelFPL100Disab_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ), align = 'lrrrrr', 
                caption = CAPTION, label = LABEL, floating = TRUE, latex.environments = "center" ),
        table.placement = "H" )
+saveModel( modelData = modelFPL100Disab, modelFilename = 'modelFPL100Disab.RData' )
 
 #######################################################################
 ## Model with Non Disabled only
@@ -173,8 +185,9 @@ CAPTION <- "FPL100 vs demographic factors and time, for households with No Disab
 LABEL <- 'tab:Anova3'
 print( xtable( modelFPL100NoDisab_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ), align = 'lrrrrr', 
                caption = CAPTION, label = LABEL, floating = TRUE, latex.environments = "center"),
-       table.placement = "H" )
+       table.placement = "H", size = 'footnotesize' )
 
+saveModel( modelData = modelFPL100NoDisab, modelFilename = 'modelFPL100NoDisab.RData' )
 #######################################################################
 ## Post hoc tests
 #######################################################################
@@ -200,7 +213,8 @@ for( Factor in postHocFactors ){
   columnsToDisplay <- c( 'Factor Levels', 'Estimate', 'Standard Error', 't-value', 'p-value' )  
   postHocDF <- formatPostHocTables( postHocTable = postHoc )
   try( print( xtable( postHocDF[, columnsToDisplay], align = 'llrrrr', digits = c( 0, 0, 2, 2, 2, 4 ), 
-                      caption = CAPTION, label = LABEL ), include.rownames = FALSE, table.placement = "H" ) )
+                      caption = CAPTION, label = LABEL ), 
+              include.rownames = FALSE, table.placement = "H", size = 'footnotesize' ) )
   
   try( print( postHoc ) )
   
@@ -218,7 +232,7 @@ print( "#############################################################" )
 
 postHocFactors <- c( 'gender', 'ms', 'race_origin', 'education', 'gender:ms', 'ms:race_origin', 
                      'ms:education', 'race_origin:education' )
-
+Factor <- 'gender:ms'
 for( Factor in postHocFactors ){
   print( "#############################################################" )  
   print( Factor )
@@ -230,12 +244,12 @@ for( Factor in postHocFactors ){
   )
   
   CAPTION <- paste( 'Post-hoc test of', getFactorName( Factor ), 'for households with Disability' )
-  LABEL <- paste0( 'tab:', Factor, 'Disb' )
+  LABEL <- paste0( 'tab:', gsub( pattern = ':', replacement = '_', x = Factor ), '_Disb' )
   columnsToMerge <- c( 'Factor Levels', 'Estimate', 'Standard Error', 't-value', 'p-value' )  
-  postHocDF <- formatPostHocTables( postHocTable = postHoc )
+  postHocDF <- formatPostHocTables( postHocTable = postHoc,  )
   try( print( xtable( postHocDF[, columnsToMerge], align = 'llrrrr', digits = c( 0, 0, 2, 2, 2, 4 ), 
                       caption = CAPTION, label = LABEL ), include.rownames = FALSE, 
-              table.placement = "H" ) )
+              table.placement = "H", size = 'footnotesize' ) )
   
   try( print( postHoc ) )
   try( rm( postHoc ) )
