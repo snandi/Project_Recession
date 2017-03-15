@@ -7,6 +7,7 @@
 \centering 
 \footnotesize
 %\begin{tabular}{@{\extracolsep{5pt}}lccc|c}
+\caption{Coefficients of Fixed effects in regression models} 
 \begin{tabular}{l|c}
 \hline 
 \hline 
@@ -26,22 +27,25 @@
 %
 Continuous Indep Variables & Model coefficients \\
 \hline 
-Intercept		&	$2.779^{***}$		\\
-			&	$(0.0706)$		\\
-time (Year-Quarter)	&	$-0.0553^{***}$		\\
-			&	$(0.0021)$		\\
-$\text{time}^2$		&	$0.0073^{***}$		\\
-			&	$(0.0013)$		\\
-Disability		&	$-0.5061^{***}$		\\    
-			&	$(0.0564)$		\\
-Year-Quarter*Disability	&	$0.0150^{***}$		\\
-			&	$(0.0043)$		\\
+Intercept			&	$2.779^{***}$		\\
+				&	$(0.0706)$		\\
+time (Year-Quarter)		&	$-0.0553^{***}$		\\
+				&	$(0.0021)$		\\
+$\text{time}^2$			&	$0.0073^{***}$		\\
+				&	$(0.0013)$		\\
+Disability			&	$-0.5061^{***}$		\\    
+				&	$(0.0564)$		\\
+Year-Quarter*Disability		&	$0.0150^{***}$		\\
+				&	$(0.0043)$		\\
+Gender (Female)	 		&	$-0.113^{***}$		\\
+				&	$(0.0394)$		\\
+Marital status (not married) 	&	$-0.1679^{***}$		\\
+				&	$(0.0545)$		\\
 \hline 
 \hline 
 \multicolumn{2}{r}{\textit{Note:}  $^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
 
 \end{tabular}
-\caption{Coefficients of Fixed effects in regression models} 
 \label{tab:FixedEffectsBetas} 
 \end{table}
 
@@ -51,6 +55,7 @@ Year-Quarter*Disability	&	$0.0150^{***}$		\\
 \begin{table}[H]
 \footnotesize
 \centering
+\caption{FPL100 vs demographic factors and time and disability status} 
 \begin{tabular}{lrrrrr}
   \hline
   & Sum Sq & Mean Sq & NumDF & F.value & p.value \\ 
@@ -72,7 +77,6 @@ Year-Quarter*Disability	&	$0.0150^{***}$		\\
   Disability \& Education & 116.32 & 58.16 & 2 & 4.83 & 0.0080 \\ 
    \hline
 \end{tabular}
-\caption{FPL100 vs demographic factors and time and disability status} 
 \label{tab:Anova1}
 \end{table}
 
@@ -82,6 +86,7 @@ Year-Quarter*Disability	&	$0.0150^{***}$		\\
 \begin{table}[H]
 \footnotesize
 \centering
+\caption{FPL100 vs demographic factors and time, for households with Disability} 
 \begin{tabular}{lrrrrr}
   \hline
   & Sum Sq & Mean Sq & NumDF & F.value & p.value \\ 
@@ -98,34 +103,7 @@ Year-Quarter*Disability	&	$0.0150^{***}$		\\
   $\text{Time}^2$ & 0.06 & 0.06 & 1 & 0.26 & 0.6074 \\ 
   \hline
 \end{tabular}
-\caption{FPL100 vs demographic factors and time, for households with Disability} 
 \label{tab:Anova2}
-\end{table}
-
-
-% latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Mon Mar 13 12:17:15 2017
-\begin{table}[H]
-\footnotesize
-\centering
-\begin{tabular}{lrrrrr}
-  \hline
-  & Sum Sq & Mean Sq & NumDF & F.value & p.value \\ 
-  \hline
-  Time & 13.16 & 13.16 & 1 & 86.80 & 0.0000 \\ 
-  Gender & 48.49 & 48.49 & 1 & 319.96 & 0.0000 \\ 
-  Marital status & 76.70 & 76.70 & 1 & 506.08 & 0.0000 \\ 
-  Ethnicity & 99.18 & 33.06 & 3 & 218.15 & 0.0000 \\ 
-  Education & 106.34 & 53.17 & 2 & 350.84 & 0.0000 \\ 
-  Gender \& Marital status & 12.85 & 12.85 & 1 & 84.80 & 0.0000 \\ 
-  Marital status \& Education & 27.95 & 13.97 & 2 & 92.21 & 0.0000 \\ 
-  Ethnicity \& Education & 25.03 & 4.17 & 6 & 27.52 & 0.0000 \\ 
-  Marital status \& Ethnicity & 9.60 & 3.20 & 3 & 21.12 & 0.0000 \\ 
-  I(Time\verb|^|2) & 0.03 & 0.03 & 1 & 0.21 & 0.6489 \\ 
-   \hline
-\end{tabular}
-\caption{FPL100 vs demographic factors and time, for households with No Disability} 
-\label{tab:Anova3}
 \end{table}
 
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
@@ -133,6 +111,7 @@ Year-Quarter*Disability	&	$0.0150^{***}$		\\
 \begin{table}[H]
 \footnotesize
 \centering
+\caption{Post-hoc test of Ethnicity} 
 \begin{tabular}{lrrrr}
   \hline
   Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
@@ -145,7 +124,6 @@ Year-Quarter*Disability	&	$0.0150^{***}$		\\
    Black - Hispanic & -0.00 & 0.06 & -0.05 & 0.9611 \\ 
   \hline
 \end{tabular}
-\caption{Post-hoc test of Ethnicity} 
 \label{tab:race_origin}
 \end{table}
 
@@ -154,6 +132,7 @@ Year-Quarter*Disability	&	$0.0150^{***}$		\\
 \begin{table}[H]
 \footnotesize
 \centering
+\caption{Post-hoc test of Education} 
 \begin{tabular}{lrrrr}
   \hline
 Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
@@ -163,7 +142,6 @@ Factor Levels & Estimate & Standard Error & t-value & p-value \\
    Some college, diploma, assoc - Bachelors or higher & -1.21 & 0.04 & -27.03 & 0.0000 \\ 
    \hline
 \end{tabular}
-\caption{Post-hoc test of Education} 
 \label{tab:education}
 \end{table}
 
@@ -172,6 +150,7 @@ Factor Levels & Estimate & Standard Error & t-value & p-value \\
 \begin{table}[H]
 \footnotesize
 \centering
+\caption{Post-hoc test of Gender and Marital status} 
 \begin{tabular}{lrrrr}
   \hline
 Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
@@ -184,8 +163,7 @@ Factor Levels & Estimate & Standard Error & t-value & p-value \\
     Female Married -  Male Not married & 0.11 & 0.04 & 3.03 & 0.0024 \\ 
    \hline
 \end{tabular}
-\caption{Post-hoc test of Gender and Marital status} 
-\label{tab:gender:ms}
+\label{tab:gender_ms}
 \end{table}
 
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
@@ -193,6 +171,7 @@ Factor Levels & Estimate & Standard Error & t-value & p-value \\
 \begin{table}[H]
 \footnotesize
 \centering
+\caption{Post-hoc test of Gender and Education} 
 \begin{tabular}{lrrrr}
   \hline
 Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
@@ -214,7 +193,6 @@ Factor Levels & Estimate & Standard Error & t-value & p-value \\
     Male High School or less -  Female Some college, diploma, assoc & -0.12 & 0.05 & -2.56 & 0.0105 \\ 
    \hline
 \end{tabular}
-\caption{Post-hoc test of Gender and Education} 
 \label{tab:gender_education}
 \end{table}
 
@@ -223,6 +201,7 @@ Factor Levels & Estimate & Standard Error & t-value & p-value \\
 \begin{table}[H]
 \footnotesize
 \centering
+\caption{Post-hoc test of Marital status and Ethnicity} 
 \begin{tabular}{lrrrr}
   \hline
 Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
@@ -257,7 +236,6 @@ Factor Levels & Estimate & Standard Error & t-value & p-value \\
     Married Black -  Not married Others & 0.02 & 0.08 & 0.21 & 0.8318 \\ 
    \hline
 \end{tabular}
-\caption{Post-hoc test of Marital status and Ethnicity} 
 \label{tab:ms_race_origin}
 \end{table}
 
@@ -266,9 +244,10 @@ Factor Levels & Estimate & Standard Error & t-value & p-value \\
 \begin{table}[H]
 \footnotesize
 \centering
+\caption{Post-hoc test of Marital status and Education} 
 \begin{tabular}{lrrrr}
   \hline
-Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
+  Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
   \hline
   Married High School or less -  Not married High School or less & 0.41 & 0.03 & 13.63 & 0.0000 \\ 
     Married High School or less -  Married Some college, diploma, assoc & -0.53 & 0.04 & -12.40 & 0.0000 \\ 
@@ -287,173 +266,8 @@ Factor Levels & Estimate & Standard Error & t-value & p-value \\
     Married High School or less -  Not married Some college, diploma, assoc & -0.01 & 0.05 & -0.18 & 0.8540 \\ 
    \hline
 \end{tabular}
-\caption{Post-hoc test of Marital status and Education} 
 \label{tab:ms_education}
 \end{table}
 
 
-% latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Mon Mar 13 12:57:48 2017
-\begin{table}[H]
-\footnotesize
-\centering
-\begin{tabular}{lrrrr}
-  \hline
-Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
-  \hline
- Male - Female & -0.03 & 0.01 & -6.56 & 0.0000 \\ 
-   \hline
-\end{tabular}
-\caption{Post-hoc test of Gender for households with Disability} 
-\label{tab:genderDisb}
-\end{table}
-
-% latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Mon Mar 13 12:57:59 2017
-\begin{table}[H]
-\footnotesize
-\centering
-\begin{tabular}{lrrrr}
-  \hline
-Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
-  \hline
- Married - Not married & -0.10 & 0.01 & -17.80 & 0.0000 \\ 
-   \hline
-\end{tabular}
-\caption{Post-hoc test of Marital status for households with Disability} 
-\label{tab:msDisb}
-\end{table}
-
-% latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Mon Mar 13 12:58:26 2017
-\begin{table}[H]
-\footnotesize
-\centering
-\begin{tabular}{lrrrr}
-  \hline
-Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
-  \hline
- Black - White & 0.05 & 0.01 & 5.54 & 0.0000 \\ 
-   Others - White & 0.07 & 0.01 & 6.17 & 0.0000 \\ 
-   Hispanic - White & 0.04 & 0.01 & 3.92 & 0.0002 \\ 
-   Hispanic - Others & -0.03 & 0.02 & -1.80 & 0.1077 \\ 
-   Black - Others & -0.02 & 0.01 & -1.14 & 0.3030 \\ 
-   Black - Hispanic & 0.01 & 0.01 & 0.80 & 0.4227 \\ 
-   \hline
-\end{tabular}
-\caption{Post-hoc test of Ethnicity for households with Disability} 
-\label{tab:race_originDisb}
-\end{table}
-
-% latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Mon Mar 13 12:58:43 2017
-\begin{table}[H]
-\footnotesize
-\centering
-\begin{tabular}{lrrrr}
-  \hline
-Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
-  \hline
- High School or less - Some college, diploma, assoc & 0.07 & 0.01 & 9.41 & 0.0000 \\ 
-   High School or less - Bachelors or higher & 0.17 & 0.01 & 17.36 & 0.0000 \\ 
-   Some college, diploma, assoc - Bachelors or higher & 0.10 & 0.01 & 10.33 & 0.0000 \\ 
-   \hline
-\end{tabular}
-\caption{Post-hoc test of Education for households with Disability} 
-\label{tab:educationDisb}
-\end{table}
-
-% latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Mon Mar 13 12:59:09 2017
-\begin{table}[H]
-\footnotesize
-\centering
-\begin{tabular}{lrrrr}
-  \hline
-Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
-  \hline
-  Male Married -  Male Not married & -0.08 & 0.01 & -11.55 & 0.0000 \\ 
-    Male Married -  Female Not married & -0.14 & 0.01 & -18.46 & 0.0000 \\ 
-    Female Married -  Male Not married & -0.07 & 0.01 & -8.79 & 0.0000 \\ 
-    Female Married -  Female Not married & -0.12 & 0.01 & -17.79 & 0.0000 \\ 
-    Male Not married -  Female Not married & -0.05 & 0.01 & -7.96 & 0.0000 \\ 
-    Male Married -  Female Married & -0.01 & 0.01 & -2.23 & 0.0255 \\ 
-   \hline
-\end{tabular}
-\caption{Post-hoc test of Gender and Marital status for households with Disability} 
-\label{tab:gender:msDisb}
-\end{table}
-
-% latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Mon Mar 13 13:00:38 2017
-\begin{table}[H]
-\footnotesize
-\centering
-\begin{tabular}{lrrrr}
-  \hline
-Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
-  \hline
-  Married Black -  Not married Black & -0.17 & 0.01 & -14.94 & 0.0000 \\ 
-    Married Black -  Not married Hispanic & -0.09 & 0.02 & -5.16 & 0.0000 \\ 
-    Married Black -  Not married Others & -0.16 & 0.02 & -9.22 & 0.0000 \\ 
-    Married Black -  Not married White & -0.07 & 0.01 & -5.60 & 0.0000 \\ 
-    Not married Black -  Married Hispanic & 0.11 & 0.02 & 7.29 & 0.0000 \\ 
-    Not married Black -  Not married Hispanic & 0.08 & 0.02 & 4.94 & 0.0000 \\ 
-    Not married Black -  Married Others & 0.13 & 0.02 & 8.38 & 0.0000 \\ 
-    Not married Black -  Married White & 0.18 & 0.01 & 16.62 & 0.0000 \\ 
-    Not married Black -  Not married White & 0.10 & 0.01 & 8.84 & 0.0000 \\ 
-    Married Hispanic -  Not married Others & -0.11 & 0.02 & -6.10 & 0.0000 \\ 
-    Married Hispanic -  Married White & 0.07 & 0.01 & 5.72 & 0.0000 \\ 
-    Not married Hispanic -  Not married Others & -0.08 & 0.02 & -4.17 & 0.0000 \\ 
-    Not married Hispanic -  Married White & 0.10 & 0.01 & 7.79 & 0.0000 \\ 
-    Married Others -  Not married Others & -0.13 & 0.02 & -8.57 & 0.0000 \\ 
-    Not married Others -  Married White & 0.18 & 0.01 & 12.26 & 0.0000 \\ 
-    Not married Others -  Not married White & 0.10 & 0.01 & 6.50 & 0.0000 \\ 
-    Married White -  Not married White & -0.08 & 0.01 & -16.53 & 0.0000 \\ 
-    Married Others -  Married White & 0.05 & 0.01 & 3.46 & 0.0008 \\ 
-    Married Black -  Married Hispanic & -0.05 & 0.02 & -3.39 & 0.0010 \\ 
-    Not married Hispanic -  Married Others & 0.06 & 0.02 & 3.13 & 0.0024 \\ 
-    Married Hispanic -  Not married Hispanic & -0.03 & 0.01 & -3.01 & 0.0035 \\ 
-    Married Others -  Not married White & -0.04 & 0.01 & -2.77 & 0.0073 \\ 
-    Married Black -  Married Others & -0.03 & 0.02 & -1.92 & 0.0666 \\ 
-    Not married Hispanic -  Not married White & 0.02 & 0.01 & 1.38 & 0.1941 \\ 
-    Married Hispanic -  Married Others & 0.02 & 0.02 & 1.33 & 0.2070 \\ 
-    Married Hispanic -  Not married White & -0.01 & 0.01 & -1.21 & 0.2420 \\ 
-    Married Black -  Married White & 0.01 & 0.01 & 1.15 & 0.2606 \\ 
-    Not married Black -  Not married Others & 0.00 & 0.02 & 0.02 & 0.9807 \\ 
-   \hline
-\end{tabular}
-\caption{Post-hoc test of Marital status and Ethnicity for households with Disability} 
-\label{tab:ms:race_originDisb}
-\end{table}
-
-% latex table generated in R 3.3.1 by xtable 1.8-2 package
-% Mon Mar 13 13:01:30 2017
-\begin{table}[H]
-\footnotesize
-\centering
-\begin{tabular}{lrrrr}
-  \hline
-Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
-  \hline
-  Married High School or less -  Not married High School or less & -0.13 & 0.01 & -18.85 & 0.0000 \\ 
-    Married High School or less -  Married Some college, diploma, assoc & 0.06 & 0.01 & 6.80 & 0.0000 \\ 
-    Married High School or less -  Not married Some college, diploma, assoc & -0.05 & 0.01 & -5.05 & 0.0000 \\ 
-    Married High School or less -  Married Bachelors or higher & 0.14 & 0.01 & 12.63 & 0.0000 \\ 
-    Married High School or less -  Not married Bachelors or higher & 0.07 & 0.01 & 6.05 & 0.0000 \\ 
-    Not married High School or less -  Married Some college, diploma, assoc & 0.19 & 0.01 & 20.38 & 0.0000 \\ 
-    Not married High School or less -  Not married Some college, diploma, assoc & 0.08 & 0.01 & 9.64 & 0.0000 \\ 
-    Not married High School or less -  Married Bachelors or higher & 0.27 & 0.01 & 23.58 & 0.0000 \\ 
-    Not married High School or less -  Not married Bachelors or higher & 0.21 & 0.01 & 18.17 & 0.0000 \\ 
-    Married Some college, diploma, assoc -  Not married Some college, diploma, assoc & -0.11 & 0.01 & -14.49 & 0.0000 \\ 
-    Married Some college, diploma, assoc -  Married Bachelors or higher & 0.08 & 0.01 & 7.16 & 0.0000 \\ 
-    Not married Some college, diploma, assoc -  Married Bachelors or higher & 0.19 & 0.01 & 16.19 & 0.0000 \\ 
-    Not married Some college, diploma, assoc -  Not married Bachelors or higher & 0.12 & 0.01 & 11.17 & 0.0000 \\ 
-    Married Bachelors or higher -  Not married Bachelors or higher & -0.07 & 0.01 & -7.06 & 0.0000 \\ 
-    Married Some college, diploma, assoc -  Not married Bachelors or higher & 0.01 & 0.01 & 1.10 & 0.2723 \\ 
-   \hline
-\end{tabular}
-\caption{Post-hoc test of Marital status and Education for households with Disability} 
-\label{tab:ms:educationDisb}
-\end{table}
 

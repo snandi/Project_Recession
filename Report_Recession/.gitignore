@@ -1,7 +1,6 @@
 *~
 tmp
 backup_linux
-*.pdf
 .Rhistory
 *.Rdata
 *.RData

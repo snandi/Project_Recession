@@ -39,8 +39,11 @@ formatAnovaTableForXtable <- function( anovaTable, multipleCorrection = TRUE,
     anovaTableDF$`p.value` <- p.adjust( p = anovaTableDF$`p.value`, method = multipleCorrectionMethod )
   }
   anovaTableDF <- anovaTableDF[ order( anovaTableDF[,'p.value'], -anovaTableDF[,'F.value'], decreasing = F ), ]
+  anovaTableDF$`p.value` <- round( anovaTableDF$`p.value`, 4 )
+  anovaTableDF$`F.value` <- round( anovaTableDF$`F.value`, 2 )
+  
   row.names( anovaTableDF ) <- sapply( X = row.names( anovaTableDF ), FUN = getFactorName )
-  return( anovaTableDF )
+  return( anovaTableDF[, c( 'F.value', 'p.value' ) ] )
 }
 
 formatPostHocTables <- function( postHocTable, multipleCorrection = TRUE, 
@@ -152,6 +155,7 @@ modelFPL100Disab <- lmerTest::lmer(
     gender*ms*Time + race_origin*I(Time^2) +
     ( 1 | hhid ), data = DataDisb, weights = wt
 )
+saveModel( modelData = modelFPL100Disab, modelFilename = 'modelFPL100Disab.RData' )
 
 modelFPL100Disab_Anova <- lmerTest::anova( modelFPL100Disab )
 modelFPL100Disab_Summary <- lmerTest::summary( modelFPL100Disab )
@@ -160,34 +164,10 @@ print( modelFPL100Disab_Summary )
 modelFPL100Disab_AnovaDF <- formatAnovaTableForXtable( anovaTable = modelFPL100Disab_Anova )
 CAPTION <- "FPL100 vs demographic factors and time, for households with Disability" 
 LABEL <- 'tab:Anova2'
-print( xtable( modelFPL100Disab_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ), align = 'lrrrrr', 
+print( xtable( modelFPL100Disab_AnovaDF, digits = c( 0, 2, 4 ), align = 'lrr', 
                caption = CAPTION, label = LABEL, floating = TRUE, latex.environments = "center" ),
        table.placement = "H" )
-saveModel( modelData = modelFPL100Disab, modelFilename = 'modelFPL100Disab.RData' )
 
-#######################################################################
-## Model with Non Disabled only
-########################################################################
-DataNoDisb <- subset( Data, adult_disb == "no" )
-
-modelFPL100NoDisab <- lmerTest::lmer( 
-  FPL100 ~ 1 + Time + I( Time^2 ) + gender + ms + race_origin + education + 
-    gender*ms + ms*race_origin + ms*education + race_origin*education +
-    ( 1 | hhid ), data = DataNoDisb, weights = wt
-)
-modelFPL100NoDisab_Anova <- lmerTest::anova( modelFPL100NoDisab )
-modelFPL100NoDisab_Summary <- lmerTest::summary( modelFPL100NoDisab )
-print( modelFPL100NoDisab_Anova )
-print( modelFPL100NoDisab_Summary )
-
-modelFPL100NoDisab_AnovaDF <- formatAnovaTableForXtable( anovaTable = modelFPL100NoDisab_Anova )
-CAPTION <- "FPL100 vs demographic factors and time, for households with No Disability" 
-LABEL <- 'tab:Anova3'
-print( xtable( modelFPL100NoDisab_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ), align = 'lrrrrr', 
-               caption = CAPTION, label = LABEL, floating = TRUE, latex.environments = "center"),
-       table.placement = "H", size = 'footnotesize' )
-
-saveModel( modelData = modelFPL100NoDisab, modelFilename = 'modelFPL100NoDisab.RData' )
 #######################################################################
 ## Post hoc tests
 #######################################################################
@@ -243,6 +223,11 @@ for( Factor in postHocFactors ){
     test.effs = Factor
   )
   
+  postHoc <- lmerTest::lsmeans( 
+    model = modelFPL100Disab, 
+    test.effs = Factor
+  )
+
   CAPTION <- paste( 'Post-hoc test of', getFactorName( Factor ), 'for households with Disability' )
   LABEL <- paste0( 'tab:', gsub( pattern = ':', replacement = '_', x = Factor ), '_Disb' )
   columnsToMerge <- c( 'Factor Levels', 'Estimate', 'Standard Error', 't-value', 'p-value' )  

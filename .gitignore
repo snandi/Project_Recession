@@ -1,7 +1,5 @@
 *.gz
 .DS_Store
-*.pdf
-*.docx
 *~
 tmp
 backup_linux
