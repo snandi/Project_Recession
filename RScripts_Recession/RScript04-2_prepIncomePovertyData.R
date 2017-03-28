@@ -133,7 +133,7 @@ Colnames_keep <- c( 'ssuid',
 Data <- unique( Data15[, Colnames_keep] )
 
 Data <- dropSomeMonths( dropMonths = c( 'May 2008', 'Jun 2008', 'Jul 2013' ), Data = Data )
-View( subset( Data, ssuid == "019128358448" )[,1:15] )
+#View( subset( Data, ssuid == "019128358448" )[,1:15] )
 filenameSubset <- paste0( RDataPath, 'Data_019128358448.csv' )
 write.csv( subset( Data, ssuid == "019128358448" ), file = filenameSubset, row.names = F )
 

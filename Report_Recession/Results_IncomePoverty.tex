@@ -11,7 +11,8 @@
 \begin{document}
 \doublespacing
 %\SweaveOpts{concordance=TRUE}
-\bibliographystyle{plain}  %Choose a bibliograhpic style
+%\bibliographystyle{plain}  %Choose a bibliograhpic style
+\bibliographystyle{chicago}
 
 \title{Effects of Great Recession on Income Poverty}
 \author{Subharati Ghosh, Subhrangshu Nandi, Susan Murphy \\
@@ -26,29 +27,30 @@
 \maketitle
 
 \section{Study Aim}
-The aim of this study is to analyze how households with a working age adult with disability compare with households with no adult with disability, during the {\emph{great recession}}, using ``Income Poverty'' as a measure of economic wellbeing, when controlling for demographic factors such as gender, marital status, education, race and origin. 
+The aim of this study is to analyze how households with a working age adult with disability compare with households with no working age adult with disability, during the {\emph{great recession}} \footnote{Business Cycle Dating Committee, National Bureau of Economic Research (NBER)}, using ``Income Poverty'' as a measure of economic wellbeing, controlling for demographic factors such as gender, marital status, education, race and origin. 
 
-\section{Sample}
+\section{Study Methods}
+\subsection{Sample}
 For this analysis data from US Census Bureau's SIPP 2008 panel survey was used. {\footnote{For more information on the SIPP 2008 panel schedule, please refer to this \href{http://www.census.gov/programs-surveys/sipp/data/2008-panel.html}{US Census Bureau website}}}. Questions on whether the households had a working age adult with disability were asked in wave-6 of the survey, which ended in August, 2010. Households that participated in wave-6 were included in our sample. There were a total of 34,850 households in wave six. Survey data upto wave-15 were used in our sample. Survey results from July, 2008 through June, 2013 were included in the analysis. Households whose reference person remained the same throughout the 2008 panel were kept in the sample. The reference persons of the households were also required to be 18 years or older throughout the 2008 panel. The final sample had 33,547 households that satisfied all the inclusion criteria. 
 
-\section{Methods}
+\subsection{Measures}
 Total monthly household income was divided by monthly federal poverty level (FPL) and then averaged over quarters to estimate FPL100-ratio. An FPL100-ratio lower than one in any quarter indicated the household was below 100\% Federal poverty level in that quarter. Averaging monthly values over a quarter reduced the noise in the response variable by eliminating the month-by-month variability in the income data. In the sample, the monthly income data ranged from -\$27,180 to \$108,900, the average being \$5240 and median \$3,874. The negative incomes were associated with households owning business that incurred lossed in those months. The FPL100-ratio ranged from -17.95 to 89.48, with the average being 3.817 and the median 2.924. In the sample, 7,865 out of 33,547 households (23.44\%) had at least one working age adult with disability during the observed time period, as identified in wave-6 of the survey. Data from July 2008 (2008-Q3) through May 2013 (2013-Q1) were analyzed. This period overlapped with twelve of the eighteen months {\footnote{\href{http://www.nber.org/cycles/}{NBER Recession Cycles}}} of the ``Great recession'' and its long wake. 
 
-\subsection{Mixed-effects model for income poverty}
-A mixed (fixed and random) effects model was fit to estimate the impact of the presence of a working-age adult with disability in a household on its FPL100-ratio. Let $Y$ denote the vector or responses (FPL100-ratio). Let $\Theta$ denote the vector of fixed effect factors like gender, marital status, education level, race, origin of household head, along with their interactions. Let $\beta$ denote another fixed effect of time, represented as quarters, starting from 2008-Q3 and ending in 2013-Q1. Let $b$ denote the household level random effect (random intercept). Then, the mixed-effects (\cite{Fitzmaurice_2012_Applied}) model for the responses, for each household $i$ can be written as
+\subsection{Analytic Strategy}
+A mixed (fixed and random) effects model was fit to analyze how households with a working age adult with disability differ from households with no working age adult with disability, during the great recession, using “Income Poverty” as a measure of economic wellbeing, controlling for demographic factors. Since this dataset is longitudinal in nature, to account for between household differences a mixed effect model was use. FPL100-ratio was used as a measure of income poverty. Let $Y$ denote the vector or responses (FPL100-ratio). Let $\Theta$ denote the vector of fixed effect factors like gender, marital status, education level, race, origin of household head, along with their interactions. Let $\beta$ denote another fixed effect of time, represented as quarters, starting from 2008-Q3 and ending in 2013-Q1. Let $b$ denote the household level random effect (random intercept). The separate estimation of $b_i$ from $\epsilon_{ij}$ ensures the treatment of the two types of variability (between household, $b_i$, and within household, $\epsilon_{ij}$) separately. Then, the mixed-effects (\cite{Fitzmaurice_2012_Applied}) model for the responses, for each household $i$ can be written as
 \vspace{-0.5cm}
 \begin{equation}
 Y_{ij} = \beta_0 + \beta t_j + X_i\Theta + b_i + \epsilon_{ij}
 \label{eq:MixedEffects1}
 \end{equation}
-where, $\epsilon_{ij}$ are regarded as measurement errors, $i$ goes from $1$ to $H$, the number of households, $j$ goes from $1$ to $T$, the total number of quarterly observations for every household. In this model, the response from the $i^{th}$ household at time $t_j$ is assumed to differ from the population mean $X_i\Theta + \beta t_j$ by a household effect $b_i$ and a within household measurement error $\epsilon_{ij}$. The within household and between household errors are assumed to be normal and independent ($b_i \sim \N(0, \sigma^2_b),\ \ \epsilon_{ij} \sim \N(0, \sigma^2), \ \ b_i \indep \epsilon_{ij}, \forall i, j$). The effect of ``time'' is a fixed effect and it could be considered part of the fixed effect design matrix $X$. However, the problem of interest is to test a linear hypothesis about the disability-by-time interaction, to detect the effect of disability on the mean response over the period of the study. Hence, the ``time'' covariate is denoted separately. During estimation it will be estimated as a fixed effect. 
+where, $\epsilon_{ij}$ are regarded as measurement errors, $i$ takes values from $1$ to $H$, the number of households, $j$ from $1$ to $T$, the total number of quarterly observations for every household. In this model, the response from the $i^{th}$ household at time $t_j$ is assumed to differ from the population mean $\beta_0 + \beta t_j + X_i\Theta$ by a household effect $b_i$ and a within household measurement error $\epsilon_{ij}$. The within household and between household errors are assumed to be normal and independent \footnote{($b_i \sim \N(0, \sigma^2_b),\ \ \epsilon_{ij} \sim \N(0, \sigma^2), \ \ b_i \indep \epsilon_{ij}, \forall i, j$)}. The effect of ``time'' is a fixed effect and it could be considered part of the fixed effects $X$. However, the question of interest is to test a linear hypothesis about the disability-by-time interaction, to detect the effect of disability on the mean response over the period of the study. Hence, the ``time'' covariate was denoted separately. During estimation it was estimated as a fixed effect. 
 
 The bottom, or trough, of the great recession was reached in the second quarter of 2009 (marking the technical end of the recession, defined as at least two consecutive quarters of declining GDP) \footnote{Business Cycle Dating Committee, National Bureau of Economic Research (NBER)}. According to NBER, June 2009 was the final month of the recession. We wanted to check if this was reflected in the FPL100-ratio as a downward trend in the initial quarters followed by an upward trend. A simple linear term in ``time'' would be insufficient. We added a second order term $\text{time}^2$ to test the change in direction of trend. The second order term was added after centering the original ``time'' variable, to avoid introducing multicollinearity. 
 
-Below is the model that will be fit: 
+Below is the final model that was fit: 
 \vspace{-0.5cm}
 \begin{equation}
-Y_{ij} = \beta_0 + \beta_1 t_j + \beta_2 t_j^2 + \beta_D \Ind_{D_i} + \gamma(\Ind_{D_i}*t_j) + X_i\Theta + b_i + \epsilon_{ij}
+Y_{ij} = \beta_0 + \beta_1 t_j + \beta_2 t_j^2 + \beta_D \Ind_{D_i} + \beta_t(\Ind_{D_i}*t_j) + X_i\Theta + b_i + \epsilon_{ij}
 \label{eq:MixedEffects2}
 \end{equation}
 
@@ -56,13 +58,13 @@ where, $\Ind_{D_i} = 1$, if household $i$ has a working age adult with disabilit
 $H_0: \beta_1 = 0, \text{  vs  } H_a: \beta_1 \ne 0$ tested if FPL100-ratio changed over time \\
 $H_0: \beta_2 = 0, \text{  vs  } H_a: \beta_2 \ne 0$ tested if the trend of FPL100-ratio changed direction \\
 $H_0: \beta_D = 0, \text{  vs  } H_a: \beta_D \ne 0$ tested if disability had any effect on FPL100-ratio\\
-$H_0: \gamma = 0, \text{  vs  } H_a: \gamma \ne 0$ tested if disability had any effect on the slope of FPL100-ratio during the study period\\
+$H_0: \beta_t = 0, \text{  vs  } H_a: \beta_t \ne 0$ tested if disability had any effect on the slope of FPL100-ratio during the study period\\
 $H_0: \Theta = 0, \text{  vs  } H_a: \Theta \ne 0$ tested if demographic factors had any effect on FPL100-ratio. \\
 In addition, interactions between demographic factors, and between disability and demograhic factors were also tested. 
 
 \noindent
 {\bf{Demographic factors}}\\
-The demographic factors were considered as fixed effects. The factors included in this analysis were {\emph{gender}}, {\emph{marital status}}, {\emph{education}}, and {\emph{race/origin}} of household head. The {\emph{Race/Origin}} factor included ``non-hispanic white'', ``non-hispanic black'', ``hispanic'' and ``others''. For simplicity, ``white'' and ``black'' would indicate categories ``non-hispanic white'' and ``non-hispanic black''. Gender of household head had two categories: ``male'' and ``female''. Education of household head has three categories: ``high-school or less'', ``some college, diploma, associated degrees'' and ``bachelors or higher''. Marital status of household heads has two categories: ``married'' and ``not married''. Divorced or widowed household heads were considered in the ``not married'' category. 
+The demographic factors were considered as fixed effects. The factors included in this analysis were {\emph{gender}}, {\emph{marital status}}, {\emph{education}}, and {\emph{race/origin}} of household head. The {\emph{Race/Origin}} factor included ``non-hispanic white'', ``non-hispanic black'', ``hispanic'' and ``others''. For simplicity, ``white'' and ``black'' would indicate categories ``non-hispanic white'' and ``non-hispanic black''. Gender of household head had two categories: ``male'' and ``female''. Education of household head has three categories: ``high-school or less'', ``some college, diploma, associated degrees'' and ``bachelors or higher''. Marital status of household heads has two categories: ``married'' and ``not married''. Divorced or widowed household heads were considered in the ``not married'' category.\\
 
 \noindent
 {\bf{Computational software}}\\
