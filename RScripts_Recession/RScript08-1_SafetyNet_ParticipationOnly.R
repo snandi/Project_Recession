@@ -28,7 +28,7 @@ getParticipationProportion <- function( Data, columnName, programName ){
   participationData$eligible <- ifelse( test = participationData$adult_disb == 1, 
                                         yes = TotalHH_Disab, 
                                         no = TotalHH_NonDisab )
-  participationData$propProgram <- participationData$participateProgram/participation_SSI$eligible
+  participationData$propProgram <- participationData$participateProgram/participationData$eligible
   participationData$programName <- programName
   return( participationData )
 }
@@ -79,7 +79,8 @@ Data15$hhid <- paste( Data15$ssuid, Data15$shhadid, sep = '_' )
 ########################################################################
 ## Drop some months
 ########################################################################
-Data15 <- dropSomeMonths( dropMonths = c( 'May 2008', 'Jun 2008', 'May 2013', 'Jun 2013', 'Jul 2013' ), 
+Data15 <- dropSomeMonths( dropMonths = c( 'May 2008', 'Jun 2008', 'Jul 2008', 
+                                          'May 2013', 'Jun 2013', 'Jul 2013' ), 
                           Data = Data15 )
 
 ########################################################################
@@ -125,11 +126,20 @@ proportionData$adult_disb <- factor( proportionData$adult_disb, levels = c( 1, 0
 ########################################################################
 ## Get the program participation proportion Plot
 ########################################################################
-proportionPlot <- qplot() + geom_point( aes( x = yearmon, y = propProgram, pch = adult_disb ), data = proportionData ) +
+proportionPlot <- qplot() + geom_line( aes( x = yearmon, y = propProgram, linetype = adult_disb ), 
+                                       data = proportionData, size = 1.25 ) +
   facet_wrap( ~ programName, nrow = 2 ) +
-  xlab( label = 'time' ) + ylab( label = 'program participation proportion' ) +
-  theme( legend.position = 'top', 
-         legend.title = element_blank() )
+  xlab( label = 'time' ) + ylab( label = 'program participation rate' ) +
+  theme( legend.position   = 'top', 
+         legend.title      = element_blank(), 
+         panel.background  = element_rect( fill = "white", colour = NA ),
+         panel.border      = element_rect( fill = NA, colour = "black" ),
+         panel.grid.major  = element_line( colour = "grey80", size = 0.5 ),
+         panel.grid.minor  = element_line( colour = "grey95", size = 0.3 )
+  )
 
 filenameSave <- paste0( PlotPath, 'ProgramParticipationPlots.pdf' )
-ggsave( filename = filenameSave, plot = proportionPlot )
+ggsave( filename = filenameSave, plot = proportionPlot, device = 'pdf' )
+
+filenameSave <- paste0( PlotPath, 'ProgramParticipationPlots.jpg' )
+ggsave( filename = filenameSave, plot = proportionPlot, device = 'jpeg' )

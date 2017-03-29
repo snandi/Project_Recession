@@ -109,6 +109,14 @@ rm( Data_forIncPov )
 #     ( 1 | hhid ), data = Data, weights = wt 
 # )
 # finalModel <- lmerTest::step( model = FULLmodelFPL100 )
+modelFPL100_lmer <- lme4::lmer( 
+  FPL100_num ~ 1 + Time + I( Time^2 ) + adult_disb + gender + ms + race_origin + education + 
+    adult_disb*gender + adult_disb*education + adult_disb*Time +
+    gender*ms + gender*education + ms*race_origin + ms*education + race_origin*education +
+    ( 1 | hhid ), data = Data, weights = wt 
+)
+summary( modelFPL100_lmer )
+stargazer::stargazer( modelFPL100_lmer )
 
 modelFPL100 <- lmerTest::lmer( 
   FPL100_num ~ 1 + Time + I( Time^2 ) + adult_disb + gender + ms + race_origin + education + 
