@@ -115,8 +115,8 @@ modelFPL100_lmer <- lme4::lmer(
     gender*ms + gender*education + ms*race_origin + ms*education + race_origin*education +
     ( 1 | hhid ), data = Data, weights = wt 
 )
-summary( modelFPL100_lmer )
-stargazer::stargazer( modelFPL100_lmer )
+# summary( modelFPL100_lmer )
+# stargazer::stargazer( modelFPL100_lmer )
 
 modelFPL100 <- lmerTest::lmer( 
   FPL100_num ~ 1 + Time + I( Time^2 ) + adult_disb + gender + ms + race_origin + education + 
@@ -144,6 +144,7 @@ print( xtable( modelFPL100_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ) , align = 'lr
        table.placement = "H" )
 
 saveModel( modelData = modelFPL100, modelFilename = 'modelFPL100.RData' )
+saveModel( modelData = modelFPL100_lmer, modelFilename = 'modelFPL100_lmer.RData' )
 
 #######################################################################
 ## Model with Disabled only
