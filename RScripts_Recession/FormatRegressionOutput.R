@@ -30,10 +30,46 @@ library( stargazer )
 
 Today <- Sys.Date( )
 
-modelFPL100 <- loadModel( modelFilename = 'modelFPL100.RData' )
+modelFPL100_Summary <- loadModel( modelFilename = 'modelFPL100_Summary.RData' )
 
-stargazer::stargazer( modelFPL100, type = 'latex' )
+Coeff_Fixed <- as.data.frame( modelFPL100_Summary$coefficients[, c( 1, 2, 5 )] )
+colnames( Coeff_Fixed ) <- c( 'beta', 'stdError', 'pValue' )
+Coeff_Fixed <- within( data = Coeff_Fixed, {
+  beta = round( beta, 2 )
+  stdError = round( stdError, 3 )
+  pValue = round( pValue, 4 )
+})
+rownames( Coeff_Fixed ) <- c(
+  'Intercept', 
+  'Time', 
+  'Time2', 
+  'Adult Disability', 
+  'Gender: (Female)',
+  'Marital status: (Not married)',
+  'Race2: (Hispanic)', 
+  'Race3: (Others)', 
+  'Race4: (White)', 
+  'Education2: (Some college, diploma, assoc)', 
+  'Education3: (Bachelors or higher)',
+  'Adult Disability x Gender',
+  'Adult Disability x Education2',
+  'Adult Disability x Education3',
+  'Adult Disability x Time',
+  'Gender x Marital status',
+  'Gender x Education2',
+  'Gender x Education3',
+  'Marital status x Race2', 
+  'Marital status x Race3', 
+  'Marital status x Race4', 
+  'Marital status x Education2', 
+  'Marital status x Education3', 
+  'Race2 x Education2', 
+  'Race3 x Education2', 
+  'Race4 x Education2', 
+  'Race2 x Education3', 
+  'Race3 x Education3', 
+  'Race4 x Education3'
+  )
 
-coef( modelFPL100 )
-summary( modelFPL100 )
-
+print( xtable( Coeff_Fixed, align = "lrrr", digits = c( 0, 2, 3, 4), caption = "Regression result", 
+               label = "tab:Table2Reg" ), table.placement = "H" )

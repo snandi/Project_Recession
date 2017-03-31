@@ -21,6 +21,13 @@ preprocessAndSaveData <- function( Data, filenameModelData = 'Data_forIncPovMode
   ## This is necessary for post hoc test, otherwise it is throwing exception as the 
   ## object not being a matrix, when difflsmeans is called
   Data$Time <- Data$yearQtrNumCentered <- Data$yearqtrNum - mean( Data$yearqtrNum )
+  
+  Data$race_origin <- factor( Data$race_origin, levels = c( "White", "Black", "Hispanic", "Others") )
+  Data$ms <- factor( Data$ms, levels = c( "Married", "Not married" ) )
+  Data$gender <- factor( Data$gender, levels = c( "Male", "Female" ) )
+  Data$education <- factor( Data$education, 
+                            levels = c( "Bachelors or higher", "Some college, diploma, assoc", "High School or less" ) )
+  
   Data_forIncPovModel <- Data
   filenameData <- paste0( RDataPath, filenameModelData )
   save( Data_forIncPovModel, file = filenameData )
@@ -57,7 +64,7 @@ formatPostHocTables <- function( postHocTable, multipleCorrection = TRUE,
   }
   
   #   postHocTableDF <- postHocTableDF[ order( postHocTableDF$`p-value`, decreasing = F ), ]
-  postHocTableDF <- postHocTableDF[ order( postHocTableDF[,'p.value'], -abs( postHocTableDF[,'t-value'] ), 
+  postHocTableDF <- postHocTableDF[ order( postHocTableDF[,'p-value'], -abs( postHocTableDF[,'t-value'] ), 
                                            decreasing = F ), ]
   
   postHocTableDF$`Factor Levels` <- sapply( X = postHocTableDF$`Factor Levels`, FUN = getFactorName )
@@ -111,7 +118,7 @@ rm( Data_forIncPov )
 # finalModel <- lmerTest::step( model = FULLmodelFPL100 )
 modelFPL100_lmer <- lme4::lmer( 
   FPL100_num ~ 1 + Time + I( Time^2 ) + adult_disb + gender + ms + race_origin + education + 
-    adult_disb*gender + adult_disb*education + adult_disb*Time +
+    adult_disb*Time + adult_disb*gender + adult_disb*education +
     gender*ms + gender*education + ms*race_origin + ms*education + race_origin*education +
     ( 1 | hhid ), data = Data, weights = wt 
 )
@@ -145,6 +152,7 @@ print( xtable( modelFPL100_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ) , align = 'lr
 
 saveModel( modelData = modelFPL100, modelFilename = 'modelFPL100.RData' )
 saveModel( modelData = modelFPL100_lmer, modelFilename = 'modelFPL100_lmer.RData' )
+saveModel( modelData = modelFPL100_Summary, modelFilename = 'modelFPL100_Summary.RData' )
 
 #######################################################################
 ## Model with Disabled only
@@ -159,9 +167,8 @@ DataDisb <- subset( Data, adult_disb == "yes" )
 # )
 # finalModel <- lmerTest::step( model = FULLmodelFPL100Disab )
 modelFPL100Disab <- lmerTest::lmer( 
-  FPL100 ~ 1 + Time + I( Time^2 ) + gender + ms + race_origin + education + 
-    gender*Time + ms*Time + race_origin*Time + education*Time + 
-    gender*ms*Time + race_origin*I(Time^2) +
+  FPL100_num ~ 1 + Time + I( Time^2 ) + gender + ms + race_origin + education + 
+    gender*ms + ms*race_origin + ms*education + race_origin*education +
     ( 1 | hhid ), data = DataDisb, weights = wt
 )
 saveModel( modelData = modelFPL100Disab, modelFilename = 'modelFPL100Disab.RData' )
@@ -176,39 +183,40 @@ LABEL <- 'tab:Anova2'
 print( xtable( modelFPL100Disab_AnovaDF, digits = c( 0, 2, 4 ), align = 'lrr', 
                caption = CAPTION, label = LABEL, floating = TRUE, latex.environments = "center" ),
        table.placement = "H" )
+saveModel( modelData = modelFPL100Disab_Summary, modelFilename = 'modelFPL100Disab_Summary.RData' )
 
 #######################################################################
 ## Post hoc tests
 #######################################################################
-postHocFactors <- c( 'race_origin', 'education', 
-                     'gender:ms', 'gender:education', 'ms:race_origin', 'ms:education',
-                     'race_origin:education'
-)
-
-Factor <- postHocFactors[3]
-
-for( Factor in postHocFactors ){
-  print( "#############################################################" )
-  print( Factor )
-  print( "#############################################################" )
-  
-  postHoc <- lmerTest::difflsmeans( 
-    model = modelFPL100, 
-    test.effs = Factor
-  )
-  
-  CAPTION <- paste( 'Post-hoc test of', getFactorName( Factor ) )
-  LABEL <- paste0( 'tab:', Factor )
-  columnsToDisplay <- c( 'Factor Levels', 'Estimate', 'Standard Error', 't-value', 'p-value' )  
-  postHocDF <- formatPostHocTables( postHocTable = postHoc )
-  try( print( xtable( postHocDF[, columnsToDisplay], align = 'llrrrr', digits = c( 0, 0, 2, 2, 2, 4 ), 
-                      caption = CAPTION, label = LABEL ), 
-              include.rownames = FALSE, table.placement = "H", size = 'footnotesize' ) )
-  
-  try( print( postHoc ) )
-  
-  try( rm( postHoc ) )
-}
+# postHocFactors <- c( 'race_origin', 'education', 
+#                      'gender:ms', 'gender:education', 'ms:race_origin', 'ms:education',
+#                      'race_origin:education'
+# )
+# 
+# Factor <- postHocFactors[3]
+# 
+# for( Factor in postHocFactors ){
+#   print( "#############################################################" )
+#   print( Factor )
+#   print( "#############################################################" )
+#   
+#   postHoc <- lmerTest::difflsmeans( 
+#     model = modelFPL100, 
+#     test.effs = Factor
+#   )
+#   
+#   CAPTION <- paste( 'Post-hoc test of', getFactorName( Factor ) )
+#   LABEL <- paste0( 'tab:', Factor )
+#   columnsToDisplay <- c( 'Factor Levels', 'Estimate', 'Standard Error', 't-value', 'p-value' )  
+#   postHocDF <- formatPostHocTables( postHocTable = postHoc )
+#   try( print( xtable( postHocDF[, columnsToDisplay], align = 'llrrrr', digits = c( 0, 0, 2, 2, 2, 4 ), 
+#                       caption = CAPTION, label = LABEL ), 
+#               include.rownames = FALSE, table.placement = "H", size = 'footnotesize' ) )
+#   
+#   try( print( postHoc ) )
+#   
+#   try( rm( postHoc ) )
+# }
 
 # dev.off( )
 
@@ -219,9 +227,10 @@ print( "#############################################################" )
 print( "Post hoc tests for disability only" )
 print( "#############################################################" )
 
-postHocFactors <- c( 'gender', 'ms', 'race_origin', 'education', 'gender:ms', 'ms:race_origin', 
+postHocFactors <- c( 'race_origin', 'education', 'gender:ms', 'gender:education', 'ms:race_origin', 
                      'ms:education', 'race_origin:education' )
-Factor <- 'gender:ms'
+Factor <- postHocFactors[1]
+postHocTableAll <- c()
 for( Factor in postHocFactors ){
   print( "#############################################################" )  
   print( Factor )
@@ -231,21 +240,27 @@ for( Factor in postHocFactors ){
     model = modelFPL100Disab, 
     test.effs = Factor
   )
-  
-  postHoc <- lmerTest::lsmeans( 
-    model = modelFPL100Disab, 
-    test.effs = Factor
-  )
 
   CAPTION <- paste( 'Post-hoc test of', getFactorName( Factor ), 'for households with Disability' )
   LABEL <- paste0( 'tab:', gsub( pattern = ':', replacement = '_', x = Factor ), '_Disb' )
-  columnsToMerge <- c( 'Factor Levels', 'Estimate', 'Standard Error', 't-value', 'p-value' )  
-  postHocDF <- formatPostHocTables( postHocTable = postHoc,  )
-  try( print( xtable( postHocDF[, columnsToMerge], align = 'llrrrr', digits = c( 0, 0, 2, 2, 2, 4 ), 
-                      caption = CAPTION, label = LABEL ), include.rownames = FALSE, 
-              table.placement = "H", size = 'footnotesize' ) )
+  columnsToMerge <- c( 'Factor Levels', 'Estimate', 't-value', 'p-value' )  
+  postHocDF <- formatPostHocTables( postHocTable = postHoc, multipleCorrection = TRUE, 
+                                    multipleCorrectionMethod = 'BH' )
+  postHocDF <- postHocDF[, columnsToMerge ]
+  postHocTableAll <- rbind( postHocTableAll, postHocDF )
+  
+#   try( print( xtable( postHocDF[, columnsToMerge], align = 'llrrr', digits = c( 0, 0, 2, 2, 4 ), 
+#                       caption = CAPTION, label = LABEL ), include.rownames = FALSE, 
+#               table.placement = "H", size = 'footnotesize' ) )
   
   try( print( postHoc ) )
   try( rm( postHoc ) )
 }
+
+CAPTION <- 'Post-hoc test of factors, for households with disability'
+LABEL <- 'tab:PostHoc'
+try( print( xtable( postHocTableAll[, columnsToMerge], align = 'llrrr', digits = c( 0, 0, 2, 2, 4 ), 
+                    caption = CAPTION, label = LABEL ), include.rownames = FALSE, 
+            table.placement = "H", size = 'footnotesize' ) )
+
 
