@@ -142,11 +142,12 @@ modelFPL100_Anova <- lmerTest::anova( modelFPL100 )
 modelFPL100_Summary <- lmerTest::summary( modelFPL100 )
 print( modelFPL100_Summary )
 
-modelFPL100_AnovaDF <- formatAnovaTableForXtable( anovaTable = modelFPL100_Anova )
+modelFPL100_AnovaDF <- formatAnovaTableForXtable( 
+  anovaTable = modelFPL100_Anova, multipleCorrection = T, multipleCorrectionMethod = 'BH' )
 CAPTION <- "FPL100 vs demographic factors and time and disability status" 
 LABEL <- 'tab:Anova1'
 
-print( xtable( modelFPL100_AnovaDF, digits = c( 0, 2, 2, 0, 2, 4 ) , align = 'lrrrrr', 
+print( xtable( modelFPL100_AnovaDF, digits = c( 0, 2, 4 ) , align = 'lrr', 
                caption = CAPTION, label = LABEL, floating = TRUE, latex.environments = "center" ), 
        table.placement = "H" )
 
