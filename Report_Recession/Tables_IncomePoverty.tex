@@ -9,64 +9,76 @@
 \caption{Descriptive statistics in wave six} 
 \begin{tabular}{lrrrr}
 \hline 
+\hline 
 & \multicolumn{2}{c}{\underline{\bf{HH with No Disability}}} & \multicolumn{2}{c}{\underline{\bf{HH with Disability}}} \\
 {\bf{Demographic factors}} & {\bf{Number}} & {\bf{Percentage}} & {\bf{Number}} & {\bf{Percentage}} \\
 \hline 
-Total                     & 26,104      & 77.81       & 7,443    & 22.19 \\
-
-
+Total					& 26,104	& 77.81		& 7,443		& 22.19		\\
+Gender:					&		&		&		& 		\\
+\hspace{5pt} Male			& 12,626	& 48.37		& 3,378		& 45.38		\\
+\hspace{5pt} Female			& 13,478	& 51.63		& 4,065		& 54.62		\\
+Marital status:				&		&		&		& 		\\
+\hspace{5pt} Married			& 13,555	& 51.93		& 3,968		& 53.31		\\
+\hspace{5pt} Not Married		& 12,549	& 48.07		& 3,474		& 46.67		\\
+Race and ethnicity:			&		&		&		& 		\\
+\hspace{5pt} White			& 18,765 	& 71.89		& 4,965		& 66.71		\\
+\hspace{5pt} Hispanic			&  2,996	& 11.48		&   908		& 12.20		\\
+\hspace{5pt} Black			&  2,912	& 11.16		& 1,092		& 14.67		\\
+\hspace{5pt} Others			&  1,431	&  5.48		&   479		&  6.44		\\
+Education:				&		&		&		& 		\\
+\hspace{5pt} High school or less	&  8,496 	& 32.55		& 2,994		& 40.23		\\
+\hspace{5pt} Some college, diploma, assoc& 8,916 	& 34.16		& 2,863		& 38.47		\\
+\hspace{5pt} Bachelors or higher	&  8,692 	& 33.30		& 1,586		& 21.31		\\
+\hline 
 \hline 
 \end{tabular}
 \label{tab:DescStats}
 \end{table}
 
-\noindent
-\begin{table}[H] 
-\centering 
+
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Thu Mar 30 18:34:49 2017
+\begin{table}[H]
 \footnotesize
-%\begin{tabular}{@{\extracolsep{5pt}}lccc|c}
-\caption{Coefficients of Fixed effects in regression models} 
-\begin{tabular}{l|c}
-\hline 
-\hline 
-% & \multicolumn{4}{c}{\textit{Dependent variable:}} \\ 
-%& Model1 (with Baseline) & Model2 (with No Baseline) \\
-%\hline 
-%Intercept		&	$2.779^{***}$		&	$0.1478^{**}$ 		\\
-%			&	$(0.0706)$		&	$(0.0646)$		\\
-%time (Year-Quarter)	&	$-0.0553^{***}$		&	$-0.0543^{***}$ 	\\
-%			&	$(0.0021)$		&	$(0.0021)$		\\
-%$\text{time}^2$		&	$0.0073^{***}$		&	$0.0075^{***}$ 		\\
-%			&	$(0.0013)$		&	$(0.0013)$		\\
-%Disability		&	$-0.5061^{***}$		&	$-0.0233$		\\    
-%			&	$(0.0564)$		&	$(0.0499)$		\\
-%Year-Quarter*Disability	&	$0.0150^{***}$		&	$0.0150^{***}$		\\
-%			&	$(0.0043)$		&	$(0.0043)$		\\
-%
-Continuous Indep Variables & Model coefficients \\
-\hline 
-Intercept			&	$2.779^{***}$		\\
-				&	$(0.0706)$		\\
-time (Year-Quarter)		&	$-0.0553^{***}$		\\
-				&	$(0.0021)$		\\
-$\text{time}^2$			&	$0.0073^{***}$		\\
-				&	$(0.0013)$		\\
-Disability			&	$-0.5061^{***}$		\\    
-				&	$(0.0564)$		\\
-Year-Quarter*Disability		&	$0.0150^{***}$		\\
-				&	$(0.0043)$		\\
-Gender (Female)	 		&	$-0.113^{***}$		\\
-				&	$(0.0394)$		\\
-Marital status (not married) 	&	$-0.1679^{***}$		\\
-				&	$(0.0545)$		\\
-\hline 
-\hline 
-\multicolumn{2}{r}{\textit{Note:}  $^{*}$p$<$0.1; $^{**}$p$<$0.05; $^{***}$p$<$0.01} \\ 
-
+\centering
+\caption{Regression result} 
+\begin{tabular}{lrrr}
+  \hline
+  & $\beta$ & Std. Error & p-value \\ 
+  \hline
+  Intercept & 2.78 & 0.071 & 0.0000 \\ 
+  Time & -0.05 & 0.002 & 0.0000 \\ 
+  $\text{Time}^2$ & 0.01 & 0.001 & 0.0000 \\ 
+  Adult Disability & -0.51 & 0.056 & 0.0000 \\ 
+  Gender: (Female) & -0.11 & 0.039 & 0.0041 \\ 
+  Marital status: (Not married) & -0.17 & 0.055 & 0.0021 \\ 
+  Race2: (Hispanic) & -0.09 & 0.083 & 0.2653 \\ 
+  Race3: (Others) & 0.35 & 0.107 & 0.0012 \\ 
+  Race4: (White) & 0.91 & 0.070 & 0.0000 \\ 
+  Education2: (Some college, diploma, assoc) & 0.65 & 0.077 & 0.0000 \\ 
+  Education3: (Bachelors or higher) & 1.83 & 0.096 & 0.0000 \\ 
+  Adult Disability x Gender & 0.19 & 0.050 & 0.0001 \\ 
+  Adult Disability x Education2 & -0.11 & 0.057 & 0.0589 \\ 
+  Adult Disability x Education3 & -0.22 & 0.072 & 0.0022 \\ 
+  Adult Disability x Time & 0.01 & 0.004 & 0.0006 \\ 
+  Gender x Marital status & -0.52 & 0.032 & 0.0000 \\ 
+  Gender x Education2 & -0.15 & 0.047 & 0.0011 \\ 
+  Gender x Education3 & -0.26 & 0.052 & 0.0000 \\ 
+  Marital status x Race2 & 0.32 & 0.063 & 0.0000 \\ 
+  Marital status x Race3 & -0.03 & 0.082 & 0.7415 \\ 
+  Marital status x Race4 & -0.21 & 0.051 & 0.0000 \\ 
+  Marital status x Education2 & -0.11 & 0.035 & 0.0019 \\ 
+  Marital status x Education3 & -0.23 & 0.038 & 0.0000 \\ 
+  Race2 x Education2 & -0.06 & 0.092 & 0.4820 \\ 
+  Race3 x Education2 & 0.04 & 0.121 & 0.7619 \\ 
+  Race4 x Education2 & 0.03 & 0.072 & 0.6425 \\ 
+  Race2 x Education3 & -0.13 & 0.123 & 0.2981 \\ 
+  Race3 x Education3 & 0.58 & 0.136 & 0.0000 \\ 
+  Race4 x Education3 & 0.37 & 0.093 & 0.0001 \\ 
+  \hline
 \end{tabular}
-\label{tab:FixedEffectsBetas} 
+\label{tab:Table2Reg}
 \end{table}
-
 
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
 % Mon Mar 13 12:08:48 2017
@@ -291,7 +303,7 @@ Factor Levels & Estimate & Standard Error & t-value & p-value \\
 % Table created by stargazer v.5.2 by Marek Hlavac, Harvard University. E-mail: hlavac at fas.harvard.edu
 % Date and time: Wed, Mar 29, 2017 - 11:11:17 AM
 \begin{table}[!htbp] \centering 
-\footnotesize
+\tiny
   \caption{} 
   \label{} 
 \begin{tabular}{@{\extracolsep{5pt}}lc} 
