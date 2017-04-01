@@ -86,6 +86,7 @@ Coeff_Disab <- within( data = Coeff_Disab, {
   stdError = round( stdError, 3 )
   pValue = round( pValue, 4 )
 })
+
 rownames( Coeff_Disab ) <- c(
   'Intercept', 
   'Time', 
@@ -98,6 +99,8 @@ rownames( Coeff_Disab ) <- c(
   'Education2: (Some college, diploma, assoc)', 
   'Education3: (High School or less)',
   'Gender x Marital status',
+  'Gender x Education2',
+  'Gender x Education3',
   'Marital status x Race2', 
   'Marital status x Race3', 
   'Marital status x Race4', 

@@ -35,6 +35,9 @@ Disab <- aggregate(adult_disb ~ ssuid + shhadid, data = Data_disab, FUN = max)
 Data1 <- merge(Data, Disab, by = c('ssuid', 'shhadid'))
 #Data1 <- merge(Data, Disab, by = c('ssuid'))
 
+Data1$hhid <- paste( Data1$ssuid, Data1$shhadid, sep = '_' )
+Subset <- subset( Data1, hhid == '019128358448_11' )
+Subset <- Subset[ order( Subset$)]
 ## ssuids
 households <- unique(Data1[,c('ssuid', 'shhadid', 'ehrefper')])
 

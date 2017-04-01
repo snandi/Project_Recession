@@ -169,21 +169,21 @@ DataDisb <- subset( Data, adult_disb == "yes" )
 # finalModel <- lmerTest::step( model = FULLmodelFPL100Disab )
 modelFPL100Disab <- lmerTest::lmer( 
   FPL100_num ~ 1 + Time + I( Time^2 ) + gender + ms + race_origin + education + 
-    gender*ms + ms*race_origin + ms*education + race_origin*education +
+    gender*ms + gender*education + ms*race_origin + ms*education + race_origin*education +
     ( 1 | hhid ), data = DataDisb, weights = wt
 )
 saveModel( modelData = modelFPL100Disab, modelFilename = 'modelFPL100Disab.RData' )
 
 modelFPL100Disab_Anova <- lmerTest::anova( modelFPL100Disab )
-modelFPL100Disab_Summary <- lmerTest::summary( modelFPL100Disab )
-print( modelFPL100Disab_Summary )
-
 modelFPL100Disab_AnovaDF <- formatAnovaTableForXtable( anovaTable = modelFPL100Disab_Anova )
 CAPTION <- "FPL100 vs demographic factors and time, for households with Disability" 
 LABEL <- 'tab:Anova2'
 print( xtable( modelFPL100Disab_AnovaDF, digits = c( 0, 2, 4 ), align = 'lrr', 
                caption = CAPTION, label = LABEL, floating = TRUE, latex.environments = "center" ),
        table.placement = "H" )
+
+modelFPL100Disab_Summary <- lmerTest::summary( modelFPL100Disab )
+print( modelFPL100Disab_Summary )
 saveModel( modelData = modelFPL100Disab_Summary, modelFilename = 'modelFPL100Disab_Summary.RData' )
 
 #######################################################################
