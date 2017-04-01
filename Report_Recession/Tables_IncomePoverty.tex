@@ -5,7 +5,7 @@
 \noindent
 \begin{table}[H] 
 \centering 
-\footnotesize
+%\footnotesize
 \caption{Descriptive statistics of the sample in wave six of the study} 
 \begin{tabular}{lrrrr}
 \hline 
@@ -39,55 +39,106 @@ Education:				&		&		&		& 		\\
 % latex table generated in R 3.3.1 by xtable 1.8-2 package
 % Thu Mar 30 18:34:49 2017
 \begin{table}[H]
-\footnotesize
+%\footnotesize
 \centering
-\caption{Mixed effects regression ouput testing the difference in income poverty between families with and without a working age adult with disability over the {\emph{great recession}} controlling for demographic factors } 
+\caption{Mixed effects regression ouput testing the difference in income poverty between families with and without a working age adult with disability, over the {\emph{great recession}} controlling for demographic factors. Only significant interactions (p-value $< 0.05$) have been reported.} 
 \begin{threeparttable}
-\begin{tabular}{lrrr}
+%\footnotesize
+\begin{tabular}{lrcl}
   \hline
-  Predictor and Control variables & $\beta$ & Std. Error & p-value \\ 
+  {\bf{Predictor and Control variables}} & $\mathbf{\beta}$ & {\bf{Std. Error}} & {\bf{p-value}} \\ 
   \hline
-  Intercept & 5.90 & 0.037 & 0.0000 \\ 
-  Time & -0.05 & 0.002 & 0.0000 \\ 
-  $\text{Time}^2$ & 0.01 & 0.001 & 0.0000 \\ 
-  Adult Disability & -0.73 & 0.068 & 0.0000 \\ 
-  Adult Disability x Time & 0.01 & 0.004 & 0.0006 \\ 
-  Gender: (Female)$^1$ & -0.37 & 0.043 & 0.0000 \\ 
-  Marital status: (Not married)$^2$ & -0.61 & 0.034 & 0.0000 \\ 
-  Race2: (Black)$^3$ & -1.28 & 0.086 & 0.0000 \\ 
-  Race3: (Hispanic)$^3$ & -1.51 & 0.088 & 0.0000 \\ 
-  Race4: (Others)$^3$ & -0.36 & 0.087 & 0.0000 \\ 
-  Education2$^4$: (Some college, diploma, assoc) & -1.52 & 0.045 & 0.0000 \\ 
-  Education3$^4$: (High School or less) & -2.20 & 0.048 & 0.0000 \\ 
-  Adult Disability x Gender & 0.19 & 0.050 & 0.0001 \\ 
-  Adult Disability x Education2 & 0.11 & 0.068 & 0.1002 \\ 
-  Adult Disability x Education3 & 0.22 & 0.072 & 0.0022 \\ 
-  Gender x Marital status & -0.52 & 0.032 & 0.0000 \\ 
-  Gender x Education2 & 0.10 & 0.051 & 0.0448 \\ 
-  Gender x Education3 & 0.26 & 0.052 & 0.0000 \\ 
-  Marital status x Race2 & 0.21 & 0.051 & 0.0000 \\ 
-  Marital status x Race3 & 0.53 & 0.046 & 0.0000 \\ 
-  Marital status x Race4 & 0.18 & 0.069 & 0.0081 \\ 
-  Marital status x Education2 & 0.12 & 0.037 & 0.0008 \\ 
-  Marital status x Education3 & 0.23 & 0.038 & 0.0000 \\ 
-  Race2 x Education2 & 0.34 & 0.087 & 0.0001 \\ 
-  Race3 x Education2 & 0.40 & 0.092 & 0.0000 \\ 
-  Race4 x Education2 & -0.21 & 0.104 & 0.0460 \\ 
-  Race2 x Education3 & 0.37 & 0.093 & 0.0001 \\ 
-  Race3 x Education3 & 0.50 & 0.092 & 0.0000 \\ 
-  Race4 x Education3 & -0.21 & 0.110 & 0.0552 \\ 
+  Intercept 						& 5.896 	& 0.037 & 0.0000 \\ 
+  Time ($t$) 						& -0.054 	& 0.002 & 0.0000 \\ 
+  Time-squared ($t^2$) 					& 0.007 	& 0.001 & 0.0000 \\ 
+  Adult Disability 					& -0.725 	& 0.068 & $0.0000^{(5)}$ \\ 
+  Adult Disability x Time 				& 0.015		& 0.004 & $0.9994^{(5)}$ \\ 
+  Gender$^1$: (Female) 					& -0.368 	& 0.043 & 0.0000 \\ 
+  Marital status$^2$: (Not married) 			& -0.611 	& 0.034 & 0.0000 \\ 
+Race$^3$: & & & \\
+  \hspace{5pt} Race2: (Black) 				& -1.284 	& 0.086 & 0.0000 \\ 
+  \hspace{5pt} Race3: (Hispanic) 			& -1.505 	& 0.088 & 0.0000 \\ 
+  \hspace{5pt}   Race4: (Others) 			& -0.355 	& 0.087 & 0.0000 \\ 
+Education$^4$: & & & \\
+  \hspace{5pt}   Education2: (Some college, diploma, assoc) & -1.516 	& 0.045 & 0.0000 \\ 
+  \hspace{5pt}   Education3: (High School or less) 	& -2.204 	& 0.048 & 0.0000 \\ 
+  Adult Disability x Gender 				& 0.195		& 0.050 & 0.0001 \\ 
+Adult Disability x Education: & & & \\
+  \hspace{5pt}   Adult Disability x Education2 		& 0.112		& 0.068 & 0.1002 \\ 
+  \hspace{5pt}   Adult Disability x Education3 		& 0.219		& 0.072 & 0.0022 \\ 
+  Gender x Marital status 				& -0.523 	& 0.032 & 0.0000 \\ 
+Gender x Education: & & & \\
+  \hspace{5pt}   Gender x Education2 			& 0.102		& 0.051 & 0.0448 \\ 
+  \hspace{5pt}   Gender x Education3 			& 0.255		& 0.052 & 0.0000 \\ 
+Marital status x Race: & & & \\
+  \hspace{5pt}   Marital status x Race2 		& 0.209		& 0.051 & 0.0000 \\ 
+  \hspace{5pt}   Marital status x Race3 		& 0.529		& 0.046 & 0.0000 \\ 
+  \hspace{5pt}   Marital status x Race4 		& 0.182		& 0.069 & 0.0081 \\ 
+Marital status x Education: & & & \\
+  \hspace{5pt}   Marital status x Education2 		& 0.125		& 0.037 & 0.0008 \\ 
+  \hspace{5pt}   Marital status x Education3 		& 0.234		& 0.038 & 0.0000 \\ 
+Race x Education: & & & \\
+  \hspace{5pt}   Race2 x Education2 			& 0.337		& 0.087 & 0.0001 \\ 
+  \hspace{5pt}   Race3 x Education2 			& 0.401		& 0.092 & 0.0000 \\ 
+  \hspace{5pt}   Race4 x Education2 			& -0.208 	& 0.104 & 0.0460 \\ 
+  \hspace{5pt}   Race2 x Education3 			& 0.371		& 0.093 & 0.0001 \\ 
+  \hspace{5pt}   Race3 x Education3 			& 0.499		& 0.092 & 0.0000 \\ 
   \hline
 \end{tabular}
-\begin{tablenotes}\tiny
+\begin{tablenotes}\footnotesize
+\item[1] Base category of gender is ``Male''
+\item[2] Base category of marital status is ``Married''
+\item[3] Base category of race is ``White''
+\item[4] Base category of education is ``Bachelors or higher''
+\item[5] Note that these are p-values of one-sided tests based on hypotheses of aim 1. 
+\end{tablenotes}
+\end{threeparttable}
+\label{tab:Table2Reg}
+\end{table}
+
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Fri Mar 31 18:15:28 2017
+\begin{table}[H]
+\centering
+\caption{Mixed effects regression ouput testing the associations of demographic factors with income poverty, for families {\underline{with}} a working age adult with disability over the {\emph{great recession}}. Only significant interactions (p-value $< 0.05$) have been reported.} 
+\begin{threeparttable}
+\begin{tabular}{lrcr}
+  \hline
+  {\bf{Predictor and Control variables}} & $\mathbf{\beta}$ & {\bf{Std. Error}} & {\bf{p-value}} \\ 
+  \hline
+  Intercept 						& 5.284		& 0.066 & 0.0000 \\ 
+  Time ($t$) 						& -0.039 	& 0.003 & 0.0000 \\ 
+  Time-squared ($t^2$) 					& 0.006		& 0.002 & 0.0120 \\ 
+  Gender$^1$: (Female) 					& -0.098 	& 0.048 & 0.0428 \\ 
+  Marital status$^2$: (Not married) 			& -1.136 	& 0.069 & 0.0000 \\ 
+Race$^3$: & & & \\
+  \hspace{5pt} Race2: (Black) 				& -1.144 	& 0.167 & 0.0000 \\ 
+  \hspace{5pt}   Race3: (Hispanic) 			& -1.336 	& 0.158 & 0.0000 \\ 
+  \hspace{5pt}   Race4: (Others) 			& -0.318 	& 0.161 & 0.0489 \\ 
+Education$^4$: & & & \\
+  \hspace{5pt}   Education2: (Some college, diploma, assoc) & -1.589 	& 0.071 & 0.0000 \\ 
+  \hspace{5pt}   Education3: (High School or less) 	& -2.046 	& 0.075 & 0.0000 \\ 
+  Gender x Marital status 				& -0.365 	& 0.058 & 0.0000 \\ 
+Marital status x Race: & & & \\
+  \hspace{5pt}   Marital status x Race3 		& 0.639		& 0.082 & 0.0000 \\ 
+  \hspace{5pt}   Marital status x Race4 		& 0.291		& 0.115 & 0.0117 \\ 
+Marital status x Education: & & & \\
+  \hspace{5pt}   Marital status x Education2 		& 0.653		& 0.073 & 0.0000 \\ 
+  \hspace{5pt}   Marital status x Education3 		& 0.776		& 0.073 & 0.0000 \\ 
+Race x Education: & & & \\
+  \hspace{5pt}   Race2 x Education2 			& 0.371		& 0.173 & 0.0322 \\ 
+  \hline
+\end{tabular}
+\begin{tablenotes}\footnotesize
 \item[1] Base category of gender is ``Male''
 \item[2] Base category of marital status is ``Married''
 \item[3] Base category of race is ``White''
 \item[4] Base category of education is ``Bachelors or higher''
 \end{tablenotes}
 \end{threeparttable}
-
-\label{tab:Table2Reg}
+\label{tab:Table3Reg}
 \end{table}
+
 
 \singlespacing
 \begin{center}
@@ -100,7 +151,7 @@ Education:				&		&		&		& 		\\
 %\begin{tabular}{lrrr}
   \caption[Post-hoc tests]{Post-hoc tests of demographic factors, for households with a working age adult with disability} \\
   \hline
-  Demographic factors & Estimate & t-value & p-value$^1$ \\ 
+  {\bf{Demographic factors}} & {\bf{Estimate}} & {\bf{t-value}} & {\bf{p-value$^1$}} \\ 
   \hline
   \endhead
 
@@ -259,9 +310,10 @@ Education:				&		&		&		& 		\\
 %\end{table}
 \multicolumn{4}{l}{
   \begin{minipage}{15cm}
-\textit{Note:} [1] The p-values of the levels of each factor or interaction have been adjusted for multiple testing using Benjamini-Hochberg procedure.
+\textit{Note:} [1] The p-values of the levels of each factor or interaction have been adjusted for multiple testing using Benjamini-Hochberg correction.
   \end{minipage}
 }\\
+\label{tab:Table3PostHoc}
 
 \end{longtable}
 

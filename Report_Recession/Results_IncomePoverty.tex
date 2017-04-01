@@ -16,7 +16,7 @@
 \bibliographystyle{chicago}
 
 \title{Effects of Great Recession on Income Poverty}
-\author{Subharati Ghosh, Subhrangshu Nandi, Susan Murphy \\
+\author{Subharati Ghosh, Subhrangshu Nandi, Susan Parish \\
 %  Statistics PhD Student, \\
 %  Research Assistant,
 %  Laboratory of Molecular and Computational Genomics, \\
@@ -31,7 +31,11 @@
 {\hl{Insert Introduction}}.
 
 \subsubsection*{Study Aim 1}
-Aim 1 of this study was to analyze how households with a working age adult with disability differed from households with no working age adult with disability, during the {\emph{great recession}} \footnote{Business Cycle Dating Committee, National Bureau of Economic Research (NBER)}, using ``Income Poverty'' as a measure of economic wellbeing, controlling for demographic factors such as gender, marital status, education, race and ethnicity. 
+Aim 1 of this study was to analyze whether households with working age adults with disability differed from households with no working age adults with disability, during the {\emph{great recession}} \footnote{Business Cycle Dating Committee, National Bureau of Economic Research (NBER)}, using ``Income Poverty'' as a measure of economic wellbeing, controlling for demographic factors such as gender, marital status, education, race and ethnicity. 
+\begin{itemize}
+\item Hypothesis 1: It was hypothesized that households with working age adults with disability experienced worse ``income poverty'' levels through the great recession, controlling for demographic factors.
+\item Hypothesis 2: It was hypothesized that households with working age adults with disability experienced worse declines in income poverty levels during the great recession, controlling for demographic factors.
+\end{itemize}
 
 \subsubsection*{Study Aim 2}
 Aim 2 of this study was to analyze how demographic factors such as gender, marital status, education, race and ethnicity impacted economic wellbeing of households with a working age adult with disability, during the {\emph{great recession}}. 
@@ -73,15 +77,7 @@ Y_{ij} = \beta_0 + \beta_1 t_j + \beta_2 t_j^2 + \beta_D \Ind_{D_i} + \beta_t(\I
 \label{eq:MixedEffects2}
 \end{equation}
 
-where, $\Ind_{D_i} = 1$, if household $i$ has a working age adult with disability, else $\Ind_{D_i} = 0$. The hypotheses of interests are:
-\begin{enumerate}
-\item $H_{1_0}: \beta_1 = 0, \text{  vs  } H_{1_a}: \beta_1 \ne 0$ tested if FPL100-ratio changed over time
-\item $H_{2_0}: \beta_2 = 0, \text{  vs  } H_{2_a}: \beta_2 \ne 0$ tested if the trend of FPL100-ratio changed direction
-\item $H_{3_0}: \beta_D = 0, \text{  vs  } H_{3_a}: \beta_D \ne 0$ tested if disability had any effect on FPL100-ratio
-\item $H_{4_0}: \beta_t = 0, \text{  vs  } H_{4_a}: \beta_t \ne 0$ tested if disability had any effect on the slope of FPL100-ratio during the study period
-\item $H_{5_0}: \Theta = 0, \text{  vs  } H_{5_a}: \Theta \ne 0$ tested if demographic factors had any effect on FPL100-ratio.
-\end{enumerate}
-In addition, interactions between demographic factors, and between disability and demograhic factors were also tested. The demographic factors were considered as fixed effects.
+where, $\Ind_{D_i} = 1$, if household $i$ has a working age adult with disability, else $\Ind_{D_i} = 0$. To test the hypotheses in aim 1 we tested the significance of $\beta_D$ (for hypothesis 1) and $\beta_t$ (for hypothesis 2). Significance of coefficients $\beta_1$ and $\beta_2$ were tested to analyze the overall trends of FPL100-ratio over the study period. In addition, interactions between demographic factors, and between disability and demograhic factors were also tested. The demographic factors were considered as fixed effects.
 
 The final model was fit with some of the fixed effect factors along with their interactions after performing ``backward elimination'' on the full model. Elimination of the fixed effects were done by the principle of marginality, that is: the highest order interactions are tested first: if they are significant, the lower order effects were included in the model without testing for significance. The p-values for the fixed effects are estimated from the F statistics, with ``Satterthwaite'' approximation (\cite{Satterthwaite_1946_Biometrics}) denominator degrees of freedom. The p-values for the random effect were computed from likelihood ratio tests (\cite{Morrell_1998_Biometrics}). 
 
@@ -98,37 +94,24 @@ When conducting post-hoc tests for demographic factors and their interactions, d
 All analysis were conducted using the statistical software R (\cite{R}), version 3.3.1. The mixed effects models were fit using the R-package ``lme4'' (\cite{R-lme4}) and all hypothesis tests were done using the R package ``lmerTest'' (\cite{Kuznetsova_etal_2015_R-lmerTest}). 
 
 \section*{RESULTS}
-Aim 1 of this study was to analyze how households with a working age adult with disability differed from households with no working age adult with disability, during the {\emph{great recession}}, using ``Income Poverty'' as a measure of economic wellbeing, controlling for demographic factors such as gender, marital status, education, race and ethnicity. Table \ref{tab:Table2Reg} shows the mixed-effects regression results with FPL100-ratio (measure of income poverty) as the dependent variable, time and disability status as the key predictors and demographic factors as the control variables, as explained in equation \ref{eq:MixedEffects2}. We rejected $H_{1_0}$ since $\beta_1 = -0.05, p < 0.001$. This implied FPL100-ratio {\bf{decreased}} by $0.05$ every year, during the study period. The coefficient of the quadratic term of Time ($\beta_2 = 0.0073, p < 0.01$) indicates rate of change of slope is positive. In other words, although the FPL100-ratio decreased over time (as $\beta_1 < 0$), it flattened out and even started increasing towards the latter parts of the study period. This is illustrated in figure \ref{fig:disability}. It shows the trends of FPL100-ratios of households with and without a working age adult with disability. We rejected $H_{2_0}$, since $\beta_2 = 0.01, p < 0.001$ indicating there was a change in direction of the slope of FPL100-ratio during the study period. We rejected $H_{3_0}$, since $\beta_D = -0.51, p < 0.001$, indicating households with a working age adult with disability had FPL100-ratios on an average $0.51$ lower than households without any working age adult with disability. Next, we rejected $H_{4_0}$ since  that the coefficient of interaction between time and disability ($\beta_t = 0.01, p < 0.001$). The positive sign of $\beta_t$ indicated that the downward trend of households with disability was not as steep as the households with no disability. 
+Table \ref{tab:DescStats} illustrates the descriptive statistics of the sample. As noted earlier, not all households participated in all waves of the survey, other than wave six, which included questions on disability status. This table is a descriptive statistics of the sample during wave six. {\hl{Add more writeup about descriptive statistics}}
 
-Gender was statistically significant; households with a female reference person had on an average 0.37 lower FPL100-ratio $\beta = -0.37, p < 0.001$ compared to households with a male reference person. Marital status was statistically significant; households with a not-married reference person had on an average 0.61 FPL100-ratio $\beta = -0.61, p < 0.001$ compared to households with a married reference person. Race and ethnicity were statistically significant; 
+\noindent
+{\bf{Aim 1}}\\
+Aim 1 of this study was to analyze how households with a working age adult with disability differed from households with no working age adult with disability, during the {\emph{great recession}}, using ``Income Poverty'' as a measure of economic wellbeing, controlling for demographic factors such as gender, marital status, education, race and ethnicity. Table \ref{tab:Table2Reg} shows the mixed-effects regression results with FPL100-ratio (measure of income poverty) as the dependent variable, time and disability status as the key predictors and demographic factors as the control variables, as explained in equation \ref{eq:MixedEffects2}. Results showed that households with working age adults with disability, on an average experienced significantly worse income poverty (FPL100-ratio, $\beta_D = -0.73, p < 0.001$) compared with households with no working age adults with disability. This is also illustrated in figure \ref{fig:disability}, which shows the trends of FPL100-ratios of households with and without a working age adults with disability. 
+
+We could not prove hypothesis 2 of aim 1. Results showed that the trends of income poverty were not significantly different between households with and without working age adults with disability, over the study period ($\beta_t = 0.01, p = 0.9994$). This is evident in figure \ref{fig:disability} as well. 
+
+The regression results in table \ref{tab:Table2Reg} showed that FPL100-ratio, on an average, {\bf{decreased}} by $0.05$ every year ($\beta_1 = -0.05, p < 0.001$). The coefficient of the quadratic term of Time ($\beta_2 = 0.0073, p < 0.01$) indicates rate of change of slope is positive. In other words, although the FPL100-ratio decreased over time (as $\beta_1 < 0$), it flattened out and even started increasing towards the latter parts of the study period. We rejected $H_{2_0}$, since $\beta_2 = 0.01, p < 0.001$ indicating there was a change in direction of the slope of FPL100-ratio during the study period. Next, we rejected $H_{4_0}$ since  that the coefficient of interaction between time and disability ($\beta_t = 0.01, p < 0.001$). The positive sign of $\beta_t$ indicated that the downward trend of households with disability was not as steep as the households with no disability.
+
+As shown in table \ref{tab:Table2Reg}, gender was statistically significant; households with female reference persons had on an average 0.37 lower FPL100-ratio $\beta = -0.37, p < 0.001$ compared to households with male reference persons. Marital status was statistically significant; households with ``not-married'' reference persons had on an average 0.61 FPL100-ratio $\beta = -0.61, p < 0.001$ compared to households with ``married'' reference person. Race and ethnicity were statistically significant; households with ``black'' reference persons had on an average 1.28 FPL100-ratio ($\beta = -1.28, p < 0.001$) lower than households with ``white'' reference person. The difference was even more stark between a households with hispanic and white reference persons ($\beta = -1.51, p < 0.001$). Education was also statistically significant; households with reference persons with ``high school or less'' education levels had on an average 2.20 ($\beta = -2.20, p < 0.001$) lower FPL100-ratio than households with reference persons with ``bachelors or higher'' education levels. All significant interactions between disability and demographic factors and between different demographic factors themselves are displayed in table \ref{tab:Table2Reg}. \\
+
+\noindent
+{\bf{Aim 2}}\\
+Aim 2 of the study was to analyze how demographic factors such as gender, marital status, education, race and ethnicity impacted economic wellbeing (measured by FPL100-ratio) of households with a working age adult with disability, during the {\emph{great recession}}. A separate mixed effects model was fit with the same demographic factors on households with working age adults with disability. Table \ref{tab:Table3Reg} shows the mixed-effects regression results with FPL100-ratio (measure of income poverty) as the dependent variable, time as the key predictor and demographic factors as the control variables. Several post-hoc tests were conducted on factors with multiple levels and their interactions. Table \ref{tab:Table3PostHoc} lists the post-hoc test results. Figure \ref{fig:Disab_Demographics} displays the trends of the different subgroups of the sample, separated by demographic factors. 
 
 Figures \ref{fig:disab_gender}, \ref{fig:disab_MS}, \ref{fig:disab_race} and \ref{fig:disab_education} illustrate the FPL100-ratios of the different households differentiated by gender, marital status, race and ethnicity, and education levels of the reference persons. Figure \ref{fig:disab_race} illustrates that households with ``hispanic'' reference persons had minimum FPL100-ratios throughout the study period. Another important observation is the different shapes of the FPL100-ratios of the four races. Households with ``white'' heads had a gradual and steady incline in their average FPL100-ratios after 2011. However, this behavior is not observed in households with ``black'', ``hispanic'' or ``others'' heads. In figure \ref{fig:disab_education}, households where the education level of their heads are ``high school or less'' experienced a decline in their FPL100-ratios, just like the other groups, but never experienced any improvement in the latter parts. Figure \ref{fig:contrasts} illustrates the evolutions of FPL100-ratios of two contrasting household types: one with white, married, male (with education bachelors or higher) as reference persons, the other with not married, black, female (with high school or less education). 
 
-Below are results from the post-hoc tests of all factors and their interactions. \\
-\noindent
-{\bf{Gender of reference person}} \\
-Gender is statistically significant. In model 1, households with a ``female'' head has, on an average, 0.113 lower FPL100-ratio ($\theta_{\text{female} - \text{male}} = -0.113, p < 0.01$) in the sample, over the study preiod. This is also illustrated in figure \ref{fig:disab_gender}. \\
-\noindent
-{\bf{Marital status of reference person}} \\
-Marital status is statistically significant. In model 1, households with a ``not married'' head, has, on an average 0.168 lower FPL-100 ratio ($\theta_{\text{not married} - \text{married}} = -0.168, p < 0.01$ in the sample, over the study period. This is also illustrated in figure \ref{fig:disab_MS}.\\
-\noindent
-{\bf{Race and Ethnicity of reference person}} \\
-In table \ref{tab:race_origin} we can see that regardless of disability, in Model 1, households with a ``black'' ($\theta_{\text{black} - \text{others}} = -0.54, p = 0.0000$) or ``hispanic'' ($\theta_{\text{hispanic} - \text{others}} = -0.54, p = 0.0000$) race/ethnicity as reference person is worse off compared to those with ``others'' race/ethnicity. The discrepancy is higher between ``black'' and ``white'' reference persons ($\theta_{\text{black} - \text{white}} = \theta_{\text{hispanic} - \text{white}} = -0.94, p = 0.0000$). This is also illustrated in figure \ref{fig:disab_race}. \\
-\noindent
-{\bf{Education of reference person}} \\
-In table \ref{tab:education}, we see that regardless of disability, in Model 1, households in ``high school or less'' is worse off than ``some college, diploma'' ($\theta_{\text{HS} - \text{Col}} = -0.47, p = 0.0000$), which is in turn worse off than ``bachelors or higher'' ($\theta_{\text{Col} - \text{BS}} = -1.29, p = 0.0000$). This is also illustrated in figure \ref{fig:disab_education}.\\
-\noindent
-{\bf{Interaction of Gender and Marital status}} \\
-In table \ref{tab:gender_ms}, we see that in Model 1 ``female, not married'' households are worse off than ``male, married'' ($\theta_{\text{female, not married} - \text{male, married}} = -0.94, p = 0.0000$), than ``female, married'' ($\theta_{\text{female, not married} - \text{female, married}} = -0.78, p = 0.0000$) and ``male, not married'' ($\theta_{\text{female, not married} - \text{male, not married}} = -0.67, p = 0.0000$). \\
-\noindent
-{\bf{Interaction of Gender and Education}} \\
-Interaction of gender and education is also statistically significant. Following from the results of the main effects, the largest differences in average FPL100-ratios between two subgroups of this interaction is that between ``female, with high-school of less'' and ``male, with bachelor or higher'' ($\theta_{\text{diff}} = -2.09, p = 0.0000 $). The other pairwise differences of average FPL100-ratios are listed in table \ref{tab:gender_education}\\
-\noindent
-{\bf{Interaction of Race/Ethnicity and Marital status}} \\
-Table \ref{tab:ms_race_origin} lists the pairwise differences of the average FPL100-ratios between the levels of interacting race/ethnicity with marital status. The largest difference is between ``not married, black'' and ``married, white'' ($\theta_{\text{diff}} = -1.59, p = 0.0000 $), followed by that between ``not married, hispanic'' and ``married, white'' ($\theta_{\text{diff}} = -1.43, p = 0.0000 $) \\
-\noindent
-{\bf{Interaction of Marital status and Education}} \\
-Interaction of marital status and education is also statistically significant. Table \ref{tab:ms_education} lists the pairwise differences of the average FPL100-ratios between the levels of interacting race/ethnicity with marital status. The largest difference is between ``not married, with high school or less'' and ``married, bachelors or higher'' ($\theta_{\text{diff}} = -2.21, p = 0.0000 $)\\
 
 \section*{Discussion}
 The FPL100-ratios decline sharply between 2008 and 2010, flatten out and then increase gradually after 2011. The quadratic term of Time in the model captures this behavior. It is noticable that the decline in FPL100-ratios was sharper than the gradual incline that followed. A similar behavior is observed in both types of households. 
