@@ -17,10 +17,14 @@ savePredictions <- function( predictedFPLMean, plotFPLMean, Factor ){
   save( predictedFPLMean, file = fileMeanPath )  
 }
 
-plotPredictedFPL <- function( predictedFPL_Factor, legendTitle = "Household head" ){ 
+plotPredictedFPL <- function( predictedFPL_Factor, legendTitle = "Reference person", 
+                              lmLineSize = 0 ){ 
   
   plotFPL <- qplot() + geom_point( aes( x = as.numeric( yearqtr ), y = predictedFPL, pch = hhType ), 
                                    data = predictedFPL_Factor, size = 2 ) + 
+    geom_smooth( aes( x = as.numeric( yearqtr ), y = predictedFPL, group = hhType ), 
+                 method = 'lm', se = FALSE, size = lmLineSize, col = 'gray40',
+                 data = predictedFPL_Factor ) +
     geom_smooth( aes( x = as.numeric( yearqtr ), y = predictedFPL, group = hhType ), 
                  method = 'loess', se = FALSE, size = 0.75, col = 'gray20',
                  data = predictedFPL_Factor ) +
@@ -167,7 +171,6 @@ plotFPLMean_MS <- plotPredictedFPL( predictedFPL_Factor = predictedFPLMean_MS )
 savePredictions( predictedFPLMean = predictedFPLMean_MS, plotFPLMean = plotFPLMean_MS, 
                  Factor = 'MS' )
 
-
 ########################################################################
 ## Ethnicity
 ########################################################################
@@ -245,7 +248,6 @@ plotFPLMean_Education <- plotPredictedFPL( predictedFPL_Factor = predictedFPLMea
 savePredictions( predictedFPLMean = predictedFPLMean_Education, plotFPLMean = plotFPLMean_Education, 
                  Factor = 'Education' )
 
-
 ########################################################################
 ## DISABILITY
 ########################################################################
@@ -280,7 +282,7 @@ for( factorLevel in levels( Data[, Factor ] ) ){
 }
 
 plotFPLMean_Disability <- plotPredictedFPL( predictedFPL_Factor = predictedFPLMean_Disability, 
-                                            legendTitle = 'Disability' )
+                                            legendTitle = 'Disability', lmLineSize = 0 )
 savePredictions( predictedFPLMean = predictedFPLMean_Disability, plotFPLMean = plotFPLMean_Disability, 
                  Factor = 'Disability' )
 
@@ -292,7 +294,7 @@ Gender <- 'Male'
 Ethnicity <- 'White'
 Education <- 'Bachelors or higher'
 Disab <- 'no'
-HH_TYPE <- paste( MS, Gender, Ethnicity, Education, 'Disability', Disab )
+HH_TYPE <- paste( MS, ', ', Gender, ', ', Ethnicity, ', ', Education, ', Disability:', Disab )
 
 hhidList <- as.vector( unique( subset( Data, ms == MS & gender == Gender & race_origin == Ethnicity &
                                          education == Education & adult_disb == Disab )[, 'hhid'] ) )
@@ -320,7 +322,7 @@ Gender <- 'Female'
 Ethnicity <- 'Black'
 Education <- 'High School or less'
 Disab <- 'yes'
-HH_TYPE <- paste( MS, Gender, Ethnicity, Education, 'Disability', Disab )
+HH_TYPE <- paste( MS, ', ', Gender, ', ', Ethnicity, ', ', Education, ', Disability:', Disab )
 
 hhidList <- as.vector( unique( subset( Data, ms == MS & gender == Gender & race_origin == Ethnicity &
                                          education == Education & adult_disb == Disab )[, 'hhid'] ) )

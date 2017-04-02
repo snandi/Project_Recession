@@ -1,0 +1,477 @@
+%% Tables for Income Poverty Report
+
+\section{Tables}
+
+\noindent
+\begin{table}[H] 
+\centering 
+\footnotesize
+\caption{Descriptive statistics in wave six} 
+\begin{tabular}{lrrrr}
+\hline 
+\hline 
+& \multicolumn{2}{c}{\underline{\bf{HH with No Disability}}} & \multicolumn{2}{c}{\underline{\bf{HH with Disability}}} \\
+{\bf{Demographic factors}} & {\bf{Number}} & {\bf{Percentage}} & {\bf{Number}} & {\bf{Percentage}} \\
+\hline 
+Total					& 26,104	& 77.81		& 7,443		& 22.19		\\
+Gender:					&		&		&		& 		\\
+\hspace{5pt} Male			& 12,626	& 48.37		& 3,378		& 45.38		\\
+\hspace{5pt} Female			& 13,478	& 51.63		& 4,065		& 54.62		\\
+Marital status:				&		&		&		& 		\\
+\hspace{5pt} Married			& 13,555	& 51.93		& 3,968		& 53.31		\\
+\hspace{5pt} Not Married		& 12,549	& 48.07		& 3,474		& 46.67		\\
+Race and ethnicity:			&		&		&		& 		\\
+\hspace{5pt} White			& 18,765 	& 71.89		& 4,965		& 66.71		\\
+\hspace{5pt} Hispanic			&  2,996	& 11.48		&   908		& 12.20		\\
+\hspace{5pt} Black			&  2,912	& 11.16		& 1,092		& 14.67		\\
+\hspace{5pt} Others			&  1,431	&  5.48		&   479		&  6.44		\\
+Education:				&		&		&		& 		\\
+\hspace{5pt} High school or less	&  8,496 	& 32.55		& 2,994		& 40.23		\\
+\hspace{5pt} Some college, diploma, assoc& 8,916 	& 34.16		& 2,863		& 38.47		\\
+\hspace{5pt} Bachelors or higher	&  8,692 	& 33.30		& 1,586		& 21.31		\\
+\hline 
+\hline 
+\end{tabular}
+\label{tab:DescStats}
+\end{table}
+
+
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Thu Mar 30 18:34:49 2017
+\begin{table}[H]
+\footnotesize
+\centering
+\caption{Regression result} 
+\begin{tabular}{lrrr}
+  \hline
+  & $\beta$ & Std. Error & p-value \\ 
+  \hline
+  Intercept & 2.78 & 0.071 & 0.0000 \\ 
+  Time & -0.05 & 0.002 & 0.0000 \\ 
+  $\text{Time}^2$ & 0.01 & 0.001 & 0.0000 \\ 
+  Adult Disability & -0.51 & 0.056 & 0.0000 \\ 
+  Gender: (Female) & -0.11 & 0.039 & 0.0041 \\ 
+  Marital status: (Not married) & -0.17 & 0.055 & 0.0021 \\ 
+  Race2: (Hispanic) & -0.09 & 0.083 & 0.2653 \\ 
+  Race3: (Others) & 0.35 & 0.107 & 0.0012 \\ 
+  Race4: (White) & 0.91 & 0.070 & 0.0000 \\ 
+  Education2: (Some college, diploma, assoc) & 0.65 & 0.077 & 0.0000 \\ 
+  Education3: (Bachelors or higher) & 1.83 & 0.096 & 0.0000 \\ 
+  Adult Disability x Gender & 0.19 & 0.050 & 0.0001 \\ 
+  Adult Disability x Education2 & -0.11 & 0.057 & 0.0589 \\ 
+  Adult Disability x Education3 & -0.22 & 0.072 & 0.0022 \\ 
+  Adult Disability x Time & 0.01 & 0.004 & 0.0006 \\ 
+  Gender x Marital status & -0.52 & 0.032 & 0.0000 \\ 
+  Gender x Education2 & -0.15 & 0.047 & 0.0011 \\ 
+  Gender x Education3 & -0.26 & 0.052 & 0.0000 \\ 
+  Marital status x Race2 & 0.32 & 0.063 & 0.0000 \\ 
+  Marital status x Race4 & -0.21 & 0.051 & 0.0000 \\ 
+  Marital status x Education2 & -0.11 & 0.035 & 0.0019 \\ 
+  Marital status x Education3 & -0.23 & 0.038 & 0.0000 \\ 
+  Race3 x Education3 & 0.58 & 0.136 & 0.0000 \\ 
+  Race4 x Education3 & 0.37 & 0.093 & 0.0001 \\ 
+  \hline
+\end{tabular}
+\label{tab:Table2Reg}
+\end{table}
+
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Mon Mar 13 12:08:48 2017
+\begin{table}[H]
+\footnotesize
+\centering
+\caption{FPL100 vs demographic factors and time and disability status} 
+\begin{tabular}{lrrrrr}
+  \hline
+  & Sum Sq & Mean Sq & NumDF & F.value & p.value \\ 
+  \hline
+  Time & 5380.93 & 5380.93 & 1 & 446.58 & 0.0000 \\ 
+  Disability & 2280.29 & 2280.29 & 1 & 189.25 & 0.0000 \\ 
+  Gender & 3143.82 & 3143.82 & 1 & 260.92 & 0.0000 \\ 
+  Marital status & 5788.34 & 5788.34 & 1 & 480.40 & 0.0000 \\ 
+  Ethnicity & 8743.91 & 2914.64 & 3 & 241.90 & 0.0000 \\ 
+  Education & 15873.19 & 7936.60 & 2 & 658.69 & 0.0000 \\ 
+  Gender \& Marital status & 3184.05 & 3184.05 & 1 & 264.26 & 0.0000 \\ 
+  Marital status \& Ethnicity & 1670.73 & 556.91 & 3 & 46.22 & 0.0000 \\ 
+  Ethnicity \& Education & 652.73 & 108.79 & 6 & 9.03 & 0.0000 \\ 
+  $\text{Time}^2$ & 414.33 & 414.33 & 1 & 34.39 & 0.0000 \\ 
+  Marital status \& Education & 450.29 & 225.15 & 2 & 18.69 & 0.0000 \\ 
+  Gender \& Education & 310.12 & 155.06 & 2 & 12.87 & 0.0000 \\ 
+  Disability \& Gender & 182.78 & 182.78 & 1 & 15.17 & 0.0001 \\ 
+  Time:adult\_disb & 143.66 & 143.66 & 1 & 11.92 & 0.0006 \\ 
+  Disability \& Education & 116.32 & 58.16 & 2 & 4.83 & 0.0080 \\ 
+   \hline
+\end{tabular}
+\label{tab:Anova1}
+\end{table}
+
+
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Mon Mar 13 12:10:56 2017
+\begin{table}[H]
+\footnotesize
+\centering
+\caption{FPL100 vs demographic factors and time, for households with Disability} 
+\begin{tabular}{lrrrrr}
+  \hline
+  & Sum Sq & Mean Sq & NumDF & F.value & p.value \\ 
+  \hline
+  Marital status & 66.83 & 66.83 & 1 & 316.81 & 0.0000 \\ 
+  Education & 65.21 & 32.60 & 2 & 154.56 & 0.0000 \\ 
+  Marital status \& Ethnicity & 18.18 & 6.06 & 3 & 28.73 & 0.0000 \\ 
+  Ethnicity & 14.34 & 4.78 & 3 & 22.66 & 0.0000 \\ 
+  Gender & 9.09 & 9.09 & 1 & 43.08 & 0.0000 \\ 
+  Ethnicity \& Education & 11.36 & 1.89 & 6 & 8.98 & 0.0000 \\ 
+  Marital status \& Education & 8.03 & 4.01 & 2 & 19.03 & 0.0000 \\ 
+  Gender \& Marital status & 4.40 & 4.40 & 1 & 20.86 & 0.0000 \\ 
+  Time & 3.39 & 3.39 & 1 & 16.08 & 0.0001 \\ 
+  $\text{Time}^2$ & 0.06 & 0.06 & 1 & 0.26 & 0.6074 \\ 
+  \hline
+\end{tabular}
+\label{tab:Anova2}
+\end{table}
+
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Mon Mar 13 12:19:44 2017
+\begin{table}[H]
+\footnotesize
+\centering
+\caption{Post-hoc test of Ethnicity} 
+\begin{tabular}{lrrrr}
+  \hline
+  Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
+  \hline
+   Black - Others & -0.54 & 0.07 & -8.02 & 0.0000 \\ 
+   Black - White & -0.94 & 0.05 & -20.16 & 0.0000 \\ 
+   Hispanic - Others & -0.54 & 0.07 & -7.78 & 0.0000 \\ 
+   Hispanic - White & -0.94 & 0.05 & -19.60 & 0.0000 \\ 
+   Others - White & -0.40 & 0.05 & -7.43 & 0.0000 \\ 
+   Black - Hispanic & -0.00 & 0.06 & -0.05 & 0.9611 \\ 
+  \hline
+\end{tabular}
+\label{tab:race_origin}
+\end{table}
+
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Mon Mar 13 12:21:17 2017
+\begin{table}[H]
+\footnotesize
+\centering
+\caption{Post-hoc test of Education} 
+\begin{tabular}{lrrrr}
+  \hline
+Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
+  \hline
+ High School or less - Some college, diploma, assoc & -0.47 & 0.04 & -12.47 & 0.0000 \\ 
+   High School or less - Bachelors or higher & -1.69 & 0.05 & -36.04 & 0.0000 \\ 
+   Some college, diploma, assoc - Bachelors or higher & -1.21 & 0.04 & -27.03 & 0.0000 \\ 
+   \hline
+\end{tabular}
+\label{tab:education}
+\end{table}
+
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Mon Mar 13 12:23:35 2017
+\begin{table}[H]
+\footnotesize
+\centering
+\caption{Post-hoc test of Gender and Marital status} 
+\begin{tabular}{lrrrr}
+  \hline
+Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
+  \hline
+  Male Married -  Female Married & 0.15 & 0.03 & 5.03 & 0.0000 \\ 
+    Male Married -  Male Not married & 0.26 & 0.03 & 9.00 & 0.0000 \\ 
+    Male Married -  Female Not married & 0.94 & 0.03 & 27.73 & 0.0000 \\ 
+    Female Married -  Female Not married & 0.78 & 0.03 & 27.52 & 0.0000 \\ 
+    Male Not married -  Female Not married & 0.67 & 0.03 & 22.30 & 0.0000 \\ 
+    Female Married -  Male Not married & 0.11 & 0.04 & 3.03 & 0.0024 \\ 
+   \hline
+\end{tabular}
+\label{tab:gender_ms}
+\end{table}
+
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Mon Mar 13 12:28:05 2017
+\begin{table}[H]
+\footnotesize
+\centering
+\caption{Post-hoc test of Gender and Education} 
+\begin{tabular}{lrrrr}
+  \hline
+Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
+  \hline
+  Male High School or less -  Female High School or less & 0.28 & 0.03 & 7.98 & 0.0000 \\ 
+    Male High School or less -  Male Some college, diploma, assoc & -0.55 & 0.05 & -12.14 & 0.0000 \\ 
+    Male High School or less -  Male Bachelors or higher & -1.81 & 0.05 & -33.25 & 0.0000 \\ 
+    Male High School or less -  Female Bachelors or higher & -1.28 & 0.05 & -23.46 & 0.0000 \\ 
+    Female High School or less -  Male Some college, diploma, assoc & -0.82 & 0.05 & -17.49 & 0.0000 \\ 
+    Female High School or less -  Female Some college, diploma, assoc & -0.39 & 0.04 & -9.01 & 0.0000 \\ 
+    Female High School or less -  Male Bachelors or higher & -2.09 & 0.06 & -37.35 & 0.0000 \\ 
+    Female High School or less -  Female Bachelors or higher & -1.56 & 0.05 & -29.82 & 0.0000 \\ 
+    Male Some college, diploma, assoc -  Female Some college, diploma, assoc & 0.43 & 0.04 & 11.59 & 0.0000 \\ 
+    Male Some college, diploma, assoc -  Male Bachelors or higher & -1.26 & 0.05 & -23.80 & 0.0000 \\ 
+    Male Some college, diploma, assoc -  Female Bachelors or higher & -0.73 & 0.05 & -13.44 & 0.0000 \\ 
+    Female Some college, diploma, assoc -  Male Bachelors or higher & -1.69 & 0.05 & -30.91 & 0.0000 \\ 
+    Female Some college, diploma, assoc -  Female Bachelors or higher & -1.16 & 0.05 & -23.24 & 0.0000 \\ 
+    Male Bachelors or higher -  Female Bachelors or higher & 0.53 & 0.04 & 12.35 & 0.0000 \\ 
+    Male High School or less -  Female Some college, diploma, assoc & -0.12 & 0.05 & -2.56 & 0.0105 \\ 
+   \hline
+\end{tabular}
+\label{tab:gender_education}
+\end{table}
+
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Mon Mar 13 12:35:52 2017
+\begin{table}[H]
+\footnotesize
+\centering
+\caption{Post-hoc test of Marital status and Ethnicity} 
+\begin{tabular}{lrrrr}
+  \hline
+Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
+  \hline
+  Married Black -  Not married Black & 0.54 & 0.05 & 11.34 & 0.0000 \\ 
+    Married Black -  Not married Hispanic & 0.38 & 0.07 & 5.12 & 0.0000 \\ 
+    Married Black -  Married Others & -0.55 & 0.08 & -6.83 & 0.0000 \\ 
+    Married Black -  Married White & -1.05 & 0.06 & -18.44 & 0.0000 \\ 
+    Married Black -  Not married White & -0.30 & 0.06 & -5.18 & 0.0000 \\ 
+    Not married Black -  Married Hispanic & -0.39 & 0.07 & -5.70 & 0.0000 \\ 
+    Not married Black -  Married Others & -1.10 & 0.08 & -14.39 & 0.0000 \\ 
+    Not married Black -  Not married Others & -0.53 & 0.08 & -6.88 & 0.0000 \\ 
+    Not married Black -  Married White & -1.59 & 0.05 & -32.10 & 0.0000 \\ 
+    Not married Black -  Not married White & -0.84 & 0.05 & -16.91 & 0.0000 \\ 
+    Married Hispanic -  Not married Hispanic & 0.22 & 0.04 & 5.25 & 0.0000 \\ 
+    Married Hispanic -  Married Others & -0.71 & 0.08 & -8.99 & 0.0000 \\ 
+    Married Hispanic -  Married White & -1.21 & 0.05 & -22.92 & 0.0000 \\ 
+    Married Hispanic -  Not married White & -0.45 & 0.05 & -8.57 & 0.0000 \\ 
+    Not married Hispanic -  Married Others & -0.93 & 0.08 & -11.72 & 0.0000 \\ 
+    Not married Hispanic -  Not married Others & -0.36 & 0.08 & -4.55 & 0.0000 \\ 
+    Not married Hispanic -  Married White & -1.43 & 0.05 & -26.45 & 0.0000 \\ 
+    Not married Hispanic -  Not married White & -0.68 & 0.05 & -12.54 & 0.0000 \\ 
+    Married Others -  Not married Others & 0.57 & 0.07 & 8.59 & 0.0000 \\ 
+    Married Others -  Married White & -0.50 & 0.06 & -7.74 & 0.0000 \\ 
+    Not married Others -  Married White & -1.07 & 0.06 & -16.50 & 0.0000 \\ 
+    Not married Others -  Not married White & -0.31 & 0.06 & -4.84 & 0.0000 \\ 
+    Married White -  Not married White & 0.75 & 0.02 & 40.59 & 0.0000 \\ 
+    Married Others -  Not married White & 0.26 & 0.06 & 4.01 & 0.0001 \\ 
+    Not married Black -  Not married Hispanic & -0.16 & 0.07 & -2.38 & 0.0193 \\ 
+    Married Black -  Married Hispanic & 0.16 & 0.07 & 2.14 & 0.0347 \\ 
+    Married Hispanic -  Not married Others & -0.14 & 0.08 & -1.76 & 0.0820 \\ 
+    Married Black -  Not married Others & 0.02 & 0.08 & 0.21 & 0.8318 \\ 
+   \hline
+\end{tabular}
+\label{tab:ms_race_origin}
+\end{table}
+
+% latex table generated in R 3.3.1 by xtable 1.8-2 package
+% Mon Mar 13 12:40:24 2017
+\begin{table}[H]
+\footnotesize
+\centering
+\caption{Post-hoc test of Marital status and Education} 
+\begin{tabular}{lrrrr}
+  \hline
+  Factor Levels & Estimate & Standard Error & t-value & p-value \\ 
+  \hline
+  Married High School or less -  Not married High School or less & 0.41 & 0.03 & 13.63 & 0.0000 \\ 
+    Married High School or less -  Married Some college, diploma, assoc & -0.53 & 0.04 & -12.40 & 0.0000 \\ 
+    Married High School or less -  Married Bachelors or higher & -1.80 & 0.05 & -35.43 & 0.0000 \\ 
+    Married High School or less -  Not married Bachelors or higher & -1.16 & 0.05 & -21.21 & 0.0000 \\ 
+    Not married High School or less -  Married Some college, diploma, assoc & -0.93 & 0.04 & -20.91 & 0.0000 \\ 
+    Not married High School or less -  Not married Some college, diploma, assoc & -0.42 & 0.04 & -10.19 & 0.0000 \\ 
+    Not married High School or less -  Married Bachelors or higher & -2.21 & 0.05 & -42.18 & 0.0000 \\ 
+    Not married High School or less -  Not married Bachelors or higher & -1.57 & 0.05 & -31.25 & 0.0000 \\ 
+    Married Some college, diploma, assoc -  Not married Some college, diploma, assoc & 0.52 & 0.03 & 16.60 & 0.0000 \\ 
+    Married Some college, diploma, assoc -  Married Bachelors or higher & -1.28 & 0.05 & -26.12 & 0.0000 \\ 
+    Married Some college, diploma, assoc -  Not married Bachelors or higher & -0.63 & 0.05 & -11.94 & 0.0000 \\ 
+    Not married Some college, diploma, assoc -  Married Bachelors or higher & -1.79 & 0.05 & -34.60 & 0.0000 \\ 
+    Not married Some college, diploma, assoc -  Not married Bachelors or higher & -1.15 & 0.05 & -23.79 & 0.0000 \\ 
+    Married Bachelors or higher -  Not married Bachelors or higher & 0.64 & 0.03 & 18.55 & 0.0000 \\ 
+    Married High School or less -  Not married Some college, diploma, assoc & -0.01 & 0.05 & -0.18 & 0.8540 \\ 
+   \hline
+\end{tabular}
+\label{tab:ms_education}
+\end{table}
+
+\singlespacing
+\begin{center}
+\footnotesize           %% Make sure this is outside of the longtable environment. 
+\begin{longtable}{lrrr}
+
+%\begin{table}[H]
+%\centering
+%\begingroup\footnotesize
+%\begin{tabular}{lrrr}
+  \caption[Post-hoc tests]{Post-hoc tests of demographic factors, for households with a working age adult with disability} \\
+  \hline
+  {\bf{Demographic factors}} & {\bf{Estimate}} & {\bf{t-value}} & {\bf{p-value$^1$}} \\ 
+  \hline
+  \endhead
+
+  \hline
+  \endfoot
+{\bf{Race and ethnicity}} & & & \\
+   White - Black & 0.90 & 11.19 & 0.0000 \\ 
+   White - Hispanic & 0.84 & 9.78 & 0.0000 \\ 
+   Black - Others & -0.61 & -5.49 & 0.0000 \\ 
+   Hispanic - Others & -0.56 & -4.67 & 0.0000 \\ 
+   White - Others & 0.29 & 3.11 & 0.0023 \\ 
+   Black - Hispanic & -0.06 & -0.49 & 0.6218 \\ 
+
+{\bf{  }} & & & \\
+{\bf{Education}} & & & \\
+\hline
+   Bachelors or higher - High School or less & 1.60 & 21.08 & 0.0000 \\ 
+   Bachelors or higher - Some college, diploma, assoc & 1.13 & 15.29 & 0.0000 \\ 
+   Some college, diploma, assoc - High School or less & 0.47 & 8.21 & 0.0000 \\ 
+
+{\bf{  }} & & & \\
+{\bf{Gender x Marital status}} & & & \\
+\hline
+    Male Married -  Female Not married & 0.87 & 16.00 & 0.0000 \\ 
+    Female Married -  Female Not married & 0.77 & 15.77 & 0.0000 \\ 
+    Male Not married -  Female Not married & 0.46 & 9.74 & 0.0000 \\ 
+    Male Married -  Male Not married & 0.41 & 7.87 & 0.0000 \\ 
+    Female Married -  Male Not married & 0.31 & 5.35 & 0.0000 \\ 
+    Male Married -  Female Married & 0.10 & 2.03 & 0.0428 \\ 
+
+{\bf{  }} & & & \\
+{\bf{Marital status x Race and ethnicity}} & & & \\
+\hline
+    Married White -  Not married White & 0.84 & 23.37 & 0.0000 \\ 
+    Married White -  Not married Black & 1.70 & 19.73 & 0.0000 \\ 
+    Married White -  Not married Hispanic & 1.37 & 13.74 & 0.0000 \\ 
+    Married White -  Married Hispanic & 1.16 & 12.66 & 0.0000 \\ 
+    Not married Black -  Married Others & -1.27 & -10.16 & 0.0000 \\ 
+    Not married White -  Not married Black & 0.86 & 9.96 & 0.0000 \\ 
+    Married White -  Married Black & 0.94 & 9.87 & 0.0000 \\ 
+    Married Black -  Not married Black & 0.76 & 9.73 & 0.0000 \\ 
+    Married White -  Not married Others & 0.98 & 8.81 & 0.0000 \\ 
+    Not married Hispanic -  Married Others & -0.93 & -6.81 & 0.0000 \\ 
+    Married Hispanic -  Married Others & -0.73 & -5.52 & 0.0000 \\ 
+    Not married Black -  Not married Others & -0.72 & -5.51 & 0.0000 \\ 
+    Not married White -  Not married Hispanic & 0.53 & 5.30 & 0.0000 \\ 
+    Married Others -  Not married Others & 0.55 & 5.00 & 0.0000 \\ 
+    Not married Black -  Married Hispanic & -0.54 & -4.55 & 0.0000 \\ 
+    Married White -  Married Others & 0.43 & 4.09 & 0.0000 \\ 
+    Married Black -  Married Others & -0.51 & -3.89 & 0.0002 \\ 
+    Not married White -  Married Others & -0.41 & -3.84 & 0.0002 \\ 
+    Not married White -  Married Hispanic & 0.32 & 3.46 & 0.0007 \\ 
+    Married Black -  Not married Hispanic & 0.43 & 3.27 & 0.0015 \\ 
+    Not married Black -  Not married Hispanic & -0.33 & -2.73 & 0.0080 \\ 
+    Not married Hispanic -  Not married Others & -0.38 & -2.73 & 0.0080 \\ 
+    Married Hispanic -  Not married Hispanic & 0.20 & 2.69 & 0.0088 \\ 
+    Married Black -  Married Hispanic & 0.22 & 1.79 & 0.0854 \\ 
+    Married Hispanic -  Not married Others & -0.18 & -1.31 & 0.2116 \\ 
+    Not married White -  Not married Others & 0.14 & 1.27 & 0.2202 \\ 
+    Not married White -  Married Black & 0.10 & 1.02 & 0.3199 \\ 
+    Married Black -  Not married Others & 0.04 & 0.32 & 0.7492 \\ 
+
+{\bf{  }} & & & \\
+{\bf{Marital status x Education}} & & & \\
+\hline
+    Married Bachelors or higher -  Not married High School or less & 2.27 & 26.30 & 0.0000 \\ 
+    Married Bachelors or higher -  Married High School or less & 1.98 & 23.55 & 0.0000 \\ 
+    Married Bachelors or higher -  Not married Some college, diploma, assoc & 1.87 & 21.45 & 0.0000 \\ 
+    Married Bachelors or higher -  Married Some college, diploma, assoc & 1.46 & 17.37 & 0.0000 \\ 
+    Married Bachelors or higher -  Not married Bachelors or higher & 1.07 & 15.84 & 0.0000 \\ 
+    Not married Bachelors or higher -  Not married High School or less & 1.21 & 14.39 & 0.0000 \\ 
+    Married Some college, diploma, assoc -  Not married High School or less & 0.82 & 11.81 & 0.0000 \\ 
+    Not married Bachelors or higher -  Married High School or less & 0.92 & 10.10 & 0.0000 \\ 
+    Not married Bachelors or higher -  Not married Some college, diploma, assoc & 0.80 & 9.90 & 0.0000 \\ 
+    Married Some college, diploma, assoc -  Married High School or less & 0.53 & 7.95 & 0.0000 \\ 
+    Married Some college, diploma, assoc -  Not married Some college, diploma, assoc & 0.41 & 7.61 & 0.0000 \\ 
+    Not married Some college, diploma, assoc -  Not married High School or less & 0.41 & 6.48 & 0.0000 \\ 
+    Married High School or less -  Not married High School or less & 0.29 & 5.87 & 0.0000 \\ 
+    Not married Bachelors or higher -  Married Some college, diploma, assoc & 0.39 & 4.33 & 0.0000 \\ 
+    Not married Some college, diploma, assoc -  Married High School or less & 0.12 & 1.62 & 0.1046 \\ 
+
+    \label{tab:PostHoc} \\
+%{\bf{  }} & & & \\
+{\bf{Race and Ethnicity x Education}} & & & \\
+\hline
+    White Bachelors or higher -  White High School or less & 1.66 & 25.14 & 0.0000 \\ 
+    White Bachelors or higher -  Black High School or less & 2.52 & 24.36 & 0.0000 \\ 
+    White Bachelors or higher -  Hispanic High School or less & 2.37 & 23.62 & 0.0000 \\ 
+    White Bachelors or higher -  White Some college, diploma, assoc & 1.26 & 20.15 & 0.0000 \\ 
+    White Bachelors or higher -  Black Some college, diploma, assoc & 1.99 & 18.96 & 0.0000 \\ 
+    White Bachelors or higher -  Hispanic Some college, diploma, assoc & 2.07 & 17.14 & 0.0000 \\ 
+    White Bachelors or higher -  Others High School or less & 2.13 & 16.70 & 0.0000 \\ 
+    Others Bachelors or higher -  Black High School or less & 2.35 & 13.87 & 0.0000 \\ 
+    Others Bachelors or higher -  Hispanic High School or less & 2.20 & 13.00 & 0.0000 \\ 
+    White Some college, diploma, assoc -  Black High School or less & 1.26 & 13.00 & 0.0000 \\ 
+    White Some college, diploma, assoc -  Hispanic High School or less & 1.11 & 11.86 & 0.0000 \\ 
+    Others Bachelors or higher -  Others High School or less & 1.96 & 11.16 & 0.0000 \\ 
+    White Bachelors or higher -  Others Some college, diploma, assoc & 1.48 & 10.99 & 0.0000 \\ 
+    Others Bachelors or higher -  Black Some college, diploma, assoc & 1.82 & 10.67 & 0.0000 \\ 
+    Others Bachelors or higher -  Hispanic Some college, diploma, assoc & 1.90 & 10.39 & 0.0000 \\ 
+    Others Bachelors or higher -  White High School or less & 1.49 & 9.72 & 0.0000 \\ 
+    White High School or less -  Black High School or less & 0.87 & 8.95 & 0.0000 \\ 
+    Hispanic Bachelors or higher -  Hispanic High School or less & 1.35 & 8.78 & 0.0000 \\ 
+    Hispanic Bachelors or higher -  Black High School or less & 1.51 & 8.70 & 0.0000 \\ 
+    Black Bachelors or higher -  Black High School or less & 1.42 & 8.60 & 0.0000 \\ 
+    Others Bachelors or higher -  Others Some college, diploma, assoc & 1.31 & 7.89 & 0.0000 \\ 
+    White High School or less -  Hispanic High School or less & 0.71 & 7.75 & 0.0000 \\ 
+    White Some college, diploma, assoc -  White High School or less & 0.40 & 7.57 & 0.0000 \\ 
+    White Some college, diploma, assoc -  Black Some college, diploma, assoc & 0.73 & 7.47 & 0.0000 \\ 
+    Black Bachelors or higher -  Hispanic High School or less & 1.27 & 7.33 & 0.0000 \\ 
+    Others Bachelors or higher -  White Some college, diploma, assoc & 1.09 & 7.15 & 0.0000 \\ 
+    White Some college, diploma, assoc -  Others High School or less & 0.87 & 7.14 & 0.0000 \\ 
+    White Some college, diploma, assoc -  Hispanic Some college, diploma, assoc & 0.81 & 7.06 & 0.0000 \\ 
+    Others Some college, diploma, assoc -  Black High School or less & 1.04 & 6.92 & 0.0000 \\ 
+    White Bachelors or higher -  Black Bachelors or higher & 1.10 & 6.90 & 0.0000 \\ 
+    Hispanic Bachelors or higher -  Hispanic Some college, diploma, assoc & 1.05 & 6.63 & 0.0000 \\
+    White Bachelors or higher -  Hispanic Bachelors or higher & 1.02 & 6.51 & 0.0000 \\ 
+    Others Some college, diploma, assoc -  Hispanic High School or less & 0.89 & 5.99 & 0.0000 \\ 
+    Hispanic Bachelors or higher -  Others High School or less & 1.11 & 5.93 & 0.0000 \\ 
+    Hispanic Bachelors or higher -  Black Some college, diploma, assoc & 0.98 & 5.60 & 0.0000 \\ 
+    Black Bachelors or higher -  Black Some college, diploma, assoc & 0.89 & 5.50 & 0.0000 \\ 
+    Black Bachelors or higher -  Others High School or less & 1.03 & 5.45 & 0.0000 \\ 
+    Black Bachelors or higher -  Hispanic Some college, diploma, assoc & 0.97 & 5.20 & 0.0000 \\ 
+    Black Some college, diploma, assoc -  Black High School or less & 0.53 & 4.93 & 0.0000 \\ 
+    Black Bachelors or higher -  Others Bachelors or higher & -0.93 & -4.62 & 0.0000 \\ 
+    Others Some college, diploma, assoc -  Others High School or less & 0.65 & 4.34 & 0.0000 \\ 
+    Hispanic Bachelors or higher -  White High School or less & 0.64 & 4.15 & 0.0000 \\ 
+    Hispanic Bachelors or higher -  Others Bachelors or higher & -0.84 & -4.03 & 0.0002 \\ 
+    White High School or less -  Others High School or less & 0.47 & 3.91 & 0.0002 \\ 
+    Hispanic Some college, diploma, assoc -  Others Some college, diploma, assoc & -0.59 & -3.61 & 0.0004 \\ 
+    Hispanic Some college, diploma, assoc -  White High School or less & -0.41 & -3.59 & 0.0004 \\ 
+    Black Bachelors or higher -  White High School or less & 0.56 & 3.55 & 0.0006 \\ 
+    Black Some college, diploma, assoc -  Others Some college, diploma, assoc & -0.51 & -3.40 & 0.0009 \\ 
+    Black Some college, diploma, assoc -  White High School or less & -0.34 & -3.39 & 0.0009 \\ 
+    Hispanic Some college, diploma, assoc -  Black High School or less & 0.45 & 3.25 & 0.0015 \\ 
+    Black Some college, diploma, assoc -  Hispanic High School or less & 0.38 & 3.05 & 0.0030 \\ 
+    Black High School or less -  Others High School or less & -0.39 & -2.77 & 0.0071 \\ 
+    Hispanic Some college, diploma, assoc -  Hispanic High School or less & 0.30 & 2.62 & 0.0110 \\ 
+    Hispanic Bachelors or higher -  Others Some college, diploma, assoc & 0.46 & 2.40 & 0.0200 \\ 
+    Black Bachelors or higher -  Others Some college, diploma, assoc & 0.38 & 1.96 & 0.0598 \\ 
+    Hispanic High School or less -  Others High School or less & -0.24 & -1.72 & 0.1008 \\ 
+    White Some college, diploma, assoc -  Others Some college, diploma, assoc & 0.22 & 1.68 & 0.1065 \\ 
+    Hispanic Bachelors or higher -  White Some college, diploma, assoc & 0.25 & 1.59 & 0.1270 \\ 
+    Others Some college, diploma, assoc -  White High School or less & 0.18 & 1.37 & 0.1926 \\ 
+    Black High School or less -  Hispanic High School or less & -0.15 & -1.27 & 0.2238 \\ 
+    White Bachelors or higher -  Others Bachelors or higher & 0.17 & 1.10 & 0.2921 \\ 
+    Black Bachelors or higher -  White Some college, diploma, assoc & 0.16 & 1.02 & 0.3257 \\ 
+    Black Some college, diploma, assoc -  Others High School or less & 0.14 & 0.93 & 0.3690 \\ 
+    Black Some college, diploma, assoc -  Hispanic Some college, diploma, assoc & 0.08 & 0.54 & 0.6097 \\ 
+    Black Bachelors or higher -  Hispanic Bachelors or higher & -0.09 & -0.41 & 0.6944 \\ 
+    Hispanic Some college, diploma, assoc -  Others High School or less & 0.06 & 0.38 & 0.7043 \\ 
+   \hline
+%\end{tabular}
+%\endgroup
+%\label{tab:PostHoc}
+%\end{table}
+\multicolumn{4}{l}{
+  \begin{minipage}{15cm}
+\textit{Note:} [1] The p-values of the levels of each factor or interaction have been adjusted for multiple testing using Benjamini-Hochberg correction.
+  \end{minipage}
+}\\
+\label{tab:Table3PostHoc}
+
+\end{longtable}
+
+\end{center}
+
+\doublespacing
+
