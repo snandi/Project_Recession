@@ -127,8 +127,9 @@ proportionData$adult_disb <- factor( proportionData$adult_disb, levels = c( 1, 0
 ## Get the program participation proportion Plot
 ########################################################################
 proportionPlot <- qplot() + geom_line( aes( x = yearmon, y = propProgram, linetype = adult_disb ), 
-                                       data = proportionData, size = 1.25 ) +
+                                       data = proportionData, size = 1 ) +
   facet_wrap( ~ programName, nrow = 2 ) +
+  scale_y_continuous( labels = scales::percent ) +
   xlab( label = 'time' ) + ylab( label = 'program participation rate' ) +
   theme( legend.position   = 'top', 
          legend.title      = element_blank(), 
@@ -136,7 +137,7 @@ proportionPlot <- qplot() + geom_line( aes( x = yearmon, y = propProgram, linety
          panel.border      = element_rect( fill = NA, colour = "black" ),
          panel.grid.major  = element_line( colour = "grey80", size = 0.5 ),
          panel.grid.minor  = element_line( colour = "grey95", size = 0.3 )
-  )
+  ) 
 
 filenameSave <- paste0( PlotPath, 'ProgramParticipationPlots.pdf' )
 ggsave( filename = filenameSave, plot = proportionPlot, device = 'pdf' )
