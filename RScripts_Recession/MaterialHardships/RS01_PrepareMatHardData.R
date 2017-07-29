@@ -53,15 +53,49 @@ dataMasterWeights <- subset( dataMasterWeights, swave %in% c( 6,9 ) )
 dataMasterWeights <- subset( dataMasterWeights, ehrefper == epppnum ) ## No change. Good!
 
 ## Average weights of the same wave per household
-dataWeights <- aggregate( wffinwgt ~ hhid + swave + epppnum, data = dataMasterWeights, FUN = mean )
+dataWeights <- aggregate( wffinwgt ~ hhid + swave, data = dataMasterWeights, FUN = mean )
 
 ########################################################################
 ## Merge data with weights
 ########################################################################
 dataMatHard$epppnum <- as.numeric( dataMatHard$epppnum )
-dataMatHardWts <- merge( x = dataMatHard, y = dataWeights, by = c( 'hhid', 'swave', 'epppnum' ), 
+dataMatHard$epppnum <- NULL
+dataMatHard$tage <- NULL
+dataMatHard$sippid <- NULL
+dataMatHard <- unique( dataMatHard )
+dataMatHardWts <- merge( x = dataMatHard, y = dataWeights, by = c( 'hhid', 'swave' ), 
                          all.x = F, all.y = F )
 
 ########################################################################
 ## Merge data with disab
 ########################################################################
+dataDisab$hhid <- paste( dataDisab$ssuid, dataDisab$shhadid, sep = '_' )
+dataDisab <- unique( dataDisab[,c( 'hhid', 'adult_disb' ) ] )
+
+dataMatHardWtsDisab <- merge( x = dataMatHardWts, y = dataDisab, by = 'hhid', all.x = T, all.y = F )
+
+table( dataMatHardWtsDisab$adult_disb)
+
+########################################################################
+## Keep only those households who were there in wave 6
+########################################################################
+wave6HH <- unique( unique( dataMatHardWtsDisab$hhid[ dataMatHardWtsDisab$swave == 6 ] ) )
+dataMatHardWtsDisab <- subset( dataMatHardWtsDisab, hhid %in% wave6HH )
+
+########################################################################
+## Ensure all households are both in waves 6 and 9
+########################################################################
+tableHH <- table( dataMatHardWtsDisab$hhid )
+length( tableHH[ tableHH == 1 ] )
+HH_notInWave9 <- names( which( tableHH == 1 ) )
+
+dataMatHardWtsDisab <- subset( dataMatHardWtsDisab, !( hhid %in% HH_notInWave9 ) )
+
+tableHH <- table( dataMatHardWtsDisab$hhid )
+tableHH[ tableHH > 2 ] ## There shouldn't be any household with more than 2 data points
+
+########################################################################
+## Save material hardships data for subsequent analysis
+########################################################################
+filenameMatHardFinal <- paste0( RDataPath, 'MaterialHardshipsData.RData' )
+save( dataMatHardWtsDisab, file = filenameMatHardFinal )
