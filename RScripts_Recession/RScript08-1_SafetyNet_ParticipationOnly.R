@@ -86,8 +86,10 @@ Data15 <- dropSomeMonths( dropMonths = c( 'May 2008', 'Jun 2008', 'Jul 2008',
 ########################################################################
 ## Define employment income
 ########################################################################
-Data15$employmentIncome <- Data15$thtotinc - rowSums( Data15[, c( "thnoncsh", "thsocsec", "thssi", 
-                                                                  "thunemp", "thvets", "thafdc", "thfdstp" )] )
+# Data15$employmentIncome <- Data15$thtotinc - rowSums( Data15[, c( "thnoncsh", "thsocsec", "thssi", 
+#                                                                   "thunemp", "thvets", "thafdc", "thfdstp" )] )
+Data15$employmentIncome <- Data15$thtotinc - rowSums( Data15[, c( 
+  "thnoncsh", "thsocsec", "thssi", "thunemp", "thvets", "thafdc", "thfdstp" )] )
 
 ########################################################################
 ## Income below FPL130
