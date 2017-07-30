@@ -3,7 +3,7 @@ rm( list = objects( all.names = TRUE ) )
 #dev.off()
 
 ########################################################################
-## Read in material hardships data and merge it with disability
+## Read in material hardships data and merge it with disability, weights
 ########################################################################
 
 ########################################################################
@@ -36,15 +36,34 @@ rm( Data_disab )
 dataMatHard$hhid <- paste( dataMatHard$ssuid, dataMatHard$shhadid, sep = '_' )
 
 ########################################################################
-## Get household weights from Master Inc Pov Data
+## Load Master Data used to prepare Inc Pov Data
 ########################################################################
 filenameData15 <- paste( RDataPath, 'Data15.RData', sep = '' )
 load( filenameData15 )
 Data15$hhid <- paste( Data15$ssuid, Data15$shhadid, sep = '_' )
+colnames( Data15 )
 
-colnamesKeep <- c( 'hhid', 'swave', 'ehrefper', 'epppnum', 'wffinwgt' )
+Data15Subset <- subset( Data15, swave %in% c(6,9) )
+########################################################################
+## Get households with Income below FPL200 only
+########################################################################
+Data15Subset$employmentIncome <- Data15Subset$thtotinc - rowSums( Data15Subset[, c( 
+  "thnoncsh", "thsocsec", "thssi", "thunemp", "thvets", "thafdc", "thfdstp" )] )
+
+Data15Subset$FPL200 <- ( Data15Subset$employmentIncome < 2 * Data15Subset$rhpov )
+
+hhID_FPL200_wave6 <- unique( Data15Subset$hhid[Data15Subset$FPL200 == TRUE & Data15Subset$swave == 6] )
+hhID_FPL200_wave9 <- unique( Data15Subset$hhid[Data15Subset$FPL200 == TRUE & Data15Subset$swave == 9] )
+hhID_FPL200_Union <- dplyr::union( hhID_FPL200_wave6, hhID_FPL200_wave9 )
+  
+Data15Subset <- subset( Data15Subset, hhid %in% hhID_FPL200_Union )
+
+########################################################################
+## Get households weights
+########################################################################
+colnamesKeep <- c( 'hhid', 'swave', 'ehrefper', 'epppnum', 'wffinwgt', 'FPL200' )
 ## Get weights
-dataMasterWeights <- unique( Data15[, colnamesKeep ] ) 
+dataMasterWeights <- unique( Data15Subset[, colnamesKeep ] ) 
 
 ## Keep weights of wave 6 and 9 only
 dataMasterWeights <- subset( dataMasterWeights, swave %in% c( 6,9 ) )
