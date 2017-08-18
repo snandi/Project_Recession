@@ -101,6 +101,7 @@ table( dataMatHardWtsDisab$adult_disb)
 wave6HH <- unique( unique( dataMatHardWtsDisab$hhid[ dataMatHardWtsDisab$swave == 6 ] ) )
 dataMatHardWtsDisab <- subset( dataMatHardWtsDisab, hhid %in% wave6HH )
 
+table( dataMatHardWtsDisab$adult_disb)
 ########################################################################
 ## Ensure all households are both in waves 6 and 9
 ########################################################################
@@ -116,5 +117,7 @@ tableHH[ tableHH > 2 ] ## There shouldn't be any household with more than 2 data
 ########################################################################
 ## Save material hardships data for subsequent analysis
 ########################################################################
+sum( dataMatHardWtsDisab$adult_disb )/2
+
 filenameMatHardFinal <- paste0( RDataPath, 'MaterialHardshipsData.RData' )
 save( dataMatHardWtsDisab, file = filenameMatHardFinal )
